@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v19.0 | Sistema Unificado Total</title>
+    <title>Integra Pro v20.0 | Sistema Unificado Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">Seguridad Activa 2026</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v20.0 Stable Build</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -98,8 +98,9 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Gestión de Periodos y Rúbrica</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Rúbrica</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                    
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
@@ -107,7 +108,7 @@
                         <div class="grid grid-cols-3 gap-6">
                             <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
                             <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Alto (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
                     <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración</button>
@@ -118,7 +119,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Estudiantes</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -131,7 +132,7 @@
                         <h3 class="font-black text-indigo-900 text-xl uppercase italic">Consulta de Notas</h3>
                         <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Vista detallada vertical con descripciones</p>
                     </div>
-                    <button onclick="openModal('modal_periodos')" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
+                    <button onclick="abrirSelectorEstudiante()" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
                         <i class="fas fa-eye mr-2"></i> Ver Mis Notas
                     </button>
                 </div>
@@ -155,7 +156,7 @@
             <div class="p-4 bg-emerald-700 text-white shadow-lg">
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex items-center gap-4">
-                        <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg hover:bg-white/40 transition"><i class="fas fa-arrow-left"></i></button>
+                        <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg"><i class="fas fa-arrow-left"></i></button>
                         <span id="planilla_header_txt" class="font-black uppercase text-xs italic tracking-widest"></span>
                     </div>
                     <div id="timer_display" class="bg-red-500 px-4 py-2 rounded-xl font-black text-[10px] shadow-lg border border-white/20 uppercase tracking-tighter"></div>
@@ -176,7 +177,7 @@
     </div>
 
     <script>
-        // --- DATA SYSTEM ---
+        // --- DATA CORE ---
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
@@ -206,12 +207,11 @@
 
         function renderMenu() {
             const nav = document.getElementById('menu-nav');
-            const rol = sesion.role;
             let html = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-home mr-3 text-orange-500"></i> Inicio</button>`;
-            if(rol === 'Administrativo') {
+            if(sesion.role === 'Administrativo') {
                 html += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-users mr-3 text-blue-400"></i> Usuarios / Materias</button>
                          <button onclick="showView('admin-config')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-cog mr-3 text-indigo-400"></i> Configuración</button>`;
-            } else if(rol === 'Docente') {
+            } else if(sesion.role === 'Docente') {
                 html += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-book mr-3 text-emerald-400"></i> Mis Asignaturas</button>`;
             } else {
                 html += `<button onclick="showView('estudiante-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-star mr-3 text-indigo-400"></i> Ver Notas</button>`;
@@ -229,9 +229,8 @@
         }
 
         function loadHome() {
-            const r = sesion.role;
-            if(r === 'Administrativo') showView('admin-main');
-            else if(r === 'Docente') showView('docente-mats');
+            if(sesion.role === 'Administrativo') showView('admin-main');
+            else if(sesion.role === 'Docente') showView('docente-mats');
             else showView('estudiante-main');
         }
 
@@ -253,6 +252,7 @@
             document.getElementById('sel_dest_mat').innerHTML = db_mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
             document.getElementById('sel_dest_user').innerHTML = Object.values(db_users).map(u => `<option value="${u.user}">${u.fullname} (${u.role})</option>`).join('');
         }
+
         function saveUser() {
             const u = document.getElementById('adm_u_user').value.trim(); const p = document.getElementById('adm_u_pass').value.trim();
             const n = document.getElementById('adm_u_name').value.trim(); const r = document.getElementById('adm_u_role').value;
@@ -260,9 +260,11 @@
             db_users[u] = { user:u, pass:p, fullname:n, role:r }; localStorage.setItem('db_users', JSON.stringify(db_users));
             alert("Usuario guardado"); loadAdmin();
         }
+
         function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
         function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01-A'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function deleteMat(id) { if(confirm("¿Borrar?")){ db_mats = db_mats.filter(m=>m.id!=id); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
+        
         function matricularAction() {
             const m = db_mats.find(x => x.id == document.getElementById('sel_dest_mat').value);
             const uId = document.getElementById('sel_dest_user').value;
@@ -272,7 +274,7 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
-        // --- CONFIG ---
+        // --- CONFIG (FECHAS REPARADO) ---
         function loadConfig() {
             document.getElementById('rub_bajo').value = db_conf.rubrica.bajo;
             document.getElementById('rub_basico').value = db_conf.rubrica.basico;
@@ -283,22 +285,24 @@
                     <div class="grid grid-cols-2 gap-2 text-[9px] font-bold"><span>PESO %</span><input type="number" value="${it.weight}" onchange="db_conf.items[${i}].weight=parseFloat(this.value)" class="w-full border rounded px-1">
                     <span>NOTAS</span><input type="number" value="${it.count}" onchange="db_conf.items[${i}].count=parseInt(this.value)" class="w-full border rounded px-1"></div>
                 </div>`).join('');
+            
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
                 <div class="bg-white p-5 rounded-3xl border shadow-sm"><h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
-                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" id="start_p${p}" value="${db_conf.periodos[p].start}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
-                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" id="end_p${p}" value="${db_conf.periodos[p].end}" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
+                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" id="f_start_${p}" value="${db_conf.periodos[p].start}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
+                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" id="f_end_${p}" value="${db_conf.periodos[p].end}" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
         }
+
         function saveGlobalConfig() {
             db_conf.rubrica = { bajo: parseInt(document.getElementById('rub_bajo').value), basico: parseInt(document.getElementById('rub_basico').value), alto: parseInt(document.getElementById('rub_alto').value) };
             [1,2,3].forEach(p => {
-                db_conf.periodos[p].start = document.getElementById(`start_p${p}`).value;
-                db_conf.periodos[p].end = document.getElementById(`end_p${p}`).value;
+                db_conf.periodos[p].start = document.getElementById(`f_start_${p}`).value;
+                db_conf.periodos[p].end = document.getElementById(`f_end_${p}`).value;
             });
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); alert("Configuración guardada"); location.reload();
         }
 
         // --- SELECTOR UNIVERSAL ---
-        function abrirOpcionesPeriodo(mid = null) {
+        function abrirSelectorPeriodos(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
@@ -308,13 +312,15 @@
                 </div>`).join('');
         }
 
+        function abrirSelectorEstudiante() { abrirSelectorPeriodos(); }
+
         // --- DOCENTE ---
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
             document.getElementById('docente_table_body').innerHTML = mis.map(m => `
-                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo}</td><td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
+                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">01-A</td><td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
                 <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
-                <td class="p-5 text-center"><button onclick="abrirOpcionesPeriodo(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
+                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodos(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
         }
 
         function abrirPlanilla(p) {
@@ -378,7 +384,7 @@
                 return `<div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <div class="p-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition" onclick="document.getElementById('det_${m.id}').classList.toggle('open')">
                         <div class="flex items-center gap-4"><div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book"></i></div>
-                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Periodo ${p}</p></div></div>
+                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase">Periodo ${p}</p></div></div>
                         <div class="text-right"><span class="block text-[8px] font-black text-gray-300 uppercase">Definitiva</span><span class="text-3xl font-black ${getNotaColor(defFinal)}">${defFinal.toFixed(1)}</span></div>
                     </div>
                     <div id="det_${m.id}" class="accordion-content bg-white p-4">${det}</div>
@@ -396,7 +402,7 @@
                 const cur = new Date().getTime();
                 if(cur < sDate) { isLocked = true; disp.innerHTML = "BLOQUEADO: NO INICIADO"; btn.style.display = 'none'; lmsg.innerText = "ACCESO BLOQUEADO HASTA INICIO"; lmsg.className="text-orange-500 font-black italic tracking-widest uppercase"; }
                 else if(cur > eDate) { isLocked = true; disp.innerHTML = "SISTEMA CERRADO"; btn.style.display = 'none'; lmsg.innerText = "SOLO LECTURA - PERIODO FINALIZADO"; lmsg.className="text-red-500 font-black italic tracking-widest uppercase"; clearInterval(timerInterval); }
-                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA HABILITADO PARA CALIFICAR"; lmsg.className="text-emerald-500 font-black italic tracking-widest uppercase";
+                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA ABIERTO PARA CALIFICAR"; lmsg.className="text-emerald-500 font-black italic tracking-widest uppercase";
                     const diff = eDate - cur; const d = Math.floor(diff/(1000*60*60*24)), h = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), m = Math.floor((diff%(1000*60*60))/(1000*60)), s = Math.floor((diff%(1000*60))/1000);
                     disp.innerHTML = `CIERRE EN: ${d}d ${h}h ${m}m ${s}s`;
                 }
