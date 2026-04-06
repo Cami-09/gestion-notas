@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v18.0 | Sistema Unificado Total</title>
+    <title>Integra Pro v19.0 | Sistema Unificado Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,7 +52,6 @@
         </header>
 
         <div class="p-6 overflow-y-auto h-full pb-24">
-            
             <div id="view-admin-main" class="tab-content space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
@@ -99,7 +98,7 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Gestión de Evaluación y Periodos</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Gestión de Periodos y Rúbrica</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
@@ -108,7 +107,7 @@
                         <div class="grid grid-cols-3 gap-6">
                             <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
                             <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Alto (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
                     <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración</button>
@@ -119,7 +118,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Estudiantes</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -177,7 +176,7 @@
     </div>
 
     <script>
-        // --- DATA CORE ---
+        // --- DATA SYSTEM ---
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
@@ -286,16 +285,20 @@
                 </div>`).join('');
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
                 <div class="bg-white p-5 rounded-3xl border shadow-sm"><h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
-                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" value="${db_conf.periodos[p].start}" onchange="db_conf.periodos[${p}].start=this.value" class="w-full text-[9px] p-2 border rounded-xl mb-3">
-                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" value="${db_conf.periodos[p].end}" onchange="db_conf.periodos[${p}].end=this.value" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
+                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" id="start_p${p}" value="${db_conf.periodos[p].start}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
+                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" id="end_p${p}" value="${db_conf.periodos[p].end}" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
         }
         function saveGlobalConfig() {
             db_conf.rubrica = { bajo: parseInt(document.getElementById('rub_bajo').value), basico: parseInt(document.getElementById('rub_basico').value), alto: parseInt(document.getElementById('rub_alto').value) };
+            [1,2,3].forEach(p => {
+                db_conf.periodos[p].start = document.getElementById(`start_p${p}`).value;
+                db_conf.periodos[p].end = document.getElementById(`end_p${p}`).value;
+            });
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); alert("Configuración guardada"); location.reload();
         }
 
         // --- SELECTOR UNIVERSAL ---
-        function abrirSelectorPeriodos(mid = null) {
+        function abrirOpcionesPeriodo(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
@@ -311,7 +314,7 @@
             document.getElementById('docente_table_body').innerHTML = mis.map(m => `
                 <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo}</td><td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
                 <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
-                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodos(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
+                <td class="p-5 text-center"><button onclick="abrirOpcionesPeriodo(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
         }
 
         function abrirPlanilla(p) {
@@ -426,17 +429,7 @@
             });
         }
 
-        function openModal(id) {
-            document.getElementById(id).classList.add('active');
-            // Si el estudiante abre el modal directamente sin pasar por una materia:
-            if(id === 'modal_periodos' && sesion.role === 'Estudiante') {
-                document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
-                    <div onclick="renderBoletinVertical(${p})" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
-                        <span class="font-black text-xs uppercase text-gray-400 group-hover:text-orange-600">Periodo Académico ${p}</span>
-                        <i class="fas fa-chevron-right text-gray-300 group-hover:text-orange-600"></i>
-                    </div>`).join('');
-            }
-        }
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); if(timerInterval) clearInterval(timerInterval); }
         function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
     </script>
