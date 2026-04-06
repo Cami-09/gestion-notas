@@ -3,433 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v3.7 | Sistema Total Unificado</title>
+    <title>Integra Pro v4.0 | Gestión Académica Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .sidebar-admin { background: #1e3a8a; }
+        .sidebar-admin { background: #1e293b; }
         .sidebar-docente { background: #065f46; }
-        .sidebar-estudiante { background: #3730a3; }
         .tab-content { display: none; }
         .tab-content.active { display: block !important; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; align-items: center; justify-content: center; }
         .modal.active { display: flex; }
-        .active-p-btn { background: white !important; color: #059669 !important; border-bottom: 4px solid #059669; }
-        .badge-bajo { background: #fee2e2; color: #991b1b; }
-        .badge-basico { background: #fef3c7; color: #92400e; }
-        .badge-alto { background: #dcfce7; color: #166534; }
-        .badge-superior { background: #e0e7ff; color: #3730a3; }
+        /* Estilo para los inputs de la planilla */
+        .input-nota { width: 45px; height: 30px; border: 1px solid #ddd; text-align: center; font-size: 11px; border-radius: 4px; }
+        .input-nota:focus { border-color: #059669; outline: none; background: #ecfdf5; }
+        .col-academic { background-color: #fdf2ff; }
+        .col-acumula { background-color: #eff6ff; }
+        .col-perso { background-color: #f0fdf4; }
+        .col-social { background-color: #ecfeff; }
     </style>
 </head>
 <body class="bg-gray-100 flex h-screen overflow-hidden text-sm">
 
     <aside id="sidebar" class="w-64 text-white flex flex-col shadow-2xl transition-all duration-300">
-        <div class="p-6 border-b border-white/10 text-center">
-            <h1 class="text-2xl font-black tracking-tighter uppercase italic">INTEGRA<span class="text-orange-500 text-sm">PRO</span></h1>
+        <div class="p-6 border-b border-white/10 flex items-center gap-3">
+            <div class="bg-orange-500 p-2 rounded-lg"><i class="fas fa-graduation-cap text-xl"></i></div>
+            <h1 class="text-xl font-black italic">INTEGRA</h1>
         </div>
-        <nav class="mt-6 flex-1 px-4 space-y-2" id="menuOptions"></nav>
-        <div class="p-4 bg-black/20 text-center uppercase text-[10px] font-black tracking-widest opacity-60">SISTEMA INTEGRADO</div>
+        <nav class="mt-6 flex-1 px-4 space-y-2">
+            <button class="w-full text-left p-3 bg-white/10 rounded-xl font-bold text-[10px] uppercase italic">
+                <i class="fas fa- chalkboard-teacher mr-3"></i> Mi Dashboard
+            </button>
+        </nav>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
-        <header class="bg-white p-4 shadow-md flex justify-between items-center px-8 border-b-4 border-orange-500">
+        <header class="bg-white p-4 shadow-sm flex justify-between items-center px-8 border-b-2 border-gray-200">
             <div>
-                <h2 class="text-xl font-black text-gray-800 uppercase leading-none italic">Panel de Gestión</h2>
-                <p class="text-[10px] text-gray-400 mt-1 font-bold uppercase tracking-widest" id="currentPeriodLabel">Estado: Cargando...</p>
+                <h2 class="text-lg font-black text-gray-800 uppercase italic">Notas Asignaturas</h2>
             </div>
-            <div class="flex items-center gap-4 text-right">
-                <div>
-                    <p id="navFullName" class="font-bold text-gray-900 leading-none text-base"></p>
+            <div class="flex items-center gap-4">
+                <div class="text-right">
+                    <p id="navFullName" class="font-bold text-gray-900 leading-none"></p>
                     <p id="navRole" class="text-[10px] uppercase text-orange-600 font-black mt-1"></p>
                 </div>
-                <button onclick="logout()" class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition shadow-sm">
-                    <i class="fas fa-power-off"></i>
+                <button onclick="logout()" class="w-8 h-8 bg-red-50 text-red-600 rounded-full flex items-center justify-center hover:bg-red-600 hover:text-white transition">
+                    <i class="fas fa-power-off text-xs"></i>
                 </button>
             </div>
         </header>
 
-        <div class="p-6 overflow-y-auto h-full pb-32">
+        <div class="p-6 overflow-y-auto h-full">
             
-            <div id="view-admin" class="tab-content">
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-purple-600">
-                        <h3 class="font-black text-purple-700 uppercase text-xs mb-4"><i class="fas fa-chart-line mr-2"></i>Escala Valorativa</h3>
+            <div id="view-admin" class="tab-content space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="font-black text-gray-700 uppercase text-xs mb-4 border-b pb-2">Configuración de Cronograma</h3>
+                        <div class="space-y-4">
+                            <select id="adm_periodo_sel" class="w-full p-2 border rounded-lg font-bold bg-gray-50">
+                                <option value="1">Periodo 1</option>
+                                <option value="2">Periodo 2</option>
+                                <option value="3">Periodo 3</option>
+                            </select>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-400 block mb-1 uppercase">Fecha Inicio</label>
+                                    <input type="datetime-local" id="adm_fecha_inicio" class="w-full p-2 border rounded-lg text-xs">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-400 block mb-1 uppercase">Fecha Cierre</label>
+                                    <input type="datetime-local" id="adm_fecha_fin" class="w-full p-2 border rounded-lg text-xs">
+                                </div>
+                            </div>
+                            <button onclick="saveCronograma()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-black text-[10px] uppercase">Actualizar Fechas</button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                        <h3 class="font-black text-gray-700 uppercase text-xs mb-4 border-b pb-2">Creación y Asignación</h3>
                         <div class="space-y-3">
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-gray-500 uppercase">Bajo Hasta:</span>
-                                <input type="number" step="0.1" id="esc_bajo" class="w-16 border rounded p-1 text-center font-bold">
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-gray-500 uppercase">Básico Hasta:</span>
-                                <input type="number" step="0.1" id="esc_basico" class="w-16 border rounded p-1 text-center font-bold">
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-gray-500 uppercase">Alto Hasta:</span>
-                                <input type="number" step="0.1" id="esc_alto" class="w-16 border rounded p-1 text-center font-bold">
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-gray-500 uppercase">Superior Hasta:</span>
-                                <input type="number" step="0.1" id="esc_superior" class="w-16 border rounded p-1 text-center font-bold">
-                            </div>
-                        </div>
-                        <button onclick="saveEscala()" class="w-full mt-4 bg-purple-600 text-white py-2 rounded-xl font-bold text-[10px] uppercase">Guardar Escala</button>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-blue-900">
-                        <h3 class="font-black text-blue-900 uppercase text-xs mb-4"><i class="fas fa-calendar-alt mr-2"></i>Apertura de Periodos</h3>
-                        <select id="admin_p_select" class="w-full mb-3 p-2 border rounded-xl text-xs font-bold bg-gray-50">
-                            <option value="1">Periodo 1</option>
-                            <option value="2">Periodo 2</option>
-                            <option value="3">Periodo 3</option>
-                        </select>
-                        <div class="grid grid-cols-1 gap-2 mb-4">
-                            <input type="datetime-local" id="f_inicio" class="w-full p-2 border rounded-lg text-xs">
-                            <input type="datetime-local" id="f_cierre" class="w-full p-2 border rounded-lg text-xs">
-                        </div>
-                        <button onclick="saveCronograma()" class="w-full bg-blue-900 text-white py-2 rounded-xl font-bold uppercase text-[10px]">Habilitar Fechas</button>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-gray-800">
-                        <h3 class="font-black text-gray-800 uppercase text-xs mb-4"><i class="fas fa-user-plus mr-2"></i>Crear Usuarios</h3>
-                        <input type="text" id="reg_name" placeholder="Nombre Completo" class="w-full mb-2 p-2 border rounded-xl text-xs">
-                        <div class="flex gap-2 mb-2">
-                            <input type="text" id="reg_user" placeholder="Usuario ID" class="w-1/2 p-2 border rounded-xl text-xs">
-                            <input type="text" id="reg_pass" placeholder="Contraseña" class="w-1/2 p-2 border rounded-xl text-xs">
-                        </div>
-                        <select id="reg_role" class="w-full mb-4 p-2 border rounded-xl text-xs font-bold">
-                            <option value="Estudiante">Estudiante</option>
-                            <option value="Docente">Docente</option>
-                            <option value="Administrativo">Administrativo</option>
-                        </select>
-                        <button onclick="register()" class="w-full bg-black text-white py-2 rounded-xl font-bold uppercase text-[10px]">Registrar en Sistema</button>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-3xl shadow-sm border-t-4 border-orange-500">
-                        <h3 class="font-black text-orange-600 uppercase text-xs mb-4 italic">Asignaturas y Matrículas</h3>
-                        <div class="flex gap-2 mb-4">
-                            <input type="text" id="mat_name" placeholder="Nombre de Materia" class="flex-1 p-2 border rounded-xl text-xs">
-                            <select id="sel_doc" class="flex-1 p-2 border rounded-xl text-xs font-bold"></select>
-                            <button onclick="addMateria()" class="bg-orange-600 text-white px-4 rounded-xl font-bold text-[10px]">CREAR MATERIA</button>
-                        </div>
-                        <div class="p-3 bg-green-50 rounded-2xl border border-green-100 flex gap-2">
-                            <select id="sel_est" class="flex-1 p-2 border rounded-xl text-xs font-bold"></select>
-                            <select id="sel_mat" class="flex-1 p-2 border rounded-xl text-xs font-bold"></select>
-                            <button onclick="matricular()" class="bg-green-600 text-white px-4 rounded-xl font-bold text-[10px]">MATRICULAR</button>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-3xl shadow-sm border overflow-hidden">
-                        <div class="p-4 bg-gray-50 border-b font-black text-gray-400 text-[10px] uppercase">Usuarios Registrados</div>
-                        <div class="max-h-48 overflow-y-auto">
-                            <table class="w-full text-left divide-y"><tbody id="table_users"></tbody></table>
+                            <input type="text" id="adm_mat_nombre" placeholder="Nombre de la Materia" class="w-full p-2 border rounded-lg text-xs">
+                            <select id="adm_doc_sel" class="w-full p-2 border rounded-lg text-xs font-bold bg-gray-50"></select>
+                            <button onclick="crearAsignatura()" class="w-full bg-orange-600 text-white py-2 rounded-lg font-black text-[10px] uppercase">Crear Asignatura</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div id="view-docente" class="tab-content">
-                <div id="doc_grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-            </div>
-
-            <div id="view-estudiante" class="tab-content">
-                <div id="est_boletin" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-500 border-b">
+                            <tr>
+                                <th class="p-4">Grupo</th>
+                                <th class="p-4">Grado</th>
+                                <th class="p-4">Asignatura</th>
+                                <th class="p-4">Ubicación</th>
+                                <th class="p-4 text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista_materias_doc" class="divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
 
+    <div id="modal_periodos" class="modal">
+        <div class="bg-white w-96 rounded-xl shadow-2xl overflow-hidden">
+            <div class="bg-emerald-600 p-3 flex justify-between items-center text-white">
+                <h4 class="font-bold text-xs uppercase">Seleccione el periodo</h4>
+                <button onclick="closeModal('modal_periodos')" class="text-xl">&times;</button>
+            </div>
+            <div class="p-4 space-y-6" id="periodos_container">
+                </div>
+            <div class="p-4 bg-gray-50 text-right">
+                <button onclick="closeModal('modal_periodos')" class="px-4 py-1.5 bg-gray-200 text-gray-700 rounded font-bold text-xs">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modal_planilla" class="modal">
-        <div class="bg-white w-full max-w-5xl mx-4 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col">
-            <div class="p-6 bg-gray-900 text-white flex justify-between items-center">
-                <h3 id="modal_mat_name" class="font-black uppercase tracking-widest italic text-sm">PLANILLA</h3>
-                <button onclick="closePlanilla()" class="text-3xl">&times;</button>
+        <div class="bg-white w-[98%] h-[95%] rounded-lg shadow-2xl overflow-hidden flex flex-col">
+            <div class="bg-emerald-600 p-3 text-white flex justify-between items-center">
+                <div class="flex gap-4 items-center">
+                    <button onclick="closeModal('modal_planilla')" class="bg-white/20 px-3 py-1 rounded text-[10px] uppercase font-bold"><i class="fas fa-arrow-left mr-2"></i>Asignaturas</button>
+                    <h4 id="planilla_titulo" class="font-bold text-xs uppercase"></h4>
+                </div>
+                <div id="planilla_countdown" class="bg-red-500 px-3 py-1 rounded text-[10px] font-black"></div>
             </div>
-            <div class="flex bg-gray-100 border-b">
-                <button onclick="setPeriodo(1)" id="p1_btn" class="flex-1 py-4 font-black text-xs uppercase border-r">Periodo 1</button>
-                <button onclick="setPeriodo(2)" id="p2_btn" class="flex-1 py-4 font-black text-xs uppercase border-r">Periodo 2</button>
-                <button onclick="setPeriodo(3)" id="p3_btn" class="flex-1 py-4 font-black text-xs uppercase">Periodo 3</button>
-            </div>
-            <div class="p-8 overflow-y-auto max-h-[60vh]">
-                <div id="status_msg" class="mb-4 p-3 rounded-2xl text-[10px] font-black text-center uppercase"></div>
-                <table class="w-full text-left">
+            
+            <div class="overflow-auto flex-1">
+                <table class="w-full border-collapse">
                     <thead>
-                        <tr class="text-[10px] text-gray-400 uppercase border-b">
-                            <th class="pb-3 px-2">Estudiante</th>
-                            <th class="pb-3 text-center">N1 (30%)</th>
-                            <th class="pb-3 text-center">N2 (30%)</th>
-                            <th class="pb-3 text-center">Examen (40%)</th>
-                            <th class="pb-3 text-center">Definitiva</th>
-                            <th class="pb-3 text-center">Rango</th>
+                        <tr class="text-[9px] font-black uppercase text-center text-white">
+                            <th rowspan="2" class="bg-gray-400 p-2 text-left text-gray-800">Estudiantes</th>
+                            <th colspan="8" class="bg-purple-600 border-l border-white">65% - Académico</th>
+                            <th colspan="1" class="bg-purple-800 border-l border-white">Subtot</th>
+                            <th colspan="1" class="bg-blue-500 border-l border-white">15% - Acumulativa</th>
+                            <th colspan="3" class="bg-green-600 border-l border-white">10% - Personal</th>
+                            <th colspan="3" class="bg-cyan-600 border-l border-white">10% - Social</th>
+                            <th rowspan="2" class="bg-gray-800 border-l border-white">Def</th>
+                        </tr>
+                        <tr class="text-[8px] font-black uppercase text-gray-500 bg-gray-50 text-center">
+                            <th class="border">N1</th><th class="border">N2</th><th class="border">N3</th><th class="border">N4</th>
+                            <th class="border">N5</th><th class="border">N6</th><th class="border">N7</th><th class="border">N8</th>
+                            <th class="border bg-purple-50 italic">Prc.</th>
+                            <th class="border">Eval</th>
+                            <th class="border">N1</th><th class="border">N2</th><th class="border">N3</th>
+                            <th class="border">N1</th><th class="border">N2</th><th class="border">N3</th>
                         </tr>
                     </thead>
-                    <tbody id="planilla_rows" class="divide-y"></tbody>
+                    <tbody id="planilla_cuerpo"></tbody>
                 </table>
             </div>
-            <div class="p-4 bg-gray-50 text-right"><button onclick="closePlanilla()" class="bg-gray-800 text-white px-8 py-2 rounded-2xl font-black text-[10px] uppercase">Finalizar Revisión</button></div>
+            <div class="p-3 bg-emerald-700 flex justify-end gap-2">
+                 <button onclick="saveAllNotas()" class="bg-white text-emerald-700 px-6 py-2 rounded font-black text-xs uppercase shadow-lg"><i class="fas fa-save mr-2"></i> Guardar Todo</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- DATA CORE ---
-        const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
-        if(!sesion) window.location.href = 'index.html';
+        // --- DATA MOCKUP & PERSISTENCIA ---
+        const sesion = JSON.parse(sessionStorage.getItem('activeUser')) || { user: 'admin', fullname: 'MARIA PAULINA', role: 'Administrativo' };
+        let currentMateria = null;
+        let currentPeriodo = 1;
+        let timerInterval = null;
 
-        let curMatId = null, curPer = 1;
-
-        // --- ARRANQUE DE SEGURIDAD (FIX ADMIN) ---
-        window.onload = function() {
-            // Paso 1: Identificar Rol sin errores
-            const rol = sesion.role ? sesion.role.toLowerCase().trim() : '';
-            
-            // Paso 2: Forzar textos de cabecera
-            document.getElementById('navFullName').innerText = sesion.fullname || sesion.user;
-            document.getElementById('navRole').innerText = sesion.role;
-            
-            // Paso 3: Forzar activación de la vista (Crítico para Admin)
-            document.querySelectorAll('.tab-content').forEach(div => div.classList.remove('active'));
-            const vista = document.getElementById('view-' + rol);
-            if(vista) {
-                vista.classList.add('active');
-            } else if(rol.includes('admin')) {
-                document.getElementById('view-admin').classList.add('active');
-            }
-
-            // Paso 4: Cargar Sidebar y Menú
-            const side = document.getElementById('sidebar');
-            side.className = `w-64 text-white flex flex-col shadow-2xl sidebar-${rol.includes('admin')?'admin':rol}`;
-            document.getElementById('menuOptions').innerHTML = `<button class="w-full text-left p-3 bg-white/10 rounded-xl font-bold text-[10px] uppercase italic"><i class="fas fa-home mr-3"></i> Principal</button>`;
-
-            // Paso 5: Cargar datos específicos
-            actualizarEstadoCronograma();
-            if(rol.includes('admin') || rol === 'administrativo') {
-                loadAdmin();
-            } else if(rol === 'docente') {
-                loadDocente();
-            } else if(rol === 'estudiante') {
-                loadEstudiante();
-            }
+        // Estructura de cronograma (Local Storage)
+        let cronograma = JSON.parse(localStorage.getItem('db_cronograma')) || {
+            1: { inicio: '2026-02-12T00:00', fin: '2026-04-24T23:59' },
+            2: { inicio: '', fin: '' },
+            3: { inicio: '', fin: '' }
         };
 
-        // --- FUNCIONES COMUNES ---
-        function getEscalaActual() {
-            const porDefecto = { bajo: 2.9, basico: 3.9, alto: 4.5, superior: 5.0 };
-            try {
-                const guardada = JSON.parse(localStorage.getItem('db_escala'));
-                return guardada || porDefecto;
-            } catch(e) { return porDefecto; }
-        }
+        // Lista de Estudiantes mockup
+        const estudiantes = [
+            { id: '13083', nombre: 'ABRIL OLARTE DAVID ALEJANDRO' },
+            { id: '12137', nombre: 'ALARCÓN CARVAJAL DAVID SANTHIAGO' },
+            { id: '11595', nombre: 'ANGULO COBOS AARON SNEIDER' }
+        ];
 
-        function getCategoria(nota) {
-            const esc = getEscalaActual();
-            if(nota <= esc.bajo) return { label: 'BAJO', class: 'badge-bajo' };
-            if(nota <= esc.basico) return { label: 'BÁSICO', class: 'badge-basico' };
-            if(nota <= esc.alto) return { label: 'ALTO', class: 'badge-alto' };
-            return { label: 'SUPERIOR', class: 'badge-superior' };
-        }
+        // Notas Storage
+        let db_notas = JSON.parse(localStorage.getItem('db_notas')) || {};
 
-        function actualizarEstadoCronograma() {
-            const crono = JSON.parse(localStorage.getItem('cronograma')) || {};
-            const label = document.getElementById('currentPeriodLabel');
-            const ahora = new Date();
-            let activo = "SISTEMA CERRADO: FUERA DE FECHA";
-            for(let p=1; p<=3; p++) {
-                if(crono[p]) {
-                    if(ahora >= new Date(crono[p].inicio) && ahora <= new Date(crono[p].cierre)) {
-                        activo = "SISTEMA ABIERTO: PERIODO " + p;
-                    }
-                }
+        window.onload = function() {
+            document.getElementById('navFullName').innerText = sesion.fullname;
+            document.getElementById('navRole').innerText = sesion.role;
+            const rol = sesion.role.toLowerCase();
+
+            if(rol.includes('admin')) {
+                document.getElementById('view-admin').classList.add('active');
+                loadAdminData();
+            } else {
+                document.getElementById('view-docente').classList.add('active');
+                renderMateriasDocente();
             }
-            label.innerText = activo;
-        }
-
-        // --- FUNCIONES ADMIN ---
-        function loadAdmin() {
-            const esc = getEscalaActual();
-            // Llenar campos de escala de forma segura
-            if(document.getElementById('esc_bajo')) {
-                document.getElementById('esc_bajo').value = esc.bajo;
-                document.getElementById('esc_basico').value = esc.basico;
-                document.getElementById('esc_alto').value = esc.alto;
-                document.getElementById('esc_superior').value = esc.superior;
-            }
-
-            let users = [];
-            for(let i=0; i<localStorage.length; i++) {
-                let k = localStorage.key(i);
-                if(['db_materias','db_notas','activeUser','cronograma','db_escala'].includes(k)) continue;
-                try {
-                    let u = JSON.parse(localStorage.getItem(k));
-                    if(u && u.user) users.push(u);
-                } catch(e){}
-            }
-
-            document.getElementById('table_users').innerHTML = users.map(u => `
-                <tr class="text-[11px] border-b hover:bg-gray-50">
-                    <td class="p-2 font-bold">${u.fullname} <span class="text-gray-400 font-normal">(@${u.user})</span></td>
-                    <td class="p-2 uppercase font-black text-blue-700">${u.role ? u.role[0] : 'U'}</td>
-                    <td class="p-2 text-right"><button onclick="deleteUser('${u.user}')" class="text-red-300 hover:text-red-600"><i class="fas fa-trash"></i></button></td>
-                </tr>`).join('');
-
-            const docs = users.filter(u => u.role && u.role.toLowerCase() === 'docente');
-            const ests = users.filter(u => u.role && u.role.toLowerCase() === 'estudiante');
             
-            document.getElementById('sel_doc').innerHTML = docs.map(d => `<option value="${d.user}">${d.fullname}</option>`).join('');
-            document.getElementById('sel_est').innerHTML = ests.map(e => `<option value="${e.user}">${e.fullname}</option>`).join('');
-            
-            const mats = JSON.parse(localStorage.getItem('db_materias')) || [];
-            document.getElementById('sel_mat').innerHTML = mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
-        }
+            // Iniciar contadores globales si existen
+            startGlobalTimers();
+        };
 
-        function saveEscala() {
-            const e = {
-                bajo: parseFloat(document.getElementById('esc_bajo').value),
-                basico: parseFloat(document.getElementById('esc_basico').value),
-                alto: parseFloat(document.getElementById('esc_alto').value),
-                superior: parseFloat(document.getElementById('esc_superior').value)
-            };
-            localStorage.setItem('db_escala', JSON.stringify(e));
-            alert("Configuración de Escala Guardada.");
+        // --- FUNCIONES LOGICA ADMIN ---
+        function loadAdminData() {
+            // Cargar lista de docentes en el select
+            const docs = [{user: 'doc1', fullname: 'Profe Juan'}]; // Mock
+            document.getElementById('adm_doc_sel').innerHTML = docs.map(d => `<option value="${d.user}">${d.fullname}</option>`).join('');
         }
 
         function saveCronograma() {
-            const p = document.getElementById('admin_p_select').value;
-            const i = document.getElementById('f_inicio').value;
-            const c = document.getElementById('f_cierre').value;
-            if(!i || !c) return alert("Por favor, ingrese ambas fechas.");
-            let cro = JSON.parse(localStorage.getItem('cronograma')) || {};
-            cro[p] = { inicio: i, cierre: c };
-            localStorage.setItem('cronograma', JSON.stringify(cro));
-            alert("Periodo Académico Habilitado.");
-            actualizarEstadoCronograma();
+            const p = document.getElementById('adm_periodo_sel').value;
+            cronograma[p] = {
+                inicio: document.getElementById('adm_fecha_inicio').value,
+                fin: document.getElementById('adm_fecha_fin').value
+            };
+            localStorage.setItem('db_cronograma', JSON.stringify(cronograma));
+            alert("Cronograma actualizado con éxito");
         }
 
-        function register() {
-            const u = document.getElementById('reg_user').value.trim();
-            const p = document.getElementById('reg_pass').value.trim();
-            const n = document.getElementById('reg_name').value.trim();
-            const r = document.getElementById('reg_role').value;
-            if(!u || !p || !n) return alert("Complete todos los campos.");
-            localStorage.setItem(u, JSON.stringify({user:u, pass:p, fullname:n, role:r}));
-            loadAdmin();
+        // --- FUNCIONES LOGICA DOCENTE ---
+        function renderMateriasDocente() {
+            const materias = [
+                { id: 101, grupo: '09-3', grado: 'Noveno', nombre: 'Educación Religiosa', ubicacion: '2026->A PRINCIPAL->Mañana' },
+                { id: 102, grupo: '07-2', grado: 'Séptimo', nombre: 'Tecnología - Emprendimiento', ubicacion: '2026->A PRINCIPAL->Mañana' }
+            ];
+
+            document.getElementById('lista_materias_doc').innerHTML = materias.map(m => `
+                <tr class="hover:bg-gray-50 transition">
+                    <td class="p-4 font-bold text-gray-600">${m.grupo}</td>
+                    <td class="p-4">${m.grado}</td>
+                    <td class="p-4 font-bold text-emerald-700">${m.nombre}</td>
+                    <td class="p-4 text-[10px] text-gray-400">${m.ubicacion}</td>
+                    <td class="p-4 text-center">
+                        <button onclick="openPeriodos(${m.id}, '${m.nombre}')" class="bg-emerald-500 text-white px-3 py-1 rounded text-[10px] font-black uppercase hover:bg-emerald-600 transition">Notas</button>
+                    </td>
+                </tr>
+            `).join('');
         }
 
-        function addMateria() {
-            const n = document.getElementById('mat_name').value.trim();
-            const d = document.getElementById('sel_doc').value;
-            if(!n) return alert("Nombre de materia requerido.");
-            let mats = JSON.parse(localStorage.getItem('db_materias')) || [];
-            mats.push({id: Date.now(), nombre: n, docente: d, matriculados: []});
-            localStorage.setItem('db_materias', JSON.stringify(mats));
-            loadAdmin();
+        function openPeriodos(id, nombre) {
+            currentMateria = { id, nombre };
+            const container = document.getElementById('periodos_container');
+            container.innerHTML = '';
+
+            [1, 2, 3].forEach(p => {
+                const c = cronograma[p];
+                const hasDate = c.inicio && c.fin;
+                
+                const div = document.createElement('div');
+                div.className = "border rounded-lg overflow-hidden";
+                div.innerHTML = `
+                    <div class="bg-gray-100 p-2 font-black text-center text-xs border-b uppercase">Periodo ${p}</div>
+                    <div class="p-3 text-[11px] space-y-1">
+                        <p><strong>Inicio:</strong> ${hasDate ? formatDate(c.inicio) : 'No definido'}</p>
+                        <p><strong>Fin:</strong> ${hasDate ? formatDate(c.fin) : 'No definido'}</p>
+                        <p id="timer_p${p}" class="text-red-500 font-bold italic"></p>
+                    </div>
+                    <div class="flex">
+                        <button onclick="openPlanilla(${p})" class="flex-1 bg-emerald-500 text-white py-2 font-bold text-[10px] uppercase">Notas</button>
+                        <button class="flex-1 bg-red-400 text-white py-2 font-bold text-[10px] uppercase">Offline</button>
+                    </div>
+                `;
+                container.appendChild(div);
+                if(hasDate) startCountdown(c.fin, `timer_p${p}`);
+            });
+
+            document.getElementById('modal_periodos').classList.add('active');
         }
 
-        function matricular() {
-            const e = document.getElementById('sel_est').value;
-            const mId = document.getElementById('sel_mat').value;
-            let mats = JSON.parse(localStorage.getItem('db_materias')) || [];
-            const idx = mats.findIndex(m => m.id == mId);
-            if(idx > -1 && !mats[idx].matriculados.includes(e)) {
-                mats[idx].matriculados.push(e);
-                localStorage.setItem('db_materias', JSON.stringify(mats));
-                alert("Matrícula exitosa.");
-            }
-        }
-
-        // --- FUNCIONES DOCENTE ---
-        function loadDocente() {
-            const mats = JSON.parse(localStorage.getItem('db_materias')) || [];
-            const mis = mats.filter(m => m.docente === sesion.user);
-            const grid = document.getElementById('doc_grid');
-            if(mis.length === 0) return grid.innerHTML = "<p class='col-span-3 text-center py-20 opacity-30 font-bold uppercase tracking-widest'>Sin carga académica</p>";
-            grid.innerHTML = mis.map(m => `
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-b-8 border-green-600 hover:shadow-xl transition cursor-pointer" onclick="openPlanilla(${m.id})">
-                    <div class="w-12 h-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-book"></i></div>
-                    <h3 class="font-black text-gray-800 uppercase text-xs">${m.nombre}</h3>
-                    <p class="text-[9px] font-bold mt-2 text-gray-400 uppercase italic">${m.matriculados.length} Estudiantes</p>
-                </div>`).join('');
-        }
-
-        function openPlanilla(id) {
-            curMatId = id;
-            const m = (JSON.parse(localStorage.getItem('db_materias')) || []).find(x => x.id == id);
-            document.getElementById('modal_mat_name').innerText = m.nombre.toUpperCase();
+        function openPlanilla(p) {
+            currentPeriodo = p;
+            closeModal('modal_periodos');
             document.getElementById('modal_planilla').classList.add('active');
-            setPeriodo(1);
-        }
-
-        function setPeriodo(p) {
-            curPer = p;
-            document.querySelectorAll('[id$="_btn"]').forEach(b => b.className = "flex-1 py-4 font-black text-xs uppercase text-gray-400 border-r");
-            document.getElementById('p'+p+'_btn').className = "flex-1 py-4 font-black text-xs uppercase active-p-btn border-r";
-            renderPlanilla();
-        }
-
-        function renderPlanilla() {
-            const m = (JSON.parse(localStorage.getItem('db_materias')) || []).find(x => x.id == curMatId);
-            const dbN = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const cro = JSON.parse(localStorage.getItem('cronograma')) || {};
-            const statusBox = document.getElementById('status_msg');
-            let bloqueado = true;
-            if(cro[curPer] && new Date() >= new Date(cro[curPer].inicio) && new Date() <= new Date(cro[curPer].cierre)) bloqueado = false;
+            document.getElementById('planilla_titulo').innerText = `Periodo ${p} - ${currentMateria.nombre}`;
             
-            statusBox.innerText = bloqueado ? "SISTEMA CERRADO - SOLO LECTURA" : "SISTEMA ABIERTO - REGISTRO DE NOTAS";
-            statusBox.className = "mb-4 p-3 rounded-2xl text-[10px] font-black text-center uppercase " + (bloqueado ? "bg-red-50 text-red-600" : "bg-green-50 text-green-600");
+            const c = cronograma[p];
+            if(c.fin) startCountdown(c.fin, 'planilla_countdown', "Cierre en: ");
 
-            document.getElementById('planilla_rows').innerHTML = m.matriculados.map(eid => {
-                const u = JSON.parse(localStorage.getItem(eid)) || {fullname: eid};
-                const k = `${curMatId}_${curPer}_${eid}`;
-                const n = dbN[k] || {n1:0, n2:0, n3:0};
-                const def = parseFloat((n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1));
-                const cat = getCategoria(def);
+            renderPlanillaRows();
+        }
+
+        function renderPlanillaRows() {
+            const tbody = document.getElementById('planilla_cuerpo');
+            tbody.innerHTML = estudiantes.map((est, index) => {
+                const key = `${currentMateria.id}_${currentPeriodo}_${est.id}`;
+                const n = db_notas[key] || {};
+                
                 return `
-                    <tr class="text-xs">
-                        <td class="py-3 px-2 font-bold">${u.fullname}</td>
-                        <td class="py-3 text-center"><input type="number" step="0.1" value="${n.n1}" onchange="saveN('${eid}',1,this.value)" ${bloqueado?'disabled':''} class="w-12 border rounded p-1 text-center font-bold"></td>
-                        <td class="py-3 text-center"><input type="number" step="0.1" value="${n.n2}" onchange="saveN('${eid}',2,this.value)" ${bloqueado?'disabled':''} class="w-12 border rounded p-1 text-center font-bold"></td>
-                        <td class="py-3 text-center"><input type="number" step="0.1" value="${n.n3}" onchange="saveN('${eid}',3,this.value)" ${bloqueado?'disabled':''} class="w-12 border rounded p-1 text-center font-bold"></td>
-                        <td class="py-3 text-center font-black text-blue-600">${def}</td>
-                        <td class="py-3 text-center"><span class="${cat.class} px-2 py-1 rounded-full text-[8px] font-black">${cat.label}</span></td>
-                    </tr>`;
+                    <tr class="border-b hover:bg-gray-50 text-[10px]">
+                        <td class="p-2 font-bold bg-gray-50 border-r">${index + 1}. ${est.nombre}</td>
+                        ${Array.from({length: 8}, (_, i) => `<td class="col-academic border"><input type="number" class="input-nota" data-est="${est.id}" data-tipo="acad" data-idx="${i}" value="${n[`acad_${i}`] || ''}"></td>`).join('')}
+                        <td class="bg-purple-100 font-black text-center" id="sub_acad_${est.id}">0.0</td>
+                        <td class="col-acumula border"><input type="number" class="input-nota" data-est="${est.id}" data-tipo="acum" value="${n.acum || ''}"></td>
+                        ${Array.from({length: 3}, (_, i) => `<td class="col-perso border"><input type="number" class="input-nota" data-est="${est.id}" data-tipo="pers" data-idx="${i}" value="${n[`pers_${i}`] || ''}"></td>`).join('')}
+                        ${Array.from({length: 3}, (_, i) => `<td class="col-social border"><input type="number" class="input-nota" data-est="${est.id}" data-tipo="soci" data-idx="${i}" value="${n[`soci_${i}`] || ''}"></td>`).join('')}
+                        <td class="bg-gray-800 text-white font-black text-center" id="def_${est.id}">0.0</td>
+                    </tr>
+                `;
             }).join('');
         }
 
-        function saveN(eid, p, val) {
-            let db = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const k = `${curMatId}_${curPer}_${eid}`;
-            if(!db[k]) db[k] = {n1:0, n2:0, n3:0};
-            db[k]['n'+p] = parseFloat(val) || 0;
-            localStorage.setItem('db_notas', JSON.stringify(db));
-            renderPlanilla();
+        function saveAllNotas() {
+            const inputs = document.querySelectorAll('.input-nota');
+            inputs.forEach(input => {
+                const {est, tipo, idx} = input.dataset;
+                const key = `${currentMateria.id}_${currentPeriodo}_${est}`;
+                if(!db_notas[key]) db_notas[key] = {};
+                
+                const prop = idx !== undefined ? `${tipo}_${idx}` : tipo;
+                db_notas[key][prop] = input.value;
+            });
+            localStorage.setItem('db_notas', JSON.stringify(db_notas));
+            alert("Notas sincronizadas correctamente");
         }
 
-        // --- FUNCIONES ESTUDIANTE ---
-        function loadEstudiante() {
-            const mats = JSON.parse(localStorage.getItem('db_materias')) || [];
-            const mis = mats.filter(m => m.matriculados.includes(sesion.user));
-            const dbN = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const grid = document.getElementById('est_boletin');
-            if(mis.length === 0) return grid.innerHTML = "<p class='col-span-2 text-center py-20 opacity-30 font-bold uppercase'>No hay asignaturas registradas</p>";
-            grid.innerHTML = mis.map(m => {
-                let card = `<div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-indigo-600">
-                    <h3 class="font-black text-indigo-900 uppercase text-[11px] mb-4 italic">${m.nombre}</h3>
-                    <div class="grid grid-cols-3 gap-2">`;
-                for(let p=1; p<=3; p++) {
-                    const n = dbN[`${m.id}_${p}_${sesion.user}`] || {n1:0, n2:0, n3:0};
-                    const f = parseFloat((n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1));
-                    const cat = getCategoria(f);
-                    card += `<div class="bg-gray-50 p-3 rounded-2xl text-center border">
-                        <p class="text-[8px] font-bold text-gray-400 mb-1 uppercase">P${p}</p>
-                        <p class="text-xl font-black ${f >= 3 ? 'text-indigo-600' : 'text-red-500'} mb-2">${f}</p>
-                        <span class="${cat.class} block py-0.5 rounded-full font-black text-[7px] uppercase">${cat.label}</span>
-                    </div>`;
+        // --- UTILS ---
+        function startCountdown(endDate, elementId, prefix = "Faltan ") {
+            const target = new Date(endDate).getTime();
+            const el = document.getElementById(elementId);
+            
+            const fn = () => {
+                const now = new Date().getTime();
+                const dist = target - now;
+                if (dist < 0) {
+                    el.innerHTML = "PERIODO CERRADO";
+                    return;
                 }
-                return card + `</div></div>`;
-            }).join('');
+                const d = Math.floor(dist / (1000 * 60 * 60 * 24));
+                const h = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((dist % (1000 * 60)) / 1000);
+                el.innerHTML = `${prefix} ${d}d ${h}h ${m}m ${s}s`;
+            };
+            fn();
+            setInterval(fn, 1000);
         }
 
-        function deleteUser(u) { if(confirm("¿Desea eliminar este usuario?")){ localStorage.removeItem(u); loadAdmin(); } }
-        function closePlanilla() { document.getElementById('modal_planilla').classList.remove('active'); }
-        function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+        function formatDate(dateStr) {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('es-CO', { day:'2-digit', month:'long', year:'numeric', hour:'2-digit', minute:'2-digit' });
+        }
+
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+        function logout() { sessionStorage.clear(); location.reload(); }
     </script>
 </body>
 </html>
