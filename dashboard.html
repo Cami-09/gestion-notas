@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v16.0 | Sistema Unificado Total</title>
+    <title>Integra Pro v17.0 | Sistema Unificado Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -19,7 +19,6 @@
         .input-nota:disabled, .input-desc:disabled { background: #f1f5f9; cursor: not-allowed; opacity: 0.7; }
         .accordion-content { max-height: 0; overflow: hidden; transition: all 0.3s ease-in-out; }
         .accordion-content.open { max-height: 5000px; padding: 10px; }
-        /* Rúbrica de Colores */
         .nota-red { color: #ef4444 !important; } 
         .nota-orange { color: #f97316 !important; } 
         .nota-green { color: #10b981 !important; }
@@ -35,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 tracking-widest uppercase">Seguridad Activa 2026</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">Seguridad Activa 2026</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -53,6 +52,7 @@
         </header>
 
         <div class="p-6 overflow-y-auto h-full pb-24">
+            
             <div id="view-admin-main" class="tab-content space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
@@ -119,7 +119,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Estudiantes</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -191,7 +191,7 @@
                 { id: 'pers', name: 'Personal', weight: 10, count: 3, color: '#059669' },
                 { id: 'soci', name: 'Social', weight: 10, count: 3, color: '#0891b2' }
             ],
-            periodos: { 1: {start: '', end:''}, 2: {start: '', end:''}, 3: {start: '', end:''} },
+            periodos: { 1: {start:'', end:''}, 2: {start:'', end:''}, 3: {start:'', end:''} },
             rubrica: { bajo: 29, basico: 39, alto: 50 }
         };
 
@@ -244,17 +244,6 @@
         }
 
         // --- ADMIN ---
-        function saveUser() {
-            const u = document.getElementById('adm_u_user').value.trim();
-            const p = document.getElementById('adm_u_pass').value.trim();
-            const n = document.getElementById('adm_u_name').value.trim();
-            const r = document.getElementById('adm_u_role').value;
-            if(!u || !p || !n) return alert("Faltan datos");
-            db_users[u] = { user:u, pass:p, fullname:n, role:r };
-            localStorage.setItem('db_users', JSON.stringify(db_users));
-            alert("Usuario guardado"); loadAdmin();
-        }
-
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${u.fullname}</b><p class="text-[9px] uppercase text-gray-400">${u.role} | @${u.user}</p></div>
@@ -265,7 +254,13 @@
             document.getElementById('sel_dest_mat').innerHTML = db_mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
             document.getElementById('sel_dest_user').innerHTML = Object.values(db_users).map(u => `<option value="${u.user}">${u.fullname} (${u.role})</option>`).join('');
         }
-
+        function saveUser() {
+            const u = document.getElementById('adm_u_user').value.trim(); const p = document.getElementById('adm_u_pass').value.trim();
+            const n = document.getElementById('adm_u_name').value.trim(); const r = document.getElementById('adm_u_role').value;
+            if(!u || !p || !n) return alert("Faltan datos");
+            db_users[u] = { user:u, pass:p, fullname:n, role:r }; localStorage.setItem('db_users', JSON.stringify(db_users));
+            alert("Usuario guardado"); loadAdmin();
+        }
         function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
         function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01-A'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function deleteMat(id) { if(confirm("¿Borrar?")){ db_mats = db_mats.filter(m=>m.id!=id); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
@@ -276,16 +271,38 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
+        // --- CONFIG ---
+        function loadConfig() {
+            document.getElementById('rub_bajo').value = db_conf.rubrica.bajo;
+            document.getElementById('rub_basico').value = db_conf.rubrica.basico;
+            document.getElementById('rub_alto').value = db_conf.rubrica.alto;
+            document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
+                <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed">
+                    <input type="text" value="${it.name}" onchange="db_conf.items[${i}].name=this.value" class="w-full font-black text-xs uppercase bg-transparent border-b mb-3">
+                    <div class="grid grid-cols-2 gap-2 text-[9px] font-bold"><span>PESO %</span><input type="number" value="${it.weight}" onchange="db_conf.items[${i}].weight=parseFloat(this.value)" class="w-full border rounded px-1">
+                    <span>NOTAS</span><input type="number" value="${it.count}" onchange="db_conf.items[${i}].count=parseInt(this.value)" class="w-full border rounded px-1"></div>
+                </div>`).join('');
+            document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
+                <div class="bg-white p-5 rounded-3xl border shadow-sm"><h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
+                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" value="${db_conf.periodos[p].start}" onchange="db_conf.periodos[${p}].start=this.value" class="w-full text-[9px] p-2 border rounded-xl mb-3">
+                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" value="${db_conf.periodos[p].end}" onchange="db_conf.periodos[${p}].end=this.value" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
+        }
+        function saveGlobalConfig() {
+            db_conf.rubrica = { bajo: parseInt(document.getElementById('rub_bajo').value), basico: parseInt(document.getElementById('rub_basico').value), alto: parseInt(document.getElementById('rub_alto').value) };
+            localStorage.setItem('db_conf', JSON.stringify(db_conf)); alert("Configuración guardada"); location.reload();
+        }
+
         // --- DOCENTE ---
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
             document.getElementById('docente_table_body').innerHTML = mis.map(m => `
                 <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo}</td><td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
-                <td class="p-5 text-center"><button onclick="abrirOpcionesPeriodo(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
+                <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
+                <td class="p-5 text-center"><button onclick="abrirSelectorUniversal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
         }
 
-        function abrirOpcionesPeriodo(mid) {
-            curMat = db_mats.find(m => m.id == mid);
+        function abrirSelectorUniversal(mid = null) {
+            if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
                 <div onclick="${sesion.role === 'Estudiante' ? `renderBoletinVertical(${p})` : `abrirPlanilla(${p})`}" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
@@ -303,10 +320,10 @@
             let h1 = `<tr class="bg-slate-800 text-white text-[9px] uppercase"><th rowspan="2" class="p-3 border border-white/10 text-left">Estudiante</th>`;
             let h2 = `<tr class="bg-gray-100 text-[8px] font-black uppercase text-gray-500">`;
             db_conf.items.forEach(it => {
-                h1 += `<th colspan="${it.count * 2}" class="border border-white/10 p-1" style="background:${it.color}">${it.name} (${it.weight}%)</th>`;
+                h1 += `<th colspan="${it.count * 2}" class="border border-white/10 p-1" style="background:${it.color}">${it.name}</th>`;
                 for(let i=1; i<=it.count; i++) h2 += `<th class="border p-1">N${i}</th><th class="border p-1 bg-gray-50">Desc</th>`;
             });
-            h1 += `<th rowspan="2" class="bg-orange-500 border border-white/10 px-3 text-center">DEF</th></tr>`;
+            h1 += `<th rowspan="2" class="bg-orange-500 border border-white/10 px-3">DEF</th></tr>`;
             document.getElementById('planilla_thead').innerHTML = h1 + h2 + `</tr>`;
 
             document.getElementById('planilla_tbody').innerHTML = curMat.alumnos.map(uid => {
@@ -314,12 +331,12 @@
                 let cells = "";
                 db_conf.items.forEach(it => {
                     for(let i=0; i<it.count; i++) {
-                        const v = n[it.id+'_'+i] || ''; const d = n[it.id+'_'+i+'_desc'] || '';
-                        cells += `<td class="border p-1"><input type="number" step="1" class="input-nota ${getNotaColor(v)}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${v}" ${isLocked?'disabled':''}></td>
+                        const val = n[it.id+'_'+i] || ''; const d = n[it.id+'_'+i+'_desc'] || '';
+                        cells += `<td class="border p-1"><input type="number" step="1" class="input-nota ${getNotaColor(val)}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${val}" ${isLocked?'disabled':''}></td>
                                   <td class="border p-1 bg-gray-50"><input type="text" placeholder="..." class="input-desc" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${d}" ${isLocked?'disabled':''}></td>`;
                     }
                 });
-                return `<tr class="hover:bg-gray-50"><td class="p-3 font-bold border uppercase bg-white">${est.fullname}</td>${cells}<td class="font-black text-center border text-sm" id="def_${uid}">--</td></tr>`;
+                return `<tr><td class="p-3 font-bold border uppercase bg-white">${est.fullname}</td>${cells}<td class="font-black text-center border text-sm" id="def_${uid}">--</td></tr>`;
             }).join('');
             calc();
         }
@@ -329,33 +346,33 @@
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
             const cont = document.getElementById('boletin_container');
-            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-20 uppercase tracking-widest'>Sin materias asignadas</p>";
+            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-20 uppercase'>Sin materias asignadas</p>";
             
             cont.innerHTML = mis.map(m => {
                 const key = `${m.id}_${p}_${sesion.user}`; const n = db_notas[key] || {};
                 let det = "", defFinal = 0;
                 db_conf.items.forEach(it => {
-                    let s = 0, rows = "";
+                    let s = 0, rowList = "";
                     for(let i=0; i<it.count; i++) {
                         const v = parseFloat(n[it.id+'_'+i] || 0); const d = n[it.id+'_'+i+'_desc'] || 'Sin descripción del docente.';
                         s += v;
-                        rows += `<div class="flex gap-4 p-4 bg-white border-b last:border-0 items-center">
+                        rowList += `<div class="flex gap-4 p-4 bg-white border-b last:border-0 items-center">
                                     <div class="w-14 h-14 bg-gray-50 border-2 rounded-2xl flex flex-col items-center justify-center font-black">
-                                        <span class="text-[7px] text-gray-400">NOTA ${i+1}</span><span class="text-xl ${getNotaColor(v)}">${v || '-'}</span>
+                                        <span class="text-[7px] text-gray-400">NOTA ${i+1}</span><span class="text-xl ${getNotaColor(v)}">${v || '--'}</span>
                                     </div>
                                     <div class="flex-1"><p class="text-[9px] font-black uppercase tracking-widest" style="color:${it.color}">${it.name}</p><p class="text-xs text-gray-500 italic mt-1">"${d}"</p></div>
                                  </div>`;
                     }
                     const prom = it.count > 0 ? (s/it.count) : 0; defFinal += prom * (it.weight/100);
                     det += `<div class="mb-4 bg-gray-50 rounded-2xl border overflow-hidden">
-                                <div class="p-3 text-white font-black text-[10px] uppercase italic" style="background:${it.color}">${it.name} (${it.weight}%)</div>
-                                ${rows}
+                                <div class="p-3 text-white font-black text-[10px] uppercase" style="background:${it.color}">${it.name} (${it.weight}%)</div>
+                                ${rowList}
                             </div>`;
                 });
                 return `<div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <div class="p-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition" onclick="document.getElementById('det_${m.id}').classList.toggle('open')">
-                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book"></i></div>
-                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Periodo ${p}</p></div></div>
+                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book"></i></div>
+                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase">Periodo ${p}</p></div></div>
                         <div class="text-right"><span class="block text-[8px] font-black text-gray-300 uppercase">Definitiva</span><span class="text-3xl font-black ${getNotaColor(defFinal)}">${defFinal.toFixed(1)}</span></div>
                     </div>
                     <div id="det_${m.id}" class="accordion-content bg-white p-4">${det}</div>
@@ -372,8 +389,8 @@
             const up = () => {
                 const cur = new Date().getTime();
                 if(cur < sDate) { isLocked = true; disp.innerHTML = "BLOQUEADO: NO INICIADO"; btn.style.display = 'none'; lmsg.innerText = "ACCESO BLOQUEADO HASTA INICIO"; lmsg.className="text-orange-500 font-black italic tracking-widest uppercase"; }
-                else if(cur > eDate) { isLocked = true; disp.innerHTML = "SISTEMA CERRADO"; btn.style.display = 'none'; lmsg.innerText = "SOLO LECTURA - PERIODO FINALIZADO"; lmsg.className="text-red-500 font-black italic tracking-widest uppercase"; clearInterval(timerInterval); }
-                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA HABILITADO PARA CALIFICAR"; lmsg.className="text-emerald-500 font-black italic tracking-widest uppercase";
+                else if(cur > eDate) { isLocked = true; disp.innerHTML = "SISTEMA CERRADO"; btn.style.display = 'none'; lmsg.innerText = "PERIODO FINALIZADO: SOLO LECTURA"; lmsg.className="text-red-500 font-black italic tracking-widest uppercase"; clearInterval(timerInterval); }
+                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA ABIERTO PARA CALIFICAR"; lmsg.className="text-emerald-500 font-black italic tracking-widest uppercase";
                     const diff = eDate - cur; const d = Math.floor(diff/(1000*60*60*24)), h = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), m = Math.floor((diff%(1000*60*60))/(1000*60)), s = Math.floor((diff%(1000*60))/1000);
                     disp.innerHTML = `CIERRE EN: ${d}d ${h}h ${m}m ${s}s`;
                 }
@@ -382,7 +399,7 @@
         }
 
         function saveNotasDB() {
-            if(isLocked) return alert("Sistema Bloqueado");
+            if(isLocked) return;
             document.querySelectorAll('.input-nota').forEach(inp => {
                 const {uid, it, idx} = inp.dataset; const key = `${curMat.id}_${curPer}_${uid}`;
                 if(!db_notas[key]) db_notas[key] = {};
@@ -402,33 +419,12 @@
                     for(let i=0; i<it.count; i++) s += parseFloat(document.querySelector(`.input-nota[data-uid="${uid}"][data-it="${it.id}"][data-idx="${i}"]`)?.value || 0);
                     f += (it.count > 0 ? (s/it.count) : 0) * (it.weight/100);
                 });
-                const el = document.getElementById(`def_${uid}`); if(el) { el.innerText = f.toFixed(1); el.className = `font-black text-center border text-sm ${getNotaColor(f)}`; }
+                const el = document.getElementById(`def_${uid}`); if(el){ el.innerText = f.toFixed(1); el.className = `font-black text-center border text-sm ${getNotaColor(f)}`; }
             });
         }
 
-        function loadConfig() {
-            document.getElementById('rub_bajo').value = db_conf.rubrica.bajo;
-            document.getElementById('rub_basico').value = db_conf.rubrica.basico;
-            document.getElementById('rub_alto').value = db_conf.rubrica.alto;
-            document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
-                <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed">
-                    <input type="text" value="${it.name}" onchange="db_conf.items[${i}].name=this.value" class="w-full font-black text-xs uppercase bg-transparent border-b mb-3">
-                    <div class="grid grid-cols-2 gap-2 text-[9px] font-bold"><span>PESO %</span><input type="number" value="${it.weight}" onchange="db_conf.items[${i}].weight=parseFloat(this.value)" class="w-full border rounded px-1">
-                    <span>NOTAS</span><input type="number" value="${it.count}" onchange="db_conf.items[${i}].count=parseInt(this.value)" class="w-full border rounded px-1"></div>
-                </div>`).join('');
-            document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
-                <div class="bg-white p-5 rounded-3xl border shadow-sm"><h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
-                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" value="${db_conf.periodos[p].start}" onchange="db_conf.periodos[${p}].start=this.value" class="w-full text-[9px] p-2 border rounded-xl mb-3">
-                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" value="${db_conf.periodos[p].end}" onchange="db_conf.periodos[${p}].end=this.value" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
-        }
-
-        function saveGlobalConfig() {
-            db_conf.rubrica = { bajo: parseInt(document.getElementById('rub_bajo').value), basico: parseInt(document.getElementById('rub_basico').value), alto: parseInt(document.getElementById('rub_alto').value) };
-            localStorage.setItem('db_conf', JSON.stringify(db_conf)); alert("Configuración Sincronizada"); location.reload();
-        }
-
         function openModal(id) { document.getElementById(id).classList.add('active'); }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); if(timerInterval) clearInterval(timerInterval); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); clearInterval(timerInterval); }
         function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
     </script>
 </body>
