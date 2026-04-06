@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Integral | Plataforma Educativa</title>
+    <title>Panel Administrativo | Gestión Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -13,18 +13,19 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         .nota-input:disabled { background-color: #f3f4f6; cursor: not-allowed; opacity: 0.6; }
+        .edit-mode { border: 2px solid #f59e0b !important; background-color: #fffbeb; }
     </style>
 </head>
 <body class="bg-gray-100 flex h-screen overflow-hidden text-sm">
 
-    <aside id="sidebar" class="w-64 text-white flex flex-col shadow-xl transition-colors duration-500">
+    <aside id="sidebar" class="w-64 text-white flex flex-col shadow-xl">
         <div class="p-6 border-b border-white/10 text-center">
-            <h1 class="text-xl font-black tracking-tighter" id="panelType">CARGANDO...</h1>
+            <h1 class="text-xl font-black tracking-tighter" id="panelType">SISTEMA</h1>
         </div>
         <nav class="mt-6 flex-1 px-4 space-y-2" id="menuOptions"></nav>
         <div class="p-4 bg-black/20">
             <button onclick="logout()" class="w-full py-2 bg-red-600 rounded font-bold hover:bg-red-700 transition">
-                <i class="fas fa-sign-out-alt mr-2"></i>CERRAR SESIÓN
+                <i class="fas fa-sign-out-alt mr-2"></i>SALIR
             </button>
         </div>
     </aside>
@@ -32,14 +33,14 @@
     <main class="flex-1 flex flex-col overflow-y-auto">
         <header class="bg-white p-4 shadow flex justify-between items-center px-8 border-b-4" id="headerBorder">
             <div>
-                <h2 id="viewTitle" class="text-xl font-black text-gray-700 uppercase leading-none">Panel de Control</h2>
-                <div id="plazoStatus" class="mt-2 flex flex-col gap-1">
-                    <p id="plazoApertura" class="text-[10px] text-blue-600 font-bold uppercase"></p>
-                    <p id="plazoCierre" class="text-[10px] text-red-600 font-bold uppercase"></p>
+                <h2 id="viewTitle" class="text-xl font-black text-gray-700 uppercase leading-none">Panel</h2>
+                <div id="plazoStatus" class="mt-2 text-[10px] font-bold uppercase">
+                    <span id="txtInicio" class="text-blue-600 mr-4"></span>
+                    <span id="txtCierre" class="text-red-600"></span>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
+            <div class="flex items-center gap-4 text-right">
+                <div>
                     <p id="navUserName" class="font-bold text-gray-900 leading-none"></p>
                     <p id="navUserRole" class="text-[10px] uppercase text-blue-600 font-black"></p>
                 </div>
@@ -51,42 +52,43 @@
             <div id="view-admin" class="tab-content">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
-                        <h3 class="font-bold mb-4 text-blue-900"><i class="fas fa-clock mr-2"></i>CONFIGURAR CRONOGRAMA</h3>
+                        <h3 class="font-bold mb-4 text-blue-900 uppercase"><i class="fas fa-clock mr-2"></i>Cronograma de Notas</h3>
                         <div class="space-y-4">
                             <div>
-                                <label class="text-[10px] font-bold text-gray-400">FECHA Y HORA DE APERTURA</label>
-                                <input type="datetime-local" id="admin_fecha_inicio" class="w-full p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="text-[10px] font-bold text-gray-400">APERTURA (FECHA Y HORA)</label>
+                                <input type="datetime-local" id="admin_fecha_inicio" class="w-full p-2 border rounded outline-none">
                             </div>
                             <div>
-                                <label class="text-[10px] font-bold text-gray-400">FECHA Y HORA DE CIERRE</label>
-                                <input type="datetime-local" id="admin_fecha_cierre" class="w-full p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500">
+                                <label class="text-[10px] font-bold text-gray-400">CIERRE (FECHA Y HORA)</label>
+                                <input type="datetime-local" id="admin_fecha_cierre" class="w-full p-2 border rounded outline-none">
                             </div>
-                            <button onclick="adminGuardarPlazos()" class="w-full bg-blue-700 text-white py-2 rounded font-bold hover:bg-blue-800 transition shadow-lg">ACTUALIZAR PLAZOS</button>
+                            <button onclick="adminGuardarPlazos()" class="w-full bg-orange-500 text-white py-2 rounded font-bold hover:bg-orange-600 transition uppercase tracking-widest">Actualizar Fechas</button>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
-                        <h3 class="font-bold mb-4 text-blue-900"><i class="fas fa-user-plus mr-2"></i>NUEVO USUARIO</h3>
+
+                    <div id="userFormContainer" class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
+                        <h3 id="formUserTitle" class="font-bold mb-4 text-blue-900 uppercase"><i class="fas fa-user-plus mr-2"></i>Gestionar Usuario</h3>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="adm_user" placeholder="Usuario" class="p-2 border rounded text-xs">
-                            <input type="password" id="adm_pass" placeholder="Contraseña" class="p-2 border rounded text-xs">
+                            <input type="hidden" id="old_username">
+                            <input type="text" id="adm_user" placeholder="Nombre de Usuario" class="p-2 border rounded text-xs">
+                            <input type="text" id="adm_pass" placeholder="Contraseña" class="p-2 border rounded text-xs">
                             <select id="adm_role" class="col-span-2 p-2 border rounded text-xs">
                                 <option value="Estudiante">Estudiante</option>
                                 <option value="Docente">Docente</option>
                                 <option value="Administrativo">Administrativo</option>
                             </select>
-                            <button onclick="adminCrearUser()" class="col-span-2 bg-gray-900 text-white py-2 rounded font-bold hover:bg-black transition">REGISTRAR EN DB</button>
+                            <div class="col-span-2 flex gap-2">
+                                <button id="btnUserAction" onclick="adminGuardarUser()" class="flex-1 bg-blue-700 text-white py-2 rounded font-bold hover:bg-blue-800 transition uppercase">Guardar</button>
+                                <button id="btnCancelEdit" onclick="cancelarEdicion()" class="hidden bg-gray-400 text-white px-4 py-2 rounded font-bold hover:bg-gray-500">X</button>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                    <div class="bg-gray-50 p-4 border-b flex justify-between items-center">
-                        <h3 class="font-bold text-gray-700 text-xs uppercase tracking-widest">Gestión de Cuentas</h3>
-                        <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-1 rounded font-bold" id="userCount">0 Usuarios</span>
-                    </div>
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
                     <table class="w-full text-left">
-                        <thead>
-                            <tr class="bg-gray-100 text-gray-500 text-[10px] uppercase">
+                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase">
+                            <tr>
                                 <th class="p-4">Usuario</th>
                                 <th class="p-4">Rol</th>
                                 <th class="p-4 text-center">Acciones</th>
@@ -98,30 +100,27 @@
             </div>
 
             <div id="view-docente" class="tab-content">
-                <div id="docenteAlert" class="mb-4 hidden p-4 rounded-lg font-bold text-center"></div>
+                <div id="docenteAlert" class="mb-4 p-4 rounded-lg font-bold text-center text-xs"></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-600">
-                    <h3 class="font-bold text-lg text-green-900 mb-6">Planilla Oficial de Notas</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse">
-                            <thead>
-                                <tr class="bg-gray-50 text-left text-[10px] uppercase text-gray-600">
-                                    <th class="p-3 border">Estudiante</th>
-                                    <th class="p-3 border text-center">Nota 1 (30%)</th>
-                                    <th class="p-3 border text-center">Nota 2 (30%)</th>
-                                    <th class="p-3 border text-center">Examen (40%)</th>
-                                    <th class="p-3 border text-center">Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody id="listaEstudiantesNotas"></tbody>
-                        </table>
-                    </div>
+                    <table class="w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-50 text-[10px] uppercase text-gray-500">
+                                <th class="p-3 border">Estudiante</th>
+                                <th class="p-3 border text-center">N1 (30%)</th>
+                                <th class="p-3 border text-center">N2 (30%)</th>
+                                <th class="p-3 border text-center">EX (40%)</th>
+                                <th class="p-3 border text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaEstudiantesNotas"></tbody>
+                    </table>
                 </div>
             </div>
 
             <div id="view-estudiante" class="tab-content">
                 <div id="cardsEstudiante" class="mb-6"></div>
                 <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-indigo-600">
-                    <h3 class="font-bold mb-4 text-indigo-900 uppercase tracking-tight">Boletín Acumulado</h3>
+                    <h3 class="font-bold mb-4 text-indigo-900 uppercase">Boletín Oficial</h3>
                     <div id="boletinContent" class="space-y-4"></div>
                 </div>
             </div>
@@ -142,40 +141,32 @@
         function configurarInterfazPorRol() {
             const side = document.getElementById('sidebar');
             const menu = document.getElementById('menuOptions');
-            const border = document.getElementById('headerBorder');
-            const avatar = document.getElementById('userAvatar');
             
-            // Cargar plazos
-            const fInicio = localStorage.getItem('fecha_inicio') || 'No definida';
-            const fCierre = localStorage.getItem('fecha_cierre') || 'No definida';
-            document.getElementById('plazoApertura').innerText = "Apertura: " + fInicio.replace('T', ' ');
-            document.getElementById('plazoCierre').innerText = "Cierre: " + fCierre.replace('T', ' ');
+            // Cargar fechas actuales en el Admin si existen
+            const fI = localStorage.getItem('fecha_inicio') || '';
+            const fC = localStorage.getItem('fecha_cierre') || '';
+            document.getElementById('txtInicio').innerText = "APERTURA: " + fI.replace('T', ' ');
+            document.getElementById('txtCierre').innerText = "CIERRE: " + fC.replace('T', ' ');
 
             if(sesion.role === 'Administrativo') {
                 side.className = "w-64 sidebar-admin text-white flex flex-col shadow-xl";
-                border.style.borderBottomColor = "#1e3a8a";
-                avatar.style.backgroundColor = "#1e3a8a";
-                document.getElementById('panelType').innerText = "ADMINISTRACIÓN";
-                menu.innerHTML = `<button onclick="showTab('admin')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-tools mr-3"></i> Gestión Sistema</button>`;
+                document.getElementById('panelType').innerText = "ADMIN";
+                menu.innerHTML = `<button onclick="showTab('admin')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-user-shield mr-3"></i> Administración</button>`;
                 cargarTablaUsuariosAdmin();
                 showTab('admin');
             } 
             else if(sesion.role === 'Docente') {
                 side.className = "w-64 sidebar-docente text-white flex flex-col shadow-xl";
-                border.style.borderBottomColor = "#065f46";
-                avatar.style.backgroundColor = "#065f46";
-                document.getElementById('panelType').innerText = "DOCENTES";
-                menu.innerHTML = `<button onclick="showTab('docente')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-edit mr-3"></i> Planilla de Notas</button>`;
+                document.getElementById('panelType').innerText = "DOCENTE";
+                menu.innerHTML = `<button onclick="showTab('docente')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-pencil-alt mr-3"></i> Planilla</button>`;
                 cargarPlanillaDocente();
+                validarAccesoDocente();
                 showTab('docente');
-                validarAccesoTemporalDocente();
             }
             else {
                 side.className = "w-64 sidebar-estudiante text-white flex flex-col shadow-xl";
-                border.style.borderBottomColor = "#3730a3";
-                avatar.style.backgroundColor = "#3730a3";
                 document.getElementById('panelType').innerText = "ESTUDIANTE";
-                menu.innerHTML = `<button onclick="showTab('estudiante')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-book-open mr-3"></i> Mis Calificaciones</button>`;
+                menu.innerHTML = `<button onclick="showTab('estudiante')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-graduation-cap mr-3"></i> Mis Notas</button>`;
                 cargarNotasEstudiante();
                 showTab('estudiante');
             }
@@ -186,61 +177,87 @@
             document.getElementById('view-' + name).classList.add('active');
         }
 
-        // --- FUNCIONES ADMIN ---
+        // --- ACCIONES ADMIN ---
         function adminGuardarPlazos() {
-            const inicio = document.getElementById('admin_fecha_inicio').value;
-            const cierre = document.getElementById('admin_fecha_cierre').value;
-            if(!inicio || !cierre) return alert("Debes definir ambas fechas y horas");
-            
-            localStorage.setItem('fecha_inicio', inicio);
-            localStorage.setItem('fecha_cierre', cierre);
-            alert("Cronograma actualizado correctamente");
+            const i = document.getElementById('admin_fecha_inicio').value;
+            const c = document.getElementById('admin_fecha_cierre').value;
+            if(!i || !c) return alert("Completa ambas fechas");
+            localStorage.setItem('fecha_inicio', i);
+            localStorage.setItem('fecha_cierre', c);
+            alert("Cronograma guardado.");
             location.reload();
         }
 
-        function adminCrearUser() {
+        function adminGuardarUser() {
             const u = document.getElementById('adm_user').value.trim();
             const p = document.getElementById('adm_pass').value.trim();
             const r = document.getElementById('adm_role').value;
-            if(!u || !p) return alert("Completa los datos");
+            const oldU = document.getElementById('old_username').value;
+
+            if(!u || !p) return alert("Datos incompletos");
+
+            // Si estamos editando y cambiamos el nombre de usuario, borramos el viejo
+            if(oldU && oldU !== u) { localStorage.removeItem(oldU); }
+
             localStorage.setItem(u, JSON.stringify({user: u, pass: p, role: r}));
+            alert("Usuario guardado/actualizado.");
+            cancelarEdicion();
             cargarTablaUsuariosAdmin();
-            alert("Usuario registrado");
         }
 
         function cargarTablaUsuariosAdmin() {
             const tabla = document.getElementById('tablaUsuariosAdmin');
             tabla.innerHTML = "";
-            let count = 0;
             for (let i = 0; i < localStorage.length; i++) {
                 const k = localStorage.key(i);
                 if(['db_notas','fecha_inicio','fecha_cierre'].includes(k)) continue;
                 const d = JSON.parse(localStorage.getItem(k));
                 if(d.user) {
-                    count++;
-                    tabla.innerHTML += `<tr class="border-b">
-                        <td class="p-4 font-bold">${d.user}</td>
-                        <td class="p-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 rounded text-[10px] font-black uppercase">${d.role}</span></td>
-                        <td class="p-4 text-center">
-                            <button onclick="eliminarUsuario('${d.user}')" class="text-red-500 hover:bg-red-50 p-2 rounded-full"><i class="fas fa-trash"></i></button>
+                    tabla.innerHTML += `<tr class="border-b hover:bg-gray-50 transition">
+                        <td class="p-4 font-bold text-gray-700">${d.user}</td>
+                        <td class="p-4"><span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-[10px] font-bold uppercase">${d.role}</span></td>
+                        <td class="p-4 flex justify-center gap-2">
+                            <button onclick='prepararEdicion(${JSON.stringify(d)})' class="text-orange-500 bg-orange-50 p-2 rounded-lg hover:bg-orange-100"><i class="fas fa-edit"></i></button>
+                            <button onclick="eliminarUsuario('${d.user}')" class="text-red-500 bg-red-50 p-2 rounded-lg hover:bg-red-100"><i class="fas fa-trash"></i></button>
                         </td>
                     </tr>`;
                 }
             }
-            document.getElementById('userCount').innerText = count + " Usuarios";
+        }
+
+        function prepararEdicion(datos) {
+            document.getElementById('formUserTitle').innerHTML = '<i class="fas fa-edit mr-2"></i> Editando Usuario';
+            document.getElementById('userFormContainer').classList.add('edit-mode');
+            document.getElementById('adm_user').value = datos.user;
+            document.getElementById('adm_pass').value = datos.pass;
+            document.getElementById('adm_role').value = datos.role;
+            document.getElementById('old_username').value = datos.user;
+            document.getElementById('btnCancelEdit').classList.remove('hidden');
+            document.getElementById('btnUserAction').innerText = "Actualizar Cambios";
+            document.getElementById('adm_user').focus();
+        }
+
+        function cancelarEdicion() {
+            document.getElementById('formUserTitle').innerHTML = '<i class="fas fa-user-plus mr-2"></i> Gestionar Usuario';
+            document.getElementById('userFormContainer').classList.remove('edit-mode');
+            document.getElementById('adm_user').value = "";
+            document.getElementById('adm_pass').value = "";
+            document.getElementById('old_username').value = "";
+            document.getElementById('btnCancelEdit').classList.add('hidden');
+            document.getElementById('btnUserAction').innerText = "Guardar";
         }
 
         function eliminarUsuario(n) {
-            if(n === sesion.user) return alert("No puedes borrarte a ti mismo");
-            if(confirm("¿Eliminar usuario?")) { localStorage.removeItem(n); cargarTablaUsuariosAdmin(); }
+            if(n === sesion.user) return alert("No puedes borrarte");
+            if(confirm("¿Eliminar usuario " + n + "?")) { localStorage.removeItem(n); cargarTablaUsuariosAdmin(); }
         }
 
-        // --- FUNCIONES DOCENTE ---
+        // --- ACCIONES DOCENTE ---
         function cargarPlanillaDocente() {
             const tabla = document.getElementById('listaEstudiantesNotas');
             const DB_NOTAS = JSON.parse(localStorage.getItem('db_notas')) || {};
             let estudiantes = [];
-            for(let i=0; i<localStorage.length; i++){
+            for(let i=0; i<localStorage.length; i++) {
                 let k = localStorage.key(i);
                 if(['db_notas','fecha_inicio','fecha_cierre'].includes(k)) continue;
                 let d = JSON.parse(localStorage.getItem(k));
@@ -249,73 +266,67 @@
             tabla.innerHTML = estudiantes.map(est => {
                 let n = DB_NOTAS[est] || {n1:0, n2:0, n3:0};
                 return `<tr class="border-b">
-                    <td class="p-3 font-bold text-gray-700">${est}</td>
-                    <td class="p-3"><input type="number" step="0.1" id="n1_${est}" value="${n.n1}" class="w-16 p-1 border rounded text-center nota-input"></td>
-                    <td class="p-3"><input type="number" step="0.1" id="n2_${est}" value="${n.n2}" class="w-16 p-1 border rounded text-center nota-input"></td>
-                    <td class="p-3"><input type="number" step="0.1" id="n3_${est}" value="${n.n3}" class="w-16 p-1 border rounded text-center nota-input"></td>
-                    <td class="p-3 text-center">
-                        <button onclick="guardarNotaDocente('${est}')" class="bg-green-600 text-white px-4 py-1 rounded text-[10px] font-bold hover:bg-green-700 btn-save">GUARDAR</button>
-                    </td>
+                    <td class="p-3 font-bold">${est}</td>
+                    <td class="p-3 text-center"><input type="number" step="0.1" id="n1_${est}" value="${n.n1}" class="w-14 border rounded p-1 text-center nota-input"></td>
+                    <td class="p-3 text-center"><input type="number" step="0.1" id="n2_${est}" value="${n.n2}" class="w-14 border rounded p-1 text-center nota-input"></td>
+                    <td class="p-3 text-center"><input type="number" step="0.1" id="n3_${est}" value="${n.n3}" class="w-14 border rounded p-1 text-center nota-input"></td>
+                    <td class="p-3 text-center"><button onclick="guardarN('${est}')" class="bg-green-600 text-white px-3 py-1 rounded text-[10px] btn-save">GUARDAR</button></td>
                 </tr>`;
             }).join('');
         }
 
-        function validarAccesoTemporalDocente() {
+        function validarAccesoDocente() {
             const ahora = new Date();
-            const inicio = localStorage.getItem('fecha_inicio') ? new Date(localStorage.getItem('fecha_inicio')) : null;
-            const cierre = localStorage.getItem('fecha_cierre') ? new Date(localStorage.getItem('fecha_cierre')) : null;
-            const alerta = document.getElementById('docenteAlert');
-            let bloqueado = false;
-
-            if(!inicio || !cierre) {
-                alerta.innerText = "SISTEMA BLOQUEADO: FECHAS NO DEFINIDAS POR ADMIN";
-                alerta.className = "mb-4 p-4 rounded-lg font-bold text-center bg-orange-100 text-orange-700";
-                bloqueado = true;
-            } else if (ahora < inicio) {
-                alerta.innerText = "SISTEMA BLOQUEADO: APERTURA EL " + inicio.toLocaleString();
-                alerta.className = "mb-4 p-4 rounded-lg font-bold text-center bg-blue-100 text-blue-700";
-                bloqueado = true;
-            } else if (ahora > cierre) {
-                alerta.innerText = "SISTEMA BLOQUEADO: EL PLAZO VENCIÓ EL " + cierre.toLocaleString();
-                alerta.className = "mb-4 p-4 rounded-lg font-bold text-center bg-red-100 text-red-700";
-                bloqueado = true;
+            const i = localStorage.getItem('fecha_inicio') ? new Date(localStorage.getItem('fecha_inicio')) : null;
+            const c = localStorage.getItem('fecha_cierre') ? new Date(localStorage.getItem('fecha_cierre')) : null;
+            const al = document.getElementById('docenteAlert');
+            
+            if(!i || !c) {
+                al.innerText = "ACCESO RESTRINGIDO: PLAZOS NO DEFINIDOS";
+                al.className = "mb-4 p-4 rounded-lg bg-orange-100 text-orange-700 font-bold";
+                bloquearInputs();
+            } else if (ahora < i) {
+                al.innerText = "SISTEMA CERRADO: ABRE EL " + i.toLocaleString();
+                al.className = "mb-4 p-4 rounded-lg bg-blue-100 text-blue-700 font-bold";
+                bloquearInputs();
+            } else if (ahora > c) {
+                al.innerText = "SISTEMA CERRADO: EL PLAZO EXPIRÓ EL " + c.toLocaleString();
+                al.className = "mb-4 p-4 rounded-lg bg-red-100 text-red-700 font-bold";
+                bloquearInputs();
             } else {
-                alerta.innerText = "SISTEMA ABIERTO: PUEDE EDITAR CALIFICACIONES";
-                alerta.className = "mb-4 p-4 rounded-lg font-bold text-center bg-green-100 text-green-700 text-xs";
-            }
-
-            if(bloqueado) {
-                alerta.classList.remove('hidden');
-                document.querySelectorAll('.nota-input').forEach(i => i.disabled = true);
-                document.querySelectorAll('.btn-save').forEach(b => b.classList.add('hidden'));
-            } else {
-                alerta.classList.remove('hidden');
+                al.innerText = "SISTEMA ABIERTO: PUEDE INGRESAR CALIFICACIONES HASTA EL " + c.toLocaleString();
+                al.className = "mb-4 p-4 rounded-lg bg-green-100 text-green-700 font-bold";
             }
         }
 
-        function guardarNotaDocente(est) {
-            let DB_NOTAS = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const n1 = parseFloat(document.getElementById(`n1_${est}`).value) || 0;
-            const n2 = parseFloat(document.getElementById(`n2_${est}`).value) || 0;
-            const n3 = parseFloat(document.getElementById(`n3_${est}`).value) || 0;
-            DB_NOTAS[est] = { n1, n2, n3 };
-            localStorage.setItem('db_notas', JSON.stringify(DB_NOTAS));
-            alert("Notas de " + est + " guardadas");
+        function bloquearInputs() {
+            document.querySelectorAll('.nota-input').forEach(inp => inp.disabled = true);
+            document.querySelectorAll('.btn-save').forEach(btn => btn.style.display = 'none');
+        }
+
+        function guardarN(est) {
+            let db = JSON.parse(localStorage.getItem('db_notas')) || {};
+            db[est] = {
+                n1: parseFloat(document.getElementById(`n1_${est}`).value) || 0,
+                n2: parseFloat(document.getElementById(`n2_${est}`).value) || 0,
+                n3: parseFloat(document.getElementById(`n3_${est}`).value) || 0
+            };
+            localStorage.setItem('db_notas', JSON.stringify(db));
+            alert("Nota guardada.");
         }
 
         // --- ESTUDIANTE ---
         function cargarNotasEstudiante() {
-            const DB_NOTAS = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const n = DB_NOTAS[sesion.user] || {n1:0, n2:0, n3:0};
-            const prom = (n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1);
-            document.getElementById('cardsEstudiante').innerHTML = `<div class="bg-white p-6 rounded-xl shadow-sm border-l-8 border-indigo-600 inline-block min-w-[200px]">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Promedio</p>
-                <p class="text-4xl font-black text-indigo-900">${prom}</p>
+            const db = JSON.parse(localStorage.getItem('db_notas')) || {};
+            const n = db[sesion.user] || {n1:0, n2:0, n3:0};
+            const p = (n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1);
+            document.getElementById('cardsEstudiante').innerHTML = `<div class="bg-white p-6 rounded-xl border-l-8 border-indigo-600 shadow-sm inline-block">
+                <p class="text-xs font-bold text-gray-400">PROMEDIO</p><p class="text-4xl font-black text-indigo-900">${p}</p>
             </div>`;
             document.getElementById('boletinContent').innerHTML = `
-                <div class="flex justify-between bg-gray-50 p-4 rounded border"><span>Parcial 1 (30%)</span><b>${n.n1}</b></div>
-                <div class="flex justify-between bg-gray-50 p-4 rounded border"><span>Parcial 2 (30%)</span><b>${n.n2}</b></div>
-                <div class="flex justify-between bg-gray-50 p-4 rounded border"><span>Examen (40%)</span><b>${n.n3}</b></div>`;
+                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Parcial 1 (30%)</span><b>${n.n1}</b></div>
+                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Parcial 2 (30%)</span><b>${n.n2}</b></div>
+                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Examen (40%)</span><b>${n.n3}</b></div>`;
         }
 
         function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
