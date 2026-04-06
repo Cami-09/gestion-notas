@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Administrativo | Gestión Total</title>
+    <title>Plataforma Integra Pro | Gestión Académica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,324 +12,345 @@
         .sidebar-estudiante { background: #3730a3; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .nota-input:disabled { background-color: #f3f4f6; cursor: not-allowed; opacity: 0.6; }
-        .edit-mode { border: 2px solid #f59e0b !important; background-color: #fffbeb; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .nota-input:disabled { background: #f3f4f6; cursor: not-allowed; }
     </style>
 </head>
 <body class="bg-gray-100 flex h-screen overflow-hidden text-sm">
 
     <aside id="sidebar" class="w-64 text-white flex flex-col shadow-xl">
         <div class="p-6 border-b border-white/10 text-center">
-            <h1 class="text-xl font-black tracking-tighter" id="panelType">SISTEMA</h1>
+            <h1 class="text-xl font-black tracking-tighter uppercase">Integra <span class="text-orange-400">Pro</span></h1>
         </div>
         <nav class="mt-6 flex-1 px-4 space-y-2" id="menuOptions"></nav>
-        <div class="p-4 bg-black/20">
-            <button onclick="logout()" class="w-full py-2 bg-red-600 rounded font-bold hover:bg-red-700 transition">
-                <i class="fas fa-sign-out-alt mr-2"></i>SALIR
-            </button>
-        </div>
+        <div class="p-4 bg-black/20 text-[10px] text-center opacity-70">Versión 2026.1</div>
     </aside>
 
-    <main class="flex-1 flex flex-col overflow-y-auto">
-        <header class="bg-white p-4 shadow flex justify-between items-center px-8 border-b-4" id="headerBorder">
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white p-4 shadow-md flex justify-between items-center px-8 border-b-4 border-orange-500">
             <div>
-                <h2 id="viewTitle" class="text-xl font-black text-gray-700 uppercase leading-none">Panel</h2>
-                <div id="plazoStatus" class="mt-2 text-[10px] font-bold uppercase">
-                    <span id="txtInicio" class="text-blue-600 mr-4"></span>
-                    <span id="txtCierre" class="text-red-600"></span>
-                </div>
+                <h2 id="viewTitle" class="text-lg font-black text-gray-700 uppercase leading-none">Panel de Control</h2>
+                <div id="plazoHeader" class="text-[10px] mt-1 font-bold text-red-600"></div>
             </div>
-            <div class="flex items-center gap-4 text-right">
-                <div>
-                    <p id="navUserName" class="font-bold text-gray-900 leading-none"></p>
-                    <p id="navUserRole" class="text-[10px] uppercase text-blue-600 font-black"></p>
+            <div class="flex items-center gap-3">
+                <div class="text-right">
+                    <p id="navFullName" class="font-bold text-gray-900 leading-none"></p>
+                    <p id="navRole" class="text-[9px] uppercase text-orange-600 font-black"></p>
                 </div>
-                <div id="userAvatar" class="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shadow-md"></div>
+                <button onclick="logout()" class="bg-red-500 text-white p-2 rounded-lg text-xs hover:bg-red-600"><i class="fas fa-power-off"></i></button>
             </div>
         </header>
 
-        <div class="p-6">
+        <div class="p-6 overflow-y-auto h-full pb-20">
             <div id="view-admin" class="tab-content">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
-                        <h3 class="font-bold mb-4 text-blue-900 uppercase"><i class="fas fa-clock mr-2"></i>Cronograma de Notas</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-[10px] font-bold text-gray-400">APERTURA (FECHA Y HORA)</label>
-                                <input type="datetime-local" id="admin_fecha_inicio" class="w-full p-2 border rounded outline-none">
-                            </div>
-                            <div>
-                                <label class="text-[10px] font-bold text-gray-400">CIERRE (FECHA Y HORA)</label>
-                                <input type="datetime-local" id="admin_fecha_cierre" class="w-full p-2 border rounded outline-none">
-                            </div>
-                            <button onclick="adminGuardarPlazos()" class="w-full bg-orange-500 text-white py-2 rounded font-bold hover:bg-orange-600 transition uppercase tracking-widest">Actualizar Fechas</button>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-blue-900">
+                        <h3 class="font-bold mb-3 text-blue-900 uppercase text-xs">Cronograma de Notas</h3>
+                        <input type="datetime-local" id="admin_inicio" class="w-full mb-2 p-2 border rounded text-xs">
+                        <input type="datetime-local" id="admin_cierre" class="w-full mb-2 p-2 border rounded text-xs">
+                        <button onclick="savePlazos()" class="w-full bg-blue-900 text-white py-2 rounded text-xs font-bold">GUARDAR FECHAS</button>
                     </div>
 
-                    <div id="userFormContainer" class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-600">
-                        <h3 id="formUserTitle" class="font-bold mb-4 text-blue-900 uppercase"><i class="fas fa-user-plus mr-2"></i>Gestionar Usuario</h3>
-                        <div class="grid grid-cols-2 gap-2">
-                            <input type="hidden" id="old_username">
-                            <input type="text" id="adm_user" placeholder="Nombre de Usuario" class="p-2 border rounded text-xs">
-                            <input type="text" id="adm_pass" placeholder="Contraseña" class="p-2 border rounded text-xs">
-                            <select id="adm_role" class="col-span-2 p-2 border rounded text-xs">
-                                <option value="Estudiante">Estudiante</option>
-                                <option value="Docente">Docente</option>
-                                <option value="Administrativo">Administrativo</option>
-                            </select>
-                            <div class="col-span-2 flex gap-2">
-                                <button id="btnUserAction" onclick="adminGuardarUser()" class="flex-1 bg-blue-700 text-white py-2 rounded font-bold hover:bg-blue-800 transition uppercase">Guardar</button>
-                                <button id="btnCancelEdit" onclick="cancelarEdicion()" class="hidden bg-gray-400 text-white px-4 py-2 rounded font-bold hover:bg-gray-500">X</button>
-                            </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-blue-900">
+                        <h3 class="font-bold mb-3 text-blue-900 uppercase text-xs">Registrar Usuario</h3>
+                        <input type="text" id="adm_fullname" placeholder="Nombre Completo" class="w-full mb-2 p-2 border rounded text-xs">
+                        <div class="flex gap-2 mb-2">
+                            <input type="text" id="adm_user" placeholder="User" class="w-1/2 p-2 border rounded text-xs">
+                            <input type="text" id="adm_pass" placeholder="Pass" class="w-1/2 p-2 border rounded text-xs">
                         </div>
+                        <select id="adm_role" class="w-full mb-2 p-2 border rounded text-xs">
+                            <option value="Estudiante">Estudiante</option>
+                            <option value="Docente">Docente</option>
+                            <option value="Administrativo">Administrativo</option>
+                        </select>
+                        <button onclick="saveUser()" class="w-full bg-black text-white py-2 rounded text-xs font-bold">CREAR CUENTA</button>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-orange-500">
+                        <h3 class="font-bold mb-3 text-orange-600 uppercase text-xs">Asignar Materia</h3>
+                        <input type="text" id="adm_materia" placeholder="Nombre Materia (Ej: Física)" class="w-full mb-2 p-2 border rounded text-xs">
+                        <select id="sel_docente" class="w-full mb-2 p-2 border rounded text-xs"></select>
+                        <button onclick="assignMateria()" class="w-full bg-orange-600 text-white py-2 rounded text-xs font-bold">VINCULAR DOCENTE</button>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden mb-8">
+                    <div class="p-3 bg-gray-50 border-b font-bold text-gray-500 text-[10px] uppercase">Usuarios en Sistema</div>
                     <table class="w-full text-left">
-                        <thead class="bg-gray-50 text-gray-500 text-[10px] uppercase">
-                            <tr>
-                                <th class="p-4">Usuario</th>
-                                <th class="p-4">Rol</th>
-                                <th class="p-4 text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tablaUsuariosAdmin"></tbody>
+                        <tbody id="tableUsers" class="divide-y"></tbody>
                     </table>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-green-600">
+                    <h3 class="font-bold mb-4 uppercase text-xs">Matricular Estudiante en Materia</h3>
+                    <div class="flex gap-4">
+                        <select id="sel_estudiante" class="flex-1 p-2 border rounded text-xs"></select>
+                        <select id="sel_materia_link" class="flex-1 p-2 border rounded text-xs"></select>
+                        <button onclick="matricular()" class="bg-green-600 text-white px-6 py-2 rounded text-xs font-bold">MATRICULAR</button>
+                    </div>
                 </div>
             </div>
 
             <div id="view-docente" class="tab-content">
-                <div id="docenteAlert" class="mb-4 p-4 rounded-lg font-bold text-center text-xs"></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-600">
-                    <table class="w-full border-collapse">
-                        <thead>
-                            <tr class="bg-gray-50 text-[10px] uppercase text-gray-500">
-                                <th class="p-3 border">Estudiante</th>
-                                <th class="p-3 border text-center">N1 (30%)</th>
-                                <th class="p-3 border text-center">N2 (30%)</th>
-                                <th class="p-3 border text-center">EX (40%)</th>
-                                <th class="p-3 border text-center">Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody id="listaEstudiantesNotas"></tbody>
-                    </table>
-                </div>
+                <div id="gridMaterias" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
             </div>
 
             <div id="view-estudiante" class="tab-content">
-                <div id="cardsEstudiante" class="mb-6"></div>
-                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-indigo-600">
-                    <h3 class="font-bold mb-4 text-indigo-900 uppercase">Boletín Oficial</h3>
-                    <div id="boletinContent" class="space-y-4"></div>
-                </div>
+                <div id="misNotasEstudiante" class="space-y-4"></div>
             </div>
         </div>
     </main>
+
+    <div id="modalNotas" class="modal">
+        <div class="bg-white w-11/12 max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="p-4 bg-gray-800 text-white flex justify-between items-center">
+                <h3 id="modalTitle" class="font-bold uppercase tracking-widest text-xs">Calificaciones</h3>
+                <button onclick="closeModal()" class="text-xl">&times;</button>
+            </div>
+            
+            <div class="flex border-b bg-gray-100">
+                <button onclick="setPeriodo(1)" id="btnP1" class="flex-1 p-3 font-bold text-xs uppercase border-r hover:bg-white active-period">Periodo 1</button>
+                <button onclick="setPeriodo(2)" id="btnP2" class="flex-1 p-3 font-bold text-xs uppercase border-r hover:bg-white">Periodo 2</button>
+                <button onclick="setPeriodo(3)" id="btnP3" class="flex-1 p-3 font-bold text-xs uppercase hover:bg-white">Periodo 3</button>
+            </div>
+
+            <div class="p-6 overflow-y-auto">
+                <div id="modalInfoStatus" class="mb-4 p-3 rounded text-[10px] font-bold text-center"></div>
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-[10px] text-gray-500 uppercase border-b">
+                            <th class="p-3">Estudiante</th>
+                            <th class="p-3 text-center">Nota 1 (30%)</th>
+                            <th class="p-3 text-center">Nota 2 (30%)</th>
+                            <th class="p-3 text-center">Examen (40%)</th>
+                            <th class="p-3 text-center">Final</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyPlanilla"></tbody>
+                </table>
+            </div>
+            
+            <div class="p-4 bg-gray-50 border-t text-right">
+                <button onclick="closeModal()" class="bg-gray-400 text-white px-6 py-2 rounded text-xs font-bold">CERRAR VENTANA</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
+        // --- DATABASE ESTRUCTURA ---
+        let DB_MATERIAS = JSON.parse(localStorage.getItem('db_materias')) || [];
+        let DB_NOTAS = JSON.parse(localStorage.getItem('db_notas_v2')) || {};
+        let currentMateria = null;
+        let currentPeriodo = 1;
+
         window.onload = function() {
-            document.getElementById('navUserName').innerText = sesion.user;
-            document.getElementById('navUserRole').innerText = sesion.role;
-            document.getElementById('userAvatar').innerText = sesion.user[0].toUpperCase();
-            configurarInterfazPorRol();
-        };
-
-        function configurarInterfazPorRol() {
-            const side = document.getElementById('sidebar');
-            const menu = document.getElementById('menuOptions');
-            
-            // Cargar fechas actuales en el Admin si existen
-            const fI = localStorage.getItem('fecha_inicio') || '';
-            const fC = localStorage.getItem('fecha_cierre') || '';
-            document.getElementById('txtInicio').innerText = "APERTURA: " + fI.replace('T', ' ');
-            document.getElementById('txtCierre').innerText = "CIERRE: " + fC.replace('T', ' ');
-
-            if(sesion.role === 'Administrativo') {
-                side.className = "w-64 sidebar-admin text-white flex flex-col shadow-xl";
-                document.getElementById('panelType').innerText = "ADMIN";
-                menu.innerHTML = `<button onclick="showTab('admin')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-user-shield mr-3"></i> Administración</button>`;
-                cargarTablaUsuariosAdmin();
-                showTab('admin');
-            } 
-            else if(sesion.role === 'Docente') {
-                side.className = "w-64 sidebar-docente text-white flex flex-col shadow-xl";
-                document.getElementById('panelType').innerText = "DOCENTE";
-                menu.innerHTML = `<button onclick="showTab('docente')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-pencil-alt mr-3"></i> Planilla</button>`;
-                cargarPlanillaDocente();
-                validarAccesoDocente();
-                showTab('docente');
-            }
-            else {
-                side.className = "w-64 sidebar-estudiante text-white flex flex-col shadow-xl";
-                document.getElementById('panelType').innerText = "ESTUDIANTE";
-                menu.innerHTML = `<button onclick="showTab('estudiante')" class="w-full text-left p-3 hover:bg-white/10 rounded-lg font-bold"><i class="fas fa-graduation-cap mr-3"></i> Mis Notas</button>`;
-                cargarNotasEstudiante();
-                showTab('estudiante');
-            }
+            document.getElementById('navFullName').innerText = sesion.fullname || sesion.user;
+            document.getElementById('navRole').innerText = sesion.role;
+            init();
         }
 
-        function showTab(name) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById('view-' + name).classList.add('active');
+        function init() {
+            renderMenu();
+            if(sesion.role === 'Administrativo') loadAdminData();
+            if(sesion.role === 'Docente') loadDocenteMaterias();
+            if(sesion.role === 'Estudiante') loadEstudianteNotas();
+            updateCronometro();
         }
 
-        // --- ACCIONES ADMIN ---
-        function adminGuardarPlazos() {
-            const i = document.getElementById('admin_fecha_inicio').value;
-            const c = document.getElementById('admin_fecha_cierre').value;
-            if(!i || !c) return alert("Completa ambas fechas");
-            localStorage.setItem('fecha_inicio', i);
-            localStorage.setItem('fecha_cierre', c);
-            alert("Cronograma guardado.");
+        // --- ADMIN FUNCIONES ---
+        function loadAdminData() {
+            const users = getUsuarios();
+            const selD = document.getElementById('sel_docente');
+            const selE = document.getElementById('sel_estudiante');
+            const selM = document.getElementById('sel_materia_link');
+            const tableU = document.getElementById('tableUsers');
+
+            selD.innerHTML = users.filter(u => u.role === 'Docente').map(u => `<option value="${u.user}">${u.fullname}</option>`).join('');
+            selE.innerHTML = users.filter(u => u.role === 'Estudiante').map(u => `<option value="${u.user}">${u.fullname}</option>`).join('');
+            selM.innerHTML = DB_MATERIAS.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
+
+            tableU.innerHTML = users.map(u => `
+                <tr class="text-xs">
+                    <td class="p-3 font-bold">${u.fullname} <span class="text-gray-400 font-normal">(@${u.user})</span></td>
+                    <td class="p-3"><span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-[9px] uppercase font-black">${u.role}</span></td>
+                    <td class="p-3 text-right">
+                        <button onclick="deleteUser('${u.user}')" class="text-red-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function saveUser() {
+            const u = document.getElementById('adm_user').value;
+            const p = document.getElementById('adm_pass').value;
+            const r = document.getElementById('adm_role').value;
+            const f = document.getElementById('adm_fullname').value;
+            if(!u || !p || !f) return alert("Completa todo");
+            localStorage.setItem(u, JSON.stringify({user:u, pass:p, role:r, fullname:f}));
             location.reload();
         }
 
-        function adminGuardarUser() {
-            const u = document.getElementById('adm_user').value.trim();
-            const p = document.getElementById('adm_pass').value.trim();
-            const r = document.getElementById('adm_role').value;
-            const oldU = document.getElementById('old_username').value;
-
-            if(!u || !p) return alert("Datos incompletos");
-
-            // Si estamos editando y cambiamos el nombre de usuario, borramos el viejo
-            if(oldU && oldU !== u) { localStorage.removeItem(oldU); }
-
-            localStorage.setItem(u, JSON.stringify({user: u, pass: p, role: r}));
-            alert("Usuario guardado/actualizado.");
-            cancelarEdicion();
-            cargarTablaUsuariosAdmin();
+        function assignMateria() {
+            const nom = document.getElementById('adm_materia').value;
+            const doc = document.getElementById('sel_docente').value;
+            if(!nom) return;
+            const id = Date.now();
+            DB_MATERIAS.push({id, nombre: nom, docente: doc, estudiantes: []});
+            localStorage.setItem('db_materias', JSON.stringify(DB_MATERIAS));
+            location.reload();
         }
 
-        function cargarTablaUsuariosAdmin() {
-            const tabla = document.getElementById('tablaUsuariosAdmin');
-            tabla.innerHTML = "";
-            for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if(['db_notas','fecha_inicio','fecha_cierre'].includes(k)) continue;
-                const d = JSON.parse(localStorage.getItem(k));
-                if(d.user) {
-                    tabla.innerHTML += `<tr class="border-b hover:bg-gray-50 transition">
-                        <td class="p-4 font-bold text-gray-700">${d.user}</td>
-                        <td class="p-4"><span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-[10px] font-bold uppercase">${d.role}</span></td>
-                        <td class="p-4 flex justify-center gap-2">
-                            <button onclick='prepararEdicion(${JSON.stringify(d)})' class="text-orange-500 bg-orange-50 p-2 rounded-lg hover:bg-orange-100"><i class="fas fa-edit"></i></button>
-                            <button onclick="eliminarUsuario('${d.user}')" class="text-red-500 bg-red-50 p-2 rounded-lg hover:bg-red-100"><i class="fas fa-trash"></i></button>
-                        </td>
-                    </tr>`;
-                }
+        function matricular() {
+            const est = document.getElementById('sel_estudiante').value;
+            const matId = document.getElementById('sel_materia_link').value;
+            const idx = DB_MATERIAS.findIndex(m => m.id == matId);
+            if(!DB_MATERIAS[idx].estudiantes.includes(est)) {
+                DB_MATERIAS[idx].estudiantes.push(est);
+                localStorage.setItem('db_materias', JSON.stringify(DB_MATERIAS));
+                alert("Estudiante matriculado");
             }
         }
 
-        function prepararEdicion(datos) {
-            document.getElementById('formUserTitle').innerHTML = '<i class="fas fa-edit mr-2"></i> Editando Usuario';
-            document.getElementById('userFormContainer').classList.add('edit-mode');
-            document.getElementById('adm_user').value = datos.user;
-            document.getElementById('adm_pass').value = datos.pass;
-            document.getElementById('adm_role').value = datos.role;
-            document.getElementById('old_username').value = datos.user;
-            document.getElementById('btnCancelEdit').classList.remove('hidden');
-            document.getElementById('btnUserAction').innerText = "Actualizar Cambios";
-            document.getElementById('adm_user').focus();
+        // --- DOCENTE FUNCIONES ---
+        function loadDocenteMaterias() {
+            const grid = document.getElementById('gridMaterias');
+            const misMaterias = DB_MATERIAS.filter(m => m.docente === sesion.user);
+            grid.innerHTML = misMaterias.map(m => `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border-b-4 border-green-600 hover:shadow-md transition">
+                    <div class="text-green-600 mb-2"><i class="fas fa-book text-2xl"></i></div>
+                    <h3 class="font-black text-gray-800 uppercase text-sm">${m.nombre}</h3>
+                    <p class="text-[10px] text-gray-400 mb-4">${m.estudiantes.length} Estudiantes Inscritos</p>
+                    <button onclick="openPlanilla(${m.id})" class="w-full bg-green-600 text-white py-2 rounded-lg font-bold text-xs">CALIFICAR NOTAS</button>
+                </div>
+            `).join('');
         }
 
-        function cancelarEdicion() {
-            document.getElementById('formUserTitle').innerHTML = '<i class="fas fa-user-plus mr-2"></i> Gestionar Usuario';
-            document.getElementById('userFormContainer').classList.remove('edit-mode');
-            document.getElementById('adm_user').value = "";
-            document.getElementById('adm_pass').value = "";
-            document.getElementById('old_username').value = "";
-            document.getElementById('btnCancelEdit').classList.add('hidden');
-            document.getElementById('btnUserAction').innerText = "Guardar";
+        function openPlanilla(id) {
+            currentMateria = DB_MATERIAS.find(m => m.id == id);
+            document.getElementById('modalTitle').innerText = "Calificando: " + currentMateria.nombre;
+            document.getElementById('modalNotas').classList.add('active');
+            renderPlanilla();
         }
 
-        function eliminarUsuario(n) {
-            if(n === sesion.user) return alert("No puedes borrarte");
-            if(confirm("¿Eliminar usuario " + n + "?")) { localStorage.removeItem(n); cargarTablaUsuariosAdmin(); }
+        function setPeriodo(p) {
+            currentPeriodo = p;
+            document.querySelectorAll('[id^="btnP"]').forEach(b => b.classList.remove('bg-white', 'text-green-600'));
+            document.getElementById('btnP'+p).classList.add('bg-white', 'text-green-600');
+            renderPlanilla();
         }
 
-        // --- ACCIONES DOCENTE ---
-        function cargarPlanillaDocente() {
-            const tabla = document.getElementById('listaEstudiantesNotas');
-            const DB_NOTAS = JSON.parse(localStorage.getItem('db_notas')) || {};
-            let estudiantes = [];
-            for(let i=0; i<localStorage.length; i++) {
-                let k = localStorage.key(i);
-                if(['db_notas','fecha_inicio','fecha_cierre'].includes(k)) continue;
-                let d = JSON.parse(localStorage.getItem(k));
-                if(d.role === 'Estudiante') estudiantes.push(d.user);
-            }
-            tabla.innerHTML = estudiantes.map(est => {
-                let n = DB_NOTAS[est] || {n1:0, n2:0, n3:0};
-                return `<tr class="border-b">
-                    <td class="p-3 font-bold">${est}</td>
-                    <td class="p-3 text-center"><input type="number" step="0.1" id="n1_${est}" value="${n.n1}" class="w-14 border rounded p-1 text-center nota-input"></td>
-                    <td class="p-3 text-center"><input type="number" step="0.1" id="n2_${est}" value="${n.n2}" class="w-14 border rounded p-1 text-center nota-input"></td>
-                    <td class="p-3 text-center"><input type="number" step="0.1" id="n3_${est}" value="${n.n3}" class="w-14 border rounded p-1 text-center nota-input"></td>
-                    <td class="p-3 text-center"><button onclick="guardarN('${est}')" class="bg-green-600 text-white px-3 py-1 rounded text-[10px] btn-save">GUARDAR</button></td>
-                </tr>`;
+        function renderPlanilla() {
+            const body = document.getElementById('bodyPlanilla');
+            const status = document.getElementById('modalInfoStatus');
+            const isLocked = !checkAccess();
+
+            status.innerText = isLocked ? "SISTEMA CERRADO - SOLO LECTURA" : "SISTEMA ABIERTO - PUEDE EDITAR";
+            status.className = "mb-4 p-3 rounded text-[10px] font-bold text-center " + (isLocked ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600");
+
+            body.innerHTML = currentMateria.estudiantes.map(estUser => {
+                const uData = JSON.parse(localStorage.getItem(estUser));
+                const key = `${currentMateria.id}_${currentPeriodo}_${estUser}`;
+                const n = DB_NOTAS[key] || {n1:0, n2:0, n3:0};
+                const fin = (n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1);
+
+                return `
+                    <tr class="border-b">
+                        <td class="p-3 font-bold text-gray-700">${uData.fullname}</td>
+                        <td class="p-3 text-center"><input type="number" step="0.1" value="${n.n1}" onchange="saveNota('${estUser}', 1, this.value)" ${isLocked ? 'disabled':''} class="w-14 border rounded p-1 text-center text-xs"></td>
+                        <td class="p-3 text-center"><input type="number" step="0.1" value="${n.n2}" onchange="saveNota('${estUser}', 2, this.value)" ${isLocked ? 'disabled':''} class="w-14 border rounded p-1 text-center text-xs"></td>
+                        <td class="p-3 text-center"><input type="number" step="0.1" value="${n.n3}" onchange="saveNota('${estUser}', 3, this.value)" ${isLocked ? 'disabled':''} class="w-14 border rounded p-1 text-center text-xs"></td>
+                        <td class="p-3 text-center font-black text-blue-600">${fin}</td>
+                    </tr>
+                `;
             }).join('');
         }
 
-        function validarAccesoDocente() {
+        function saveNota(est, num, val) {
+            const key = `${currentMateria.id}_${currentPeriodo}_${est}`;
+            if(!DB_NOTAS[key]) DB_NOTAS[key] = {n1:0, n2:0, n3:0};
+            DB_NOTAS[key]['n'+num] = parseFloat(val) || 0;
+            localStorage.setItem('db_notas_v2', JSON.stringify(DB_NOTAS));
+            renderPlanilla();
+        }
+
+        // --- ESTUDIANTE FUNCIONES ---
+        function loadEstudianteNotas() {
+            const cont = document.getElementById('misNotasEstudiante');
+            const misMat = DB_MATERIAS.filter(m => m.estudiantes.includes(sesion.user));
+            
+            cont.innerHTML = misMat.map(m => {
+                let html = `<div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-indigo-600">
+                    <h3 class="font-black text-indigo-900 uppercase text-xs mb-3">${m.nombre}</h3>
+                    <div class="grid grid-cols-3 gap-2 text-center">`;
+                
+                for(let p=1; p<=3; p++) {
+                    const key = `${m.id}_${p}_${sesion.user}`;
+                    const n = DB_NOTAS[key] || {n1:0, n2:0, n3:0};
+                    const f = (n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1);
+                    html += `<div class="bg-gray-50 p-2 rounded">
+                        <p class="text-[8px] uppercase text-gray-400 font-bold">P${p}</p>
+                        <p class="font-black text-sm">${f}</p>
+                    </div>`;
+                }
+                html += `</div></div>`;
+                return html;
+            }).join('');
+        }
+
+        // --- HELPERS ---
+        function getUsuarios() {
+            let u = [];
+            for(let i=0; i<localStorage.length; i++){
+                let k = localStorage.key(i);
+                if(['db_materias','db_notas_v2','fecha_inicio','fecha_cierre'].includes(k)) continue;
+                u.push(JSON.parse(localStorage.getItem(k)));
+            }
+            return u;
+        }
+
+        function savePlazos() {
+            localStorage.setItem('fecha_inicio', document.getElementById('admin_inicio').value);
+            localStorage.setItem('fecha_cierre', document.getElementById('admin_cierre').value);
+            alert("Cronograma actualizado");
+            location.reload();
+        }
+
+        function checkAccess() {
             const ahora = new Date();
             const i = localStorage.getItem('fecha_inicio') ? new Date(localStorage.getItem('fecha_inicio')) : null;
             const c = localStorage.getItem('fecha_cierre') ? new Date(localStorage.getItem('fecha_cierre')) : null;
-            const al = document.getElementById('docenteAlert');
-            
-            if(!i || !c) {
-                al.innerText = "ACCESO RESTRINGIDO: PLAZOS NO DEFINIDOS";
-                al.className = "mb-4 p-4 rounded-lg bg-orange-100 text-orange-700 font-bold";
-                bloquearInputs();
-            } else if (ahora < i) {
-                al.innerText = "SISTEMA CERRADO: ABRE EL " + i.toLocaleString();
-                al.className = "mb-4 p-4 rounded-lg bg-blue-100 text-blue-700 font-bold";
-                bloquearInputs();
-            } else if (ahora > c) {
-                al.innerText = "SISTEMA CERRADO: EL PLAZO EXPIRÓ EL " + c.toLocaleString();
-                al.className = "mb-4 p-4 rounded-lg bg-red-100 text-red-700 font-bold";
-                bloquearInputs();
+            if(!i || !c) return false;
+            return (ahora >= i && ahora <= c);
+        }
+
+        function renderMenu() {
+            const menu = document.getElementById('menuOptions');
+            const side = document.getElementById('sidebar');
+            if(sesion.role === 'Administrativo') {
+                side.classList.add('sidebar-admin');
+                menu.innerHTML = `<button class="w-full text-left p-3 bg-white/10 rounded-lg font-bold text-xs"><i class="fas fa-university mr-3"></i> INSTITUCIÓN</button>`;
+            } else if(sesion.role === 'Docente') {
+                side.classList.add('sidebar-docente');
+                menu.innerHTML = `<button class="w-full text-left p-3 bg-white/10 rounded-lg font-bold text-xs"><i class="fas fa-chalkboard mr-3"></i> MIS CURSOS</button>`;
             } else {
-                al.innerText = "SISTEMA ABIERTO: PUEDE INGRESAR CALIFICACIONES HASTA EL " + c.toLocaleString();
-                al.className = "mb-4 p-4 rounded-lg bg-green-100 text-green-700 font-bold";
+                side.classList.add('sidebar-estudiante');
+                menu.innerHTML = `<button class="w-full text-left p-3 bg-white/10 rounded-lg font-bold text-xs"><i class="fas fa-user-graduate mr-3"></i> MI PROGRESO</button>`;
             }
         }
 
-        function bloquearInputs() {
-            document.querySelectorAll('.nota-input').forEach(inp => inp.disabled = true);
-            document.querySelectorAll('.btn-save').forEach(btn => btn.style.display = 'none');
+        function updateCronometro() {
+            const i = localStorage.getItem('fecha_inicio');
+            const c = localStorage.getItem('fecha_cierre');
+            document.getElementById('plazoHeader').innerHTML = `APERTURA: ${i || '?'}<br>CIERRE: ${c || '?'}`;
         }
 
-        function guardarN(est) {
-            let db = JSON.parse(localStorage.getItem('db_notas')) || {};
-            db[est] = {
-                n1: parseFloat(document.getElementById(`n1_${est}`).value) || 0,
-                n2: parseFloat(document.getElementById(`n2_${est}`).value) || 0,
-                n3: parseFloat(document.getElementById(`n3_${est}`).value) || 0
-            };
-            localStorage.setItem('db_notas', JSON.stringify(db));
-            alert("Nota guardada.");
-        }
-
-        // --- ESTUDIANTE ---
-        function cargarNotasEstudiante() {
-            const db = JSON.parse(localStorage.getItem('db_notas')) || {};
-            const n = db[sesion.user] || {n1:0, n2:0, n3:0};
-            const p = (n.n1*0.3 + n.n2*0.3 + n.n3*0.4).toFixed(1);
-            document.getElementById('cardsEstudiante').innerHTML = `<div class="bg-white p-6 rounded-xl border-l-8 border-indigo-600 shadow-sm inline-block">
-                <p class="text-xs font-bold text-gray-400">PROMEDIO</p><p class="text-4xl font-black text-indigo-900">${p}</p>
-            </div>`;
-            document.getElementById('boletinContent').innerHTML = `
-                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Parcial 1 (30%)</span><b>${n.n1}</b></div>
-                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Parcial 2 (30%)</span><b>${n.n2}</b></div>
-                <div class="flex justify-between p-3 bg-gray-50 rounded border"><span>Examen (40%)</span><b>${n.n3}</b></div>`;
-        }
-
+        function closeModal() { document.getElementById('modalNotas').classList.remove('active'); }
         function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+        function deleteUser(u) { if(confirm("¿Borrar?")){localStorage.removeItem(u); location.reload();}}
     </script>
 </body>
 </html>
