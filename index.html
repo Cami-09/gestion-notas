@@ -3,103 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso | Plataforma Educativa</title>
+    <title>Acceso | Plataforma Integra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        .role-card { transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
-        .role-card:hover { transform: translateY(-5px); border-color: #2b6cb0; background-color: #ebf8ff; }
-        .role-icon { width: 80px; height: 80px; display: flex; items-center: center; justify-content: center; border-radius: 50%; margin: 0 auto 10px; }
-        .active-role { border-color: #2b6cb0; background-color: #bee3f8; }
+        .role-card { transition: all 0.3s ease; cursor: pointer; border: 2px solid #e2e8f0; }
+        .role-card.active { border-color: #1e3a8a; background-color: #eff6ff; transform: scale(1.05); }
+        .role-icon { width: 60px; height: 60px; display: flex; items-center: center; justify-content: center; border-radius: 50%; margin: 0 auto 8px; }
     </style>
 </head>
-<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-    <div class="bg-white shadow-2xl rounded-xl overflow-hidden max-w-4xl w-full flex flex-col md:flex-row">
-        
-        <div class="w-full md:w-1/2 p-8 bg-gray-50">
-            <div class="text-center mb-8">
-                <img src="https://e.plataformaintegra.net/luiscarlosgs/img/logo_colegio.png" alt="Logo" class="mx-auto h-20 mb-4 font-bold text-blue-800">
-                <h2 class="text-2xl font-bold text-blue-900 uppercase tracking-tighter">Plataforma Integra</h2>
-                <p class="text-gray-500 text-sm">Seleccione su perfil de ingreso</p>
+    <div class="bg-white shadow-2xl rounded-2xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden border border-gray-200">
+        <div class="md:w-1/2 bg-slate-50 p-8">
+            <div class="text-center mb-6">
+                <div class="bg-blue-900 text-white inline-block p-3 rounded-lg mb-2">
+                    <i class="fas fa-university text-3xl"></i>
+                </div>
+                <h2 class="text-xl font-black text-blue-900 uppercase">Sistema de Gestión</h2>
+                <p class="text-gray-500 text-xs">Seleccione su perfil de usuario</p>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div onclick="selectRole('Estudiante', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200 active-role">
-                    <div class="role-icon bg-blue-100 text-blue-600"><i class="fas fa-user-graduate text-3xl"></i></div>
-                    <span class="font-bold text-sm">Estudiantes</span>
+            <div class="grid grid-cols-2 gap-3" id="roleContainer">
+                <div onclick="setRole('Estudiante', this)" class="role-card p-4 rounded-xl text-center bg-white active">
+                    <div class="role-icon bg-blue-100 text-blue-700"><i class="fas fa-user-graduate text-2xl"></i></div>
+                    <span class="text-xs font-bold uppercase">Estudiantes</span>
                 </div>
-                <div onclick="selectRole('Docente', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
-                    <div class="role-icon bg-green-100 text-green-600"><i class="fas fa-chalkboard-teacher text-3xl"></i></div>
-                    <span class="font-bold text-sm">Docentes</span>
+                <div onclick="setRole('Docente', this)" class="role-card p-4 rounded-xl text-center bg-white">
+                    <div class="role-icon bg-green-100 text-green-700"><i class="fas fa-chalkboard-teacher text-2xl"></i></div>
+                    <span class="text-xs font-bold uppercase">Docentes</span>
                 </div>
-                <div onclick="selectRole('Padre de Familia', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
-                    <div class="role-icon bg-purple-100 text-purple-600"><i class="fas fa-users text-3xl"></i></div>
-                    <span class="font-bold text-sm">Padres</span>
+                <div onclick="setRole('Padre', this)" class="role-card p-4 rounded-xl text-center bg-white">
+                    <div class="role-icon bg-purple-100 text-purple-700"><i class="fas fa-users text-2xl"></i></div>
+                    <span class="text-xs font-bold uppercase">Padres</span>
                 </div>
-                <div onclick="selectRole('Administrativo', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
-                    <div class="role-icon bg-orange-100 text-orange-600"><i class="fas fa-user-tie text-3xl"></i></div>
-                    <span class="font-bold text-sm">Administrativos</span>
+                <div onclick="setRole('Administrativo', this)" class="role-card p-4 rounded-xl text-center bg-white">
+                    <div class="role-icon bg-orange-100 text-orange-700"><i class="fas fa-user-tie text-2xl"></i></div>
+                    <span class="text-xs font-bold uppercase">Admin</span>
                 </div>
             </div>
         </div>
 
-        <div class="w-full md:w-1/2 p-8 flex flex-col justify-center border-l border-gray-100">
-            <div class="mb-6">
-                <h3 id="role-title" class="text-xl font-bold text-gray-800">Ingreso: Estudiante</h3>
-                <div class="h-1 w-16 bg-blue-600 mt-1"></div>
-            </div>
-
-            <form onsubmit="handleLogin(event)" class="space-y-4">
+        <div class="md:w-1/2 p-8">
+            <h3 id="formTitle" class="text-2xl font-bold text-gray-800 mb-6 border-b-2 border-blue-600 inline-block">Ingreso: Estudiante</h3>
+            
+            <form id="authForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Usuario</label>
-                    <div class="relative mt-1">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                            <i class="fas fa-user"></i>
-                        </span>
-                        <input type="text" required class="pl-10 w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nombre de usuario">
-                    </div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Usuario</label>
+                    <input type="text" id="userInput" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
                 </div>
-
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <div class="relative mt-1">
-                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                            <i class="fas fa-lock"></i>
-                        </span>
-                        <input type="password" required class="pl-10 w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
-                    </div>
+                    <label class="block text-xs font-bold text-gray-600 uppercase">Contraseña</label>
+                    <input type="password" id="passInput" required class="w-full mt-1 p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition">
                 </div>
-
-                <button type="submit" class="w-full bg-blue-700 text-white p-3 rounded-md font-bold hover:bg-blue-800 transition duration-300 shadow-lg">
-                    ENTRAR AL SISTEMA
-                </button>
+                
+                <div class="flex flex-col gap-3 pt-4">
+                    <button type="button" onclick="login()" class="w-full bg-blue-900 text-white font-bold py-3 rounded-lg hover:bg-blue-800 shadow-lg">ACCEDER</button>
+                    <button type="button" onclick="register()" class="w-full border-2 border-blue-900 text-blue-900 font-bold py-3 rounded-lg hover:bg-blue-50">CREAR CUENTA NUEVA</button>
+                </div>
             </form>
-
-            <div class="mt-6 text-center">
-                <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidó su contraseña?</a>
-            </div>
+            <p id="msg" class="mt-4 text-center text-sm font-medium"></p>
         </div>
     </div>
 
     <script>
-        function selectRole(role, element) {
-            // Cambiar título
-            document.getElementById('role-title').innerText = 'Ingreso: ' + role;
-            
-            // Quitar clase activa de todos
-            document.querySelectorAll('.role-card').forEach(card => {
-                card.classList.remove('active-role');
-            });
-            
-            // Agregar clase activa al seleccionado
-            element.classList.add('active-role');
+        let currentRole = 'Estudiante';
+
+        function setRole(role, el) {
+            currentRole = role;
+            document.getElementById('formTitle').innerText = 'Ingreso: ' + role;
+            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
         }
 
-        function handleLogin(e) {
-            e.preventDefault();
-            alert('¡Simulación de inicio de sesión exitosa!');
-            // Aquí podrías redirigir a otra página: window.location.href = "dashboard.html";
+        function register() {
+            const user = document.getElementById('userInput').value;
+            const pass = document.getElementById('passInput').value;
+            if(!user || !pass) return alert("Completa los datos");
+
+            const userData = { user, pass, role: currentRole };
+            localStorage.setItem(user, JSON.stringify(userData));
+            
+            document.getElementById('msg').innerText = "✅ Usuario " + user + " creado como " + currentRole;
+            document.getElementById('msg').className = "mt-4 text-center text-sm font-medium text-green-600";
+        }
+
+        function login() {
+            const user = document.getElementById('userInput').value;
+            const pass = document.getElementById('passInput').value;
+            const storedData = localStorage.getItem(user);
+
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                if (data.pass === pass && data.role === currentRole) {
+                    sessionStorage.setItem('activeUser', JSON.stringify(data));
+                    window.location.href = 'dashboard.html';
+                } else {
+                    showError("Contraseña incorrecta o rol equivocado");
+                }
+            } else {
+                showError("El usuario no existe");
+            }
+        }
+
+        function showError(text) {
+            const m = document.getElementById('msg');
+            m.innerText = "❌ " + text;
+            m.className = "mt-4 text-center text-sm font-medium text-red-600";
         }
     </script>
 </body>
