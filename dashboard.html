@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v14.0 | Sistema Unificado Final</title>
+    <title>Integra Pro v15.0 | Sistema Unificado Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,18 +34,18 @@
             <h1 class="text-xl font-black italic uppercase tracking-tighter">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase">v14.0 Stable</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase">v15.0 - Funcionamiento Garantizado</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
         <header class="bg-white p-4 shadow-sm flex justify-between items-center px-8 border-b-2 border-orange-500">
-            <h2 id="view-title" class="text-lg font-black text-gray-800 uppercase italic">Panel Principal</h2>
+            <h2 id="view-title" class="text-lg font-black text-gray-800 uppercase italic">Cargando...</h2>
             <div class="flex items-center gap-4 text-right">
                 <div>
                     <p id="navFullName" class="font-bold text-gray-900 leading-none text-base"></p>
                     <p id="navRole" class="text-[10px] uppercase text-orange-600 font-black mt-1"></p>
                 </div>
-                <button onclick="logout()" class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center hover:bg-red-600 transition">
+                <button onclick="logout()" class="w-10 h-10 bg-red-50 text-red-600 rounded-full flex items-center justify-center hover:bg-red-600 transition shadow-sm">
                     <i class="fas fa-power-off"></i>
                 </button>
             </div>
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
-                        <h3 class="font-black text-xs uppercase mb-4 text-blue-600 border-b pb-2">Vincular Estudiantes</h3>
+                        <h3 class="font-black text-xs uppercase mb-4 text-blue-600 border-b pb-2">Gestión de Matrículas</h3>
                         <div class="space-y-4">
                             <div class="flex gap-2">
                                 <input type="text" id="adm_m_name" placeholder="Nombre Materia" class="flex-1 p-3 border rounded-xl text-xs">
@@ -80,7 +80,7 @@
                             <div class="p-4 bg-blue-50 rounded-2xl flex gap-2">
                                 <select id="sel_dest_mat" class="flex-1 p-2 border rounded-lg text-[10px] font-bold"></select>
                                 <select id="sel_dest_user" class="flex-1 p-2 border rounded-lg text-[10px]"></select>
-                                <button onclick="matricularAction()" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase">Vincular</button>
+                                <button onclick="matricularAction()" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase shadow-md">Vincular</button>
                             </div>
                         </div>
                     </div>
@@ -92,16 +92,16 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Notas</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Rúbrica</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
-                        <h4 class="font-black text-[10px] uppercase mb-4 italic">Rúbrica de Colores</h4>
+                        <h4 class="font-black text-[10px] uppercase mb-4">Rúbrica de Colores (10-50)</h4>
                         <div class="grid grid-cols-3 gap-6">
-                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Alto (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Básico (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Alto (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
                     <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Sincronizar Todo</button>
@@ -112,24 +112,22 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acción</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
             </div>
 
-            <div id="view-estudiante-main" class="tab-content space-y-4">
+            <div id="view-estudiante-main" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
                         <h3 class="font-black text-indigo-900 text-lg uppercase italic">Consulta de Boletín</h3>
-                        <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase">Detalle vertical de notas y descripciones</p>
+                        <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase">Selecciona el periodo para ver el detalle vertical</p>
                     </div>
-                    <button onclick="abrirSelectorPeriodoGlobal()" class="bg-orange-500 text-white px-10 py-3 rounded-2xl font-black text-[10px] uppercase shadow-lg hover:bg-orange-600 transition">
-                        Elegir Periodo
-                    </button>
+                    <button onclick="abrirSelectorPeriodoTotal()" class="bg-orange-500 text-white px-10 py-3 rounded-2xl font-black text-[10px] uppercase shadow-lg">Elegir Periodo</button>
                 </div>
-                <div id="boletin_container" class="space-y-4"></div>
+                <div id="boletin_container" class="mt-8 space-y-4"></div>
             </div>
         </div>
     </main>
@@ -164,7 +162,7 @@
             </div>
             <div class="p-4 bg-gray-50 border-t flex justify-between items-center px-10">
                 <span id="lock_msg" class="text-[10px] font-black uppercase italic tracking-widest"></span>
-                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl">Guardar Cambios</button>
+                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl">Guardar Calificaciones</button>
             </div>
         </div>
     </div>
@@ -202,7 +200,7 @@
             const nav = document.getElementById('menu-nav');
             let h = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-home mr-3 text-orange-500"></i> Dashboard</button>`;
             if(sesion.role === 'Administrativo') {
-                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-users-cog mr-3 text-blue-400"></i> Usuarios</button>
+                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-users mr-3 text-blue-400"></i> Usuarios</button>
                       <button onclick="showView('admin-config')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-cog mr-3 text-indigo-400"></i> Configuración</button>`;
             } else if(sesion.role === 'Docente') {
                 h += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-edit mr-3 text-emerald-400"></i> Calificar</button>`;
@@ -234,7 +232,7 @@
             return "nota-green";
         }
 
-        // --- ADMIN LOGIC ---
+        // --- ADMIN ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
                 <div class="flex justify-between items-center p-3 hover:bg-gray-50 border-b">
@@ -251,44 +249,44 @@
             db_users[u] = {user:u, pass:p, fullname:n, role:r}; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin();
         }
         function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
-        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
+        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'09-1'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function matricularAction() {
             const m = db_mats.find(x => x.id == document.getElementById('sel_dest_mat').value);
             const u = db_users[document.getElementById('sel_dest_user').value];
             if(u.role === 'Docente') m.docente = u.user; else if(!m.alumnos.includes(u.user)) m.alumnos.push(u.user);
-            localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculado correctamente"); loadAdmin();
+            localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
-        // --- DOCENTE LOGIC ---
-        function loadDocente() {
-            const mis = db_mats.filter(m => m.docente === sesion.user);
-            document.getElementById('docente_table_body').innerHTML = mis.map(m => `
-                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo || 'S/G'}</td>
-                <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
-                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodoGlobal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
-        }
-
-        // --- SELECTOR GLOBAL DE PERIODOS ---
-        function abrirSelectorPeriodoGlobal(mid = null) {
+        // --- SELECTOR PERIODOS ---
+        function abrirSelectorPeriodoTotal(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
-                <div onclick="ejecutarAccionPeriodo(${p})" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
+                <div onclick="lanzarAccionPeriodo(${p})" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
                     <span class="font-black text-xs uppercase text-gray-400 group-hover:text-orange-600">Periodo Académico ${p}</span>
                     <i class="fas fa-arrow-right text-gray-300 group-hover:text-orange-600"></i>
                 </div>`).join('');
         }
 
-        function ejecutarAccionPeriodo(p) {
-            if(sesion.role === 'Estudiante') { renderBoletinVertical(p); }
-            else { abrirPlanilla(p); }
+        function lanzarAccionPeriodo(p) {
+            if(sesion.role === 'Estudiante') renderBoletinVertical(p);
+            else abrirPlanilla(p);
+        }
+
+        // --- DOCENTE ---
+        function loadDocente() {
+            const mis = db_mats.filter(m => m.docente === sesion.user);
+            document.getElementById('docente_table_body').innerHTML = mis.map(m => `
+                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo || 'S/G'}</td>
+                <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
+                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodoTotal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">PLANILLA</button></td></tr>`).join('');
         }
 
         function abrirPlanilla(p) {
             curPer = p; closeModal('modal_periodos'); openModal('modal_planilla');
             checkLock(db_conf.periodos[p].start, db_conf.periodos[p].end);
             document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | P${p}`;
-            document.getElementById('period_dates_info').innerHTML = `<span><i class="fas fa-calendar mr-1"></i> Inicio: ${db_conf.periodos[p].start || 'S/D'}</span> <span><i class="fas fa-clock mr-1"></i> Cierre: ${db_conf.periodos[p].end || 'S/D'}</span>`;
+            document.getElementById('period_dates_info').innerHTML = `<span><i class="fas fa-calendar mr-1"></i> Inicio: ${db_conf.periodos[p].start || 'S/D'}</span> <span><i class="fas fa-clock mr-1"></i> Fin: ${db_conf.periodos[p].end || 'S/D'}</span>`;
             
             let h1 = `<tr class="bg-slate-800 text-white text-[9px] uppercase"><th rowspan="2" class="p-3 border border-white/10 text-left">Estudiante</th>`;
             let h2 = `<tr class="bg-gray-100 text-[8px] font-black uppercase text-gray-500">`;
@@ -319,7 +317,7 @@
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
             const cont = document.getElementById('boletin_container');
-            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-20 uppercase tracking-widest'>Sin asignaturas</p>";
+            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-30 uppercase tracking-widest'>Sin materias asignadas</p>";
             
             cont.innerHTML = mis.map(m => {
                 const key = `${m.id}_${p}_${sesion.user}`; const n = db_notas[key] || {};
@@ -345,19 +343,14 @@
                     det += `<div class="mb-4 bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
                                 <div class="p-3 text-white font-black text-[10px] uppercase italic" style="background:${it.color}">${it.name} (${it.weight}%)</div>
                                 ${rowList}
-                                <div class="p-2 bg-white text-right font-black text-[9px] border-t">Subtotal: ${prom.toFixed(1)}</div>
+                                <div class="p-2 bg-white text-right font-black text-[9px] border-t">Sub: ${prom.toFixed(1)}</div>
                             </div>`;
                 });
                 return `<div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <div class="p-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition" onclick="document.getElementById('det_${m.id}').classList.toggle('open')">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book-open"></i></div>
-                            <div><h4 class="font-black text-gray-800 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Periodo ${p}</p></div>
-                        </div>
-                        <div class="text-right">
-                            <span class="block text-[8px] font-black text-gray-300 uppercase">Definitiva</span>
-                            <span class="text-3xl font-black ${getNotaColor(defFinal)}">${defFinal.toFixed(1)}</span>
-                        </div>
+                        <div class="flex items-center gap-4"><div class="w-12 h-12 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book-open"></i></div>
+                        <div><h4 class="font-black text-gray-800 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Periodo ${p}</p></div></div>
+                        <div class="text-right"><span class="block text-[8px] font-black text-gray-300 uppercase">Definitiva</span><span class="text-3xl font-black ${getNotaColor(defFinal)}">${defFinal.toFixed(1)}</span></div>
                     </div>
                     <div id="det_${m.id}" class="accordion-content bg-white p-4">${det}</div>
                 </div>`;
@@ -372,9 +365,9 @@
             if(!start || !end) { isLocked = true; disp.innerHTML = "BLOQUEADO: SIN FECHAS"; btn.style.display = 'none'; return; }
             const up = () => {
                 const cur = new Date().getTime();
-                if(cur < sDate) { isLocked = true; disp.innerHTML = "BLOQUEADO: NO INICIADO"; btn.style.display = 'none'; lmsg.innerText = "ACCESO BLOQUEADO HASTA INICIO"; lmsg.className="text-orange-500 font-black italic tracking-widest"; }
-                else if(cur > eDate) { isLocked = true; disp.innerHTML = "SISTEMA CERRADO"; btn.style.display = 'none'; lmsg.innerText = "SOLO LECTURA"; lmsg.className="text-red-500 font-black italic tracking-widest"; clearInterval(timerInterval); }
-                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA HABILITADO"; lmsg.className="text-emerald-500 font-black italic tracking-widest";
+                if(cur < sDate) { isLocked = true; disp.innerHTML = "BLOQUEADO: NO INICIADO"; btn.style.display = 'none'; lmsg.innerText = "ACCESO BLOQUEADO HASTA INICIO"; lmsg.className="text-orange-500 font-black italic tracking-widest uppercase"; }
+                else if(cur > eDate) { isLocked = true; disp.innerHTML = "SISTEMA CERRADO"; btn.style.display = 'none'; lmsg.innerText = "PERIODO FINALIZADO: SOLO LECTURA"; lmsg.className="text-red-500 font-black italic tracking-widest uppercase"; clearInterval(timerInterval); }
+                else { isLocked = false; btn.style.display = 'block'; lmsg.innerText = "SISTEMA ABIERTO PARA CALIFICAR"; lmsg.className="text-emerald-500 font-black italic tracking-widest uppercase";
                     const diff = eDate - cur; const d = Math.floor(diff/(1000*60*60*24)), h = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), m = Math.floor((diff%(1000*60*60))/(1000*60)), s = Math.floor((diff%(1000*60))/1000);
                     disp.innerHTML = `CIERRE EN: ${d}d ${h}h ${m}m ${s}s`;
                 }
