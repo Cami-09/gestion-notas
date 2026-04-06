@@ -3,79 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control | Integra</title>
+    <title>Panel Administrativo | Integra</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .admin-gradient { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card-hover:hover { transform: translateY(-3px); transition: all 0.3s; }
+    </style>
 </head>
-<body class="bg-gray-100 flex h-screen">
+<body class="bg-gray-100 flex h-screen overflow-hidden">
 
-    <aside class="w-64 bg-blue-900 text-white hidden md:flex flex-col">
-        <div class="p-6 border-b border-blue-800 text-center font-bold text-xl uppercase tracking-widest">Integra</div>
-        <nav class="mt-4 flex-1">
-            <a href="#" class="block px-6 py-3 bg-blue-800 border-l-4 border-orange-400"><i class="fas fa-home mr-3"></i> Menú Principal</a>
-            <a href="#" class="block px-6 py-3 hover:bg-blue-800 transition"><i class="fas fa-file-alt mr-3"></i> Mis Notas</a>
-            <a href="#" class="block px-6 py-3 hover:bg-blue-800 transition"><i class="fas fa-calendar mr-3"></i> Horarios</a>
+    <aside class="w-64 admin-gradient text-white flex flex-col shadow-xl">
+        <div class="p-6 border-b border-blue-400/30 text-center">
+            <h1 class="text-2xl font-black tracking-tighter">INTEGRA <span class="text-orange-400">ADMIN</span></h1>
+        </div>
+        <nav class="mt-6 flex-1 px-4 space-y-2">
+            <button onclick="showTab('usuarios')" class="w-full flex items-center p-3 rounded-lg hover:bg-white/10 transition"><i class="fas fa-users-cog mr-3"></i> Gestión Usuarios</button>
+            <button onclick="showTab('config')" class="w-full flex items-center p-3 rounded-lg hover:bg-white/10 transition"><i class="fas fa-calendar-check mr-3"></i> Plazos y Fechas</button>
+            <button onclick="showTab('notas')" class="w-full flex items-center p-3 rounded-lg hover:bg-white/10 transition"><i class="fas fa-edit mr-3"></i> Control de Notas</button>
         </nav>
-        <button onclick="logout()" class="p-4 bg-red-800 hover:bg-red-700 text-sm font-bold"><i class="fas fa-power-off mr-2"></i> SALIR</button>
+        <div class="p-4 border-t border-blue-400/30">
+            <button onclick="window.location.href='index.html'" class="w-full bg-red-500 hover:bg-red-600 p-2 rounded font-bold text-sm">CERRAR SESIÓN</button>
+        </div>
     </aside>
 
-    <main class="flex-1 flex flex-col">
-        <header class="bg-white shadow px-8 py-4 flex justify-between items-center border-b-2 border-orange-400">
-            <h2 class="text-blue-900 font-bold uppercase tracking-tight">Institución Educativa Luis Carlos Galán</h2>
-            <div class="flex items-center gap-4">
-                <div class="text-right">
-                    <p id="userNameDisplay" class="font-bold text-gray-800 leading-none"></p>
-                    <span id="userRoleDisplay" class="text-xs text-blue-600 font-bold uppercase"></span>
-                </div>
-                <div class="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center text-white font-bold" id="userInitial"></div>
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <header class="bg-white p-4 shadow-md flex justify-between items-center px-8">
+            <h2 id="tabTitle" class="text-xl font-bold text-gray-700 uppercase">Gestión de Usuarios</h2>
+            <div class="flex items-center gap-3">
+                <span class="bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-0.5 rounded">MODO ADMINISTRADOR</span>
+                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">A</div>
             </div>
         </header>
 
-        <section class="p-8 overflow-y-auto">
-            <div class="bg-blue-50 border-l-4 border-blue-800 p-6 rounded-lg mb-8">
-                <h1 class="text-2xl font-bold text-blue-900 italic">¡Bienvenido al sistema de gestión académica!</h1>
-                <p class="text-gray-600">Aquí podrás consultar tus calificaciones, inasistencias y circulares informativas.</p>
+        <div class="p-8">
+            <div id="tab-usuarios" class="tab-content">
+                <div class="bg-white p-6 rounded-xl shadow-sm mb-6 border-t-4 border-blue-600">
+                    <h3 class="text-lg font-bold mb-4"><i class="fas fa-user-plus mr-2"></i> Crear Nuevo Usuario</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="new_user" placeholder="Nombre de usuario" class="p-2 border rounded">
+                        <input type="password" id="new_pass" placeholder="Contraseña" class="p-2 border rounded">
+                        <select id="new_role" class="p-2 border rounded">
+                            <option value="Estudiante">Estudiante</option>
+                            <option value="Docente">Docente</option>
+                            <option value="Padre">Padre</option>
+                            <option value="Administrativo">Administrativo</option>
+                        </select>
+                        <button onclick="adminCreateUser()" class="bg-blue-600 text-white font-bold rounded hover:bg-blue-700">GUARDAR</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Usuario</th>
+                                <th class="p-4">Rol</th>
+                                <th class="p-4">Estado</th>
+                                <th class="p-4">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userList">
+                            </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="dashboardContent">
+            <div id="tab-config" class="tab-content hidden">
+                <div class="max-w-2xl bg-white p-8 rounded-xl shadow-sm border-t-4 border-orange-500">
+                    <h3 class="text-xl font-bold mb-6">Configuración de Plazos Académicos</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-600">INICIO CARGUE DE NOTAS (1° PERIODO)</label>
+                            <input type="date" id="date_start" class="w-full p-2 border rounded mt-1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-600">CIERRE SISTEMA DE NOTAS</label>
+                            <input type="date" id="date_end" class="w-full p-2 border rounded mt-1">
+                        </div>
+                        <button onclick="saveDates()" class="w-full bg-orange-500 text-white font-bold py-3 rounded hover:bg-orange-600">ACTUALIZAR CALENDARIO</button>
+                    </div>
                 </div>
-        </section>
+            </div>
+
+            <div id="tab-notas" class="tab-content hidden">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-4">Parámetros de Calificación</h3>
+                    <p class="text-gray-500 mb-6">Agregue los ítems que los docentes podrán evaluar.</p>
+                    <div class="flex gap-2 mb-6">
+                        <input type="text" id="item_name" placeholder="Ej: Examen Final" class="flex-1 p-2 border rounded">
+                        <input type="number" id="item_percent" placeholder="%" class="w-20 p-2 border rounded">
+                        <button onclick="addItem()" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700">+ AGREGAR</button>
+                    </div>
+                    <ul id="itemList" class="space-y-2">
+                        </ul>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
-        // SEGURIDAD: SI NO HAY SESION, REGRESAR AL LOGIN
-        const user = JSON.parse(sessionStorage.getItem('activeUser'));
-        if(!user) { window.location.href = 'index.html'; }
-
-        // Mostrar datos en el Header
-        document.getElementById('userNameDisplay').innerText = user.user;
-        document.getElementById('userRoleDisplay').innerText = user.role;
-        document.getElementById('userInitial').innerText = user.user[0].toUpperCase();
-
-        function logout() {
-            sessionStorage.clear();
-            window.location.href = 'index.html';
+        // Lógica de pestañas
+        function showTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            document.getElementById('tabTitle').innerText = 'Gestión de ' + tab;
         }
 
-        // Simular contenido según rol
-        const content = document.getElementById('dashboardContent');
-        if(user.role === 'Estudiante') {
-            content.innerHTML = `
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <i class="fas fa-star text-orange-500 text-3xl mb-4"></i>
-                    <h3 class="font-bold">Promedio 1° Periodo</h3>
-                    <p class="text-4xl font-black text-blue-900">4.8</p>
-                </div>
-            `;
-        } else if(user.role === 'Docente') {
-            content.innerHTML = `
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                    <i class="fas fa-users text-green-500 text-3xl mb-4"></i>
-                    <h3 class="font-bold">Grupos Asignados</h3>
-                    <p class="text-4xl font-black text-blue-900">8</p>
-                </div>
-            `;
+        // Crear usuario desde el panel
+        function adminCreateUser() {
+            const user = document.getElementById('new_user').value;
+            const pass = document.getElementById('new_pass').value;
+            const role = document.getElementById('new_role').value;
+
+            if(!user || !pass) return alert("Completa los campos");
+
+            const userData = { user, pass, role };
+            localStorage.setItem(user, JSON.stringify(userData));
+            alert("Usuario " + user + " creado correctamente");
+            loadUsers();
         }
+
+        // Cargar lista de usuarios
+        function loadUsers() {
+            const list = document.getElementById('userList');
+            list.innerHTML = "";
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const data = JSON.parse(localStorage.getItem(key));
+                if(data.user) {
+                    list.innerHTML += `
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-4 font-bold text-blue-900">${data.user}</td>
+                            <td class="p-4"><span class="px-2 py-1 bg-gray-200 rounded text-xs">${data.role}</span></td>
+                            <td class="p-4 text-green-600 font-bold text-xs">ACTIVO</td>
+                            <td class="p-4">
+                                <button onclick="deleteUser('${data.user}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+
+        function deleteUser(username) {
+            if(confirm("¿Seguro que quieres eliminar a " + username + "?")) {
+                localStorage.removeItem(username);
+                loadUsers();
+            }
+        }
+
+        // Fechas
+        function saveDates() {
+            const start = document.getElementById('date_start').value;
+            const end = document.getElementById('date_end').value;
+            localStorage.setItem('plazos_notas', JSON.stringify({start, end}));
+            alert("Plazos actualizados. El sistema se cerrará el " + end);
+        }
+
+        // Items de Notas
+        function addItem() {
+            const name = document.getElementById('item_name').value;
+            const pct = document.getElementById('item_percent').value;
+            if(!name || !pct) return;
+            
+            const li = document.createElement('li');
+            li.className = "flex justify-between bg-gray-50 p-3 border rounded items-center";
+            li.innerHTML = `<span><strong>${name}</strong> (${pct}%)</span> <button class="text-red-400" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>`;
+            document.getElementById('itemList').appendChild(li);
+        }
+
+        // Cargar datos al iniciar
+        window.onload = loadUsers;
     </script>
 </body>
 </html>
