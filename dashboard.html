@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v15.0 | Sistema Unificado Final</title>
+    <title>Integra Pro v16.0 | Sistema Académico Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,12 +34,12 @@
             <h1 class="text-xl font-black italic uppercase tracking-tighter">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase">v15.0 - Funcionamiento Garantizado</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase">v16.0 Full Uncut</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
         <header class="bg-white p-4 shadow-sm flex justify-between items-center px-8 border-b-2 border-orange-500">
-            <h2 id="view-title" class="text-lg font-black text-gray-800 uppercase italic">Cargando...</h2>
+            <h2 id="view-title" class="text-lg font-black text-gray-800 uppercase italic">Panel de Control</h2>
             <div class="flex items-center gap-4 text-right">
                 <div>
                     <p id="navFullName" class="font-bold text-gray-900 leading-none text-base"></p>
@@ -67,20 +67,20 @@
                                 <option value="Administrativo">Administrativo</option>
                             </select>
                         </div>
-                        <button onclick="saveUser()" class="w-full mt-4 bg-gray-800 text-white py-3 rounded-2xl font-black text-[10px] uppercase shadow-lg">Crear Cuenta</button>
+                        <button onclick="saveUser()" class="w-full mt-4 bg-gray-800 text-white py-3 rounded-2xl font-black text-[10px] uppercase">Crear Usuario</button>
                     </div>
 
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
                         <h3 class="font-black text-xs uppercase mb-4 text-blue-600 border-b pb-2">Gestión de Matrículas</h3>
                         <div class="space-y-4">
                             <div class="flex gap-2">
-                                <input type="text" id="adm_m_name" placeholder="Nombre Materia" class="flex-1 p-3 border rounded-xl text-xs">
+                                <input type="text" id="adm_m_name" placeholder="Nueva Asignatura" class="flex-1 p-3 border rounded-xl text-xs">
                                 <button onclick="saveMateria()" class="bg-blue-600 text-white px-6 rounded-xl font-black text-[10px] uppercase">Crear</button>
                             </div>
                             <div class="p-4 bg-blue-50 rounded-2xl flex gap-2">
                                 <select id="sel_dest_mat" class="flex-1 p-2 border rounded-lg text-[10px] font-bold"></select>
                                 <select id="sel_dest_user" class="flex-1 p-2 border rounded-lg text-[10px]"></select>
-                                <button onclick="matricularAction()" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase shadow-md">Vincular</button>
+                                <button onclick="matricularAction()" class="bg-orange-500 text-white px-4 py-2 rounded-lg font-black text-[10px] uppercase">Vincular</button>
                             </div>
                         </div>
                     </div>
@@ -92,19 +92,19 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Rúbrica</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración Global</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
                         <h4 class="font-black text-[10px] uppercase mb-4">Rúbrica de Colores (10-50)</h4>
                         <div class="grid grid-cols-3 gap-6">
-                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Básico (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Alto (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Básico (Naranja)</label><input type="number" id="rub_basico" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Sincronizar Todo</button>
+                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Cambios</button>
                 </div>
             </div>
 
@@ -119,15 +119,17 @@
                 </div>
             </div>
 
-            <div id="view-estudiante-main" class="tab-content">
+            <div id="view-estudiante-main" class="tab-content space-y-4">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
-                        <h3 class="font-black text-indigo-900 text-lg uppercase italic">Consulta de Boletín</h3>
-                        <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase">Selecciona el periodo para ver el detalle vertical</p>
+                        <h3 class="font-black text-indigo-900 text-lg uppercase italic">Consulta de Notas</h3>
+                        <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase">Selector de periodo para vista vertical</p>
                     </div>
-                    <button onclick="abrirSelectorPeriodoTotal()" class="bg-orange-500 text-white px-10 py-3 rounded-2xl font-black text-[10px] uppercase shadow-lg">Elegir Periodo</button>
+                    <button onclick="abrirSelectorUniversal()" class="bg-orange-500 text-white px-10 py-3 rounded-2xl font-black text-[10px] uppercase shadow-lg">
+                        Ver Boletín
+                    </button>
                 </div>
-                <div id="boletin_container" class="mt-8 space-y-4"></div>
+                <div id="boletin_container" class="space-y-4"></div>
             </div>
         </div>
     </main>
@@ -135,7 +137,7 @@
     <div id="modal_periodos" class="modal">
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
-                <span class="font-black uppercase text-[10px] italic">Selector Académico</span>
+                <span class="font-black uppercase text-[10px] italic">Elegir Periodo Académico</span>
                 <button onclick="closeModal('modal_periodos')" class="text-2xl">&times;</button>
             </div>
             <div id="period_list_container" class="p-8 space-y-4"></div>
@@ -144,7 +146,7 @@
 
     <div id="modal_planilla" class="modal">
         <div class="bg-white w-full h-full rounded-2xl shadow-2xl overflow-hidden flex flex-col">
-            <div class="p-4 bg-emerald-700 text-white shadow-lg">
+            <div class="p-4 bg-emerald-700 text-white">
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex items-center gap-4">
                         <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg hover:bg-white/40 transition"><i class="fas fa-arrow-left"></i></button>
@@ -168,7 +170,7 @@
     </div>
 
     <script>
-        // --- DATA SYSTEM ---
+        // --- BASE DE DATOS Y CONFIGURACIÓN ---
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
@@ -198,12 +200,12 @@
 
         function renderMenu() {
             const nav = document.getElementById('menu-nav');
-            let h = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-home mr-3 text-orange-500"></i> Dashboard</button>`;
+            let h = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-home mr-3 text-orange-500"></i> Mi Dashboard</button>`;
             if(sesion.role === 'Administrativo') {
-                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-users mr-3 text-blue-400"></i> Usuarios</button>
+                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-users-cog mr-3 text-blue-400"></i> Usuarios / Materias</button>
                       <button onclick="showView('admin-config')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-cog mr-3 text-indigo-400"></i> Configuración</button>`;
             } else if(sesion.role === 'Docente') {
-                h += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-edit mr-3 text-emerald-400"></i> Calificar</button>`;
+                h += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-edit mr-3 text-emerald-400"></i> Mis Asignaturas</button>`;
             } else {
                 h += `<button onclick="showView('estudiante-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-bold text-[10px] uppercase italic transition"><i class="fas fa-medal mr-3 text-indigo-400"></i> Mis Notas</button>`;
             }
@@ -232,10 +234,10 @@
             return "nota-green";
         }
 
-        // --- ADMIN ---
+        // --- GESTIÓN ADMIN ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
-                <div class="flex justify-between items-center p-3 hover:bg-gray-50 border-b">
+                <div class="flex justify-between items-center p-3 hover:bg-gray-50 transition border-b">
                     <div><b>${u.fullname}</b><p class="text-[9px] uppercase text-gray-400">${u.role} | @${u.user}</p></div>
                     <button onclick="deleteUser('${u.user}')" class="text-red-300 hover:text-red-600"><i class="fas fa-trash-alt"></i></button>
                 </div>`).join('');
@@ -249,37 +251,37 @@
             db_users[u] = {user:u, pass:p, fullname:n, role:r}; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin();
         }
         function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
-        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'09-1'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
+        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01-A'}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function matricularAction() {
             const m = db_mats.find(x => x.id == document.getElementById('sel_dest_mat').value);
             const u = db_users[document.getElementById('sel_dest_user').value];
             if(u.role === 'Docente') m.docente = u.user; else if(!m.alumnos.includes(u.user)) m.alumnos.push(u.user);
-            localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
+            localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación Exitosa"); loadAdmin();
         }
 
-        // --- SELECTOR PERIODOS ---
-        function abrirSelectorPeriodoTotal(mid = null) {
+        // --- GESTIÓN SELECTOR PERIODOS ---
+        function abrirSelectorUniversal(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
-                <div onclick="lanzarAccionPeriodo(${p})" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
-                    <span class="font-black text-xs uppercase text-gray-400 group-hover:text-orange-600">Periodo Académico ${p}</span>
-                    <i class="fas fa-arrow-right text-gray-300 group-hover:text-orange-600"></i>
+                <div onclick="accionPeriodo(${p})" class="bg-gray-50 border-2 p-5 rounded-3xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition group shadow-sm">
+                    <span class="font-black text-xs uppercase text-gray-400 group-hover:text-orange-600 italic">Periodo Académico ${p}</span>
+                    <i class="fas fa-chevron-right text-gray-300 group-hover:text-orange-600"></i>
                 </div>`).join('');
         }
 
-        function lanzarAccionPeriodo(p) {
+        function accionPeriodo(p) {
             if(sesion.role === 'Estudiante') renderBoletinVertical(p);
             else abrirPlanilla(p);
         }
 
-        // --- DOCENTE ---
+        // --- GESTIÓN DOCENTE ---
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
             document.getElementById('docente_table_body').innerHTML = mis.map(m => `
-                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo || 'S/G'}</td>
+                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">${m.grupo}</td>
                 <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
-                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodoTotal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">PLANILLA</button></td></tr>`).join('');
+                <td class="p-5 text-center"><button onclick="abrirSelectorUniversal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
         }
 
         function abrirPlanilla(p) {
@@ -291,7 +293,7 @@
             let h1 = `<tr class="bg-slate-800 text-white text-[9px] uppercase"><th rowspan="2" class="p-3 border border-white/10 text-left">Estudiante</th>`;
             let h2 = `<tr class="bg-gray-100 text-[8px] font-black uppercase text-gray-500">`;
             db_conf.items.forEach(it => {
-                h1 += `<th colspan="${it.count * 2}" class="border border-white/10 p-1" style="background:${it.color}">${it.name} (${it.weight}%)</th>`;
+                h1 += `<th colspan="${it.count * 2}" class="border border-white/10 p-1" style="background:${it.color}">${it.name}</th>`;
                 for(let i=1; i<=it.count; i++) h2 += `<th class="border p-1">N${i}</th><th class="border p-1 bg-gray-50">Desc</th>`;
             });
             h1 += `<th rowspan="2" class="bg-orange-500 border border-white/10 px-3">DEF</th></tr>`;
@@ -307,17 +309,17 @@
                                   <td class="border p-1 bg-gray-50"><input type="text" placeholder="..." class="input-desc" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${d}" ${isLocked?'disabled':''}></td>`;
                     }
                 });
-                return `<tr class="hover:bg-gray-50"><td class="p-3 font-bold border uppercase bg-white">${est.fullname}</td>${cells}<td class="font-black text-center border text-sm" id="def_${uid}">--</td></tr>`;
+                return `<tr><td class="p-3 font-bold border uppercase bg-white">${est.fullname}</td>${cells}<td class="font-black text-center border text-sm" id="def_${uid}">--</td></tr>`;
             }).join('');
             calc();
         }
 
-        // --- ESTUDIANTE VERTICAL ---
+        // --- GESTIÓN ESTUDIANTE VERTICAL ---
         function renderBoletinVertical(p) {
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
             const cont = document.getElementById('boletin_container');
-            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-30 uppercase tracking-widest'>Sin materias asignadas</p>";
+            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-20 uppercase'>Sin materias asignadas</p>";
             
             cont.innerHTML = mis.map(m => {
                 const key = `${m.id}_${p}_${sesion.user}`; const n = db_notas[key] || {};
@@ -330,20 +332,15 @@
                         rowList += `
                             <div class="flex gap-4 p-4 bg-white border-b last:border-0 items-center">
                                 <div class="w-14 h-14 bg-gray-50 border-2 rounded-2xl flex flex-col items-center justify-center font-black">
-                                    <span class="text-[7px] text-gray-400 uppercase">Nota ${i+1}</span>
-                                    <span class="text-xl ${getNotaColor(v)}">${v || '--'}</span>
+                                    <span class="text-[7px] text-gray-400">NOTA ${i+1}</span><span class="text-xl ${getNotaColor(v)}">${v || '--'}</span>
                                 </div>
-                                <div class="flex-1">
-                                    <p class="text-[9px] font-black uppercase tracking-widest" style="color:${it.color}">${it.name}</p>
-                                    <p class="text-xs text-gray-500 italic mt-1">"${d}"</p>
-                                </div>
+                                <div class="flex-1"><p class="text-[9px] font-black uppercase tracking-widest" style="color:${it.color}">${it.name}</p><p class="text-xs text-gray-500 italic mt-1">"${d}"</p></div>
                             </div>`;
                     }
                     const prom = it.count > 0 ? (s/it.count) : 0; defFinal += prom * (it.weight/100);
                     det += `<div class="mb-4 bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden shadow-sm">
                                 <div class="p-3 text-white font-black text-[10px] uppercase italic" style="background:${it.color}">${it.name} (${it.weight}%)</div>
                                 ${rowList}
-                                <div class="p-2 bg-white text-right font-black text-[9px] border-t">Sub: ${prom.toFixed(1)}</div>
                             </div>`;
                 });
                 return `<div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
@@ -357,7 +354,7 @@
             }).join('');
         }
 
-        // --- CORE LOGIC ---
+        // --- LOGICA DE TIEMPO Y GUARDADO ---
         function checkLock(start, end) {
             const disp = document.getElementById('timer_display'); const btn = document.getElementById('save_btn'); const lmsg = document.getElementById('lock_msg');
             if(timerInterval) clearInterval(timerInterval);
