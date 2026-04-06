@@ -3,117 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión Académica | Plataforma</title>
+    <title>Acceso | Plataforma Educativa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .sidebar-item:hover { background-color: #2c5282; border-left: 4px solid #f6ad55; }
+        .role-card { transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
+        .role-card:hover { transform: translateY(-5px); border-color: #2b6cb0; background-color: #ebf8ff; }
+        .role-icon { width: 80px; height: 80px; display: flex; items-center: center; justify-content: center; border-radius: 50%; margin: 0 auto 10px; }
+        .active-role { border-color: #2b6cb0; background-color: #bee3f8; }
     </style>
 </head>
-<body class="bg-gray-100 flex h-screen overflow-hidden">
+<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4">
 
-    <aside class="w-64 bg-blue-900 text-white flex-shrink-0 flex flex-col">
-        <div class="p-6 text-center border-b border-blue-800">
-            <h1 class="text-xl font-bold uppercase tracking-wider">Institución Educativa</h1>
-            <p class="text-xs text-blue-300 mt-1">Portal del Estudiante</p>
-        </div>
+    <div class="bg-white shadow-2xl rounded-xl overflow-hidden max-w-4xl w-full flex flex-col md:flex-row">
         
-        <nav class="mt-5 flex-1">
-            <a href="#" class="sidebar-item flex items-center px-6 py-3 transition-all duration-200 bg-blue-800 border-left-4">
-                <i class="fas fa-home mr-3"></i> Inicio
-            </a>
-            <a href="#" class="sidebar-item flex items-center px-6 py-3 transition-all duration-200">
-                <i class="fas fa-user-graduate mr-3"></i> Mi Perfil
-            </a>
-            <a href="#" class="sidebar-item flex items-center px-6 py-3 transition-all duration-200">
-                <i class="fas fa-file-invoice mr-3"></i> Boletines
-            </a>
-            <a href="#" class="sidebar-item flex items-center px-6 py-3 transition-all duration-200">
-                <i class="fas fa-book mr-3"></i> Tareas y Actividades
-            </a>
-            <a href="#" class="sidebar-item flex items-center px-6 py-3 transition-all duration-200">
-                <i class="fas fa-calendar-alt mr-3"></i> Horario
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-blue-800 text-sm">
-            <button class="flex items-center text-red-300 hover:text-white">
-                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-            </button>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex flex-col overflow-y-auto">
-        
-        <header class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
-            <h2 class="text-xl font-semibold text-gray-700 italic">"Excelencia y Compromiso"</h2>
-            <div class="flex items-center space-x-4">
-                <span class="text-gray-600 font-medium">Estudiante: Juan Pérez</span>
-                <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5282&color=fff" class="w-10 h-10 rounded-full border-2 border-gray-200">
+        <div class="w-full md:w-1/2 p-8 bg-gray-50">
+            <div class="text-center mb-8">
+                <img src="https://e.plataformaintegra.net/luiscarlosgs/img/logo_colegio.png" alt="Logo" class="mx-auto h-20 mb-4 font-bold text-blue-800">
+                <h2 class="text-2xl font-bold text-blue-900 uppercase tracking-tighter">Plataforma Integra</h2>
+                <p class="text-gray-500 text-sm">Seleccione su perfil de ingreso</p>
             </div>
-        </header>
 
-        <section class="p-8">
+            <div class="grid grid-cols-2 gap-4">
+                <div onclick="selectRole('Estudiante', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200 active-role">
+                    <div class="role-icon bg-blue-100 text-blue-600"><i class="fas fa-user-graduate text-3xl"></i></div>
+                    <span class="font-bold text-sm">Estudiantes</span>
+                </div>
+                <div onclick="selectRole('Docente', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
+                    <div class="role-icon bg-green-100 text-green-600"><i class="fas fa-chalkboard-teacher text-3xl"></i></div>
+                    <span class="font-bold text-sm">Docentes</span>
+                </div>
+                <div onclick="selectRole('Padre de Familia', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
+                    <div class="role-icon bg-purple-100 text-purple-600"><i class="fas fa-users text-3xl"></i></div>
+                    <span class="font-bold text-sm">Padres</span>
+                </div>
+                <div onclick="selectRole('Administrativo', this)" class="role-card p-4 rounded-lg text-center bg-white shadow-sm border-gray-200">
+                    <div class="role-icon bg-orange-100 text-orange-600"><i class="fas fa-user-tie text-3xl"></i></div>
+                    <span class="font-bold text-sm">Administrativos</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full md:w-1/2 p-8 flex flex-col justify-center border-l border-gray-100">
             <div class="mb-6">
-                <h3 class="text-2xl font-bold text-gray-800">Calificaciones Recientes</h3>
-                <p class="text-gray-500">Periodo Académico: 2026 - Primer Semestre</p>
+                <h3 id="role-title" class="text-xl font-bold text-gray-800">Ingreso: Estudiante</h3>
+                <div class="h-1 w-16 bg-blue-600 mt-1"></div>
             </div>
 
-            <div class="bg-white rounded-lg shadow overflow-hidden">
-                <table class="min-w-full leading-normal">
-                    <thead>
-                        <tr class="bg-gray-50 border-b-2 border-gray-200 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                            <th class="px-5 py-3">Asignatura</th>
-                            <th class="px-5 py-3 text-center">Fallas</th>
-                            <th class="px-5 py-3 text-center">Nota 1</th>
-                            <th class="px-5 py-3 text-center">Nota 2</th>
-                            <th class="px-5 py-3 text-center">Final</th>
-                            <th class="px-5 py-3">Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-700">
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 font-medium">Matemáticas</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">0</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">4.5</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">4.0</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center font-bold">4.2</td>
-                            <td class="px-5 py-5 border-b border-gray-200">
-                                <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">Aprobado</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-5 border-b border-gray-200 font-medium">Lenguaje y Literatura</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">2</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">3.2</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center">2.8</td>
-                            <td class="px-5 py-5 border-b border-gray-200 text-center font-bold text-red-600">3.0</td>
-                            <td class="px-5 py-5 border-b border-gray-200">
-                                <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-bold">En Riesgo</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Usuario</label>
+                    <div class="relative mt-1">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" required class="pl-10 w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nombre de usuario">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <div class="relative mt-1">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" required class="pl-10 w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-700 text-white p-3 rounded-md font-bold hover:bg-blue-800 transition duration-300 shadow-lg">
+                    ENTRAR AL SISTEMA
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <a href="#" class="text-sm text-blue-600 hover:underline">¿Olvidó su contraseña?</a>
             </div>
+        </div>
+    </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded shadow-sm">
-                    <p class="text-sm text-blue-600 font-bold uppercase">Promedio General</p>
-                    <p class="text-3xl font-bold text-gray-800">3.6</p>
-                </div>
-                <div class="bg-orange-50 border-l-4 border-orange-500 p-4 rounded shadow-sm">
-                    <p class="text-sm text-orange-600 font-bold uppercase">Puesto en Grupo</p>
-                    <p class="text-3xl font-bold text-gray-800">12 / 35</p>
-                </div>
-                <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded shadow-sm">
-                    <p class="text-sm text-green-600 font-bold uppercase">Asistencia</p>
-                    <p class="text-3xl font-bold text-gray-800">98%</p>
-                </div>
-            </div>
-        </section>
+    <script>
+        function selectRole(role, element) {
+            // Cambiar título
+            document.getElementById('role-title').innerText = 'Ingreso: ' + role;
+            
+            // Quitar clase activa de todos
+            document.querySelectorAll('.role-card').forEach(card => {
+                card.classList.remove('active-role');
+            });
+            
+            // Agregar clase activa al seleccionado
+            element.classList.add('active-role');
+        }
 
-    </main>
-
+        function handleLogin(e) {
+            e.preventDefault();
+            alert('¡Simulación de inicio de sesión exitosa!');
+            // Aquí podrías redirigir a otra página: window.location.href = "dashboard.html";
+        }
+    </script>
 </body>
 </html>
