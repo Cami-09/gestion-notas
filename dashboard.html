@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v24.0 | Sistema Unificado Final</title>
+    <title>Integra Pro v25.0 | Sistema Unificado Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v24.0 Stable Build</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v25.0 Admin Control</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -105,14 +105,14 @@
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
-                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Límites de Rúbrica</h4>
+                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Configuración de Rúbrica</h4>
                         <div class="grid grid-cols-3 gap-6">
-                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Rojo hasta:</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Naranja hasta:</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Verde hasta:</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Cambios Globales</button>
+                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración</button>
                 </div>
             </div>
 
@@ -120,7 +120,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Alumnos</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -130,11 +130,11 @@
             <div id="view-estudiante-main" class="tab-content space-y-4">
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
-                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Mis Calificaciones</h3>
-                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Consulta detallada por periodo académico</p>
+                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Consulta de Notas</h3>
+                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Vista detallada vertical con descripciones</p>
                     </div>
-                    <button onclick="abrirSelectorUniversal()" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
-                        <i class="fas fa-eye mr-2"></i> Seleccionar Periodo
+                    <button onclick="abrirSelectorUniversal(null)" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
+                        <i class="fas fa-eye mr-2"></i> Ver Mis Notas
                     </button>
                 </div>
                 <div id="boletin_container" class="mt-8 space-y-4"></div>
@@ -145,7 +145,7 @@
     <div id="modal_periodos" class="modal">
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
-                <span class="font-black uppercase text-[10px] tracking-widest italic">Periodo Académico</span>
+                <span class="font-black uppercase text-[10px] tracking-widest italic">Seleccionar Periodo</span>
                 <button onclick="closeModal('modal_periodos')" class="text-2xl">&times;</button>
             </div>
             <div id="period_list_container" class="p-8 space-y-4"></div>
@@ -172,7 +172,7 @@
             </div>
             <div class="p-4 bg-gray-50 border-t flex justify-between items-center px-10">
                 <span id="lock_msg" class="text-[10px] font-black uppercase italic tracking-widest"></span>
-                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Sincronizar Planilla</button>
+                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -242,14 +242,17 @@
             return "nota-green";
         }
 
-        // --- ADMIN: USUARIOS ---
+        // --- ADMIN: USUARIOS Y MATERIAS ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${u.fullname}</b><p class="text-[9px] uppercase text-gray-400">${u.role} | @${u.user}</p></div>
                 <button onclick="deleteUser('${u.user}')" class="text-red-300 hover:text-red-600"><i class="fas fa-trash"></i></button></div>`).join('');
             document.getElementById('list_mats').innerHTML = db_mats.map(m => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${m.nombre}</b><p class="text-[9px] uppercase text-blue-400">Docente: ${db_users[m.docente]?.fullname || 'Sin asignar'}</p></div>
-                <button onclick="deleteMat(${m.id})" class="text-red-300 hover:text-red-600"><i class="fas fa-trash"></i></button></div>`).join('');
+                <div class="flex gap-2">
+                    <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-500 hover:text-emerald-700 text-xs font-black uppercase italic mr-2">Notas</button>
+                    <button onclick="deleteMat(${m.id})" class="text-red-300 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                </div></div>`).join('');
             document.getElementById('sel_dest_mat').innerHTML = db_mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
             document.getElementById('sel_dest_user').innerHTML = Object.values(db_users).map(u => `<option value="${u.user}">${u.fullname} (${u.role})</option>`).join('');
         }
@@ -275,17 +278,14 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
-        // --- CONFIGURACIÓN REPARADA (SIN IDs DINÁMICOS) ---
+        // --- ADMIN: CONFIGURACIÓN REPARADA ---
         function loadConfig() {
-            // Rúbrica
             document.getElementById('rub_bajo_input').value = db_conf.rubrica.bajo;
             document.getElementById('rub_basico_input').value = db_conf.rubrica.basico;
             document.getElementById('rub_alto_input').value = db_conf.rubrica.alto;
 
-            // Items Evaluativos
             document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
                 <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed item-eval-row">
-                    <input type="hidden" class="it-id" value="${it.id}">
                     <input type="text" class="it-name w-full font-black text-xs uppercase bg-transparent border-b mb-3" value="${it.name}">
                     <div class="grid grid-cols-2 gap-2 text-[9px] font-bold">
                         <span>PESO %</span><input type="number" class="it-weight w-full border rounded px-1" value="${it.weight}">
@@ -293,7 +293,6 @@
                     </div>
                 </div>`).join('');
             
-            // Periodos
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
                 <div class="bg-white p-5 rounded-3xl border shadow-sm period-config-row" data-p="${p}">
                     <h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
@@ -305,21 +304,16 @@
         }
 
         function saveGlobalConfig() {
-            // Guardar Rúbrica
-            db_conf.rubrica = { 
-                bajo: parseInt(document.getElementById('rub_bajo_input').value), 
-                basico: parseInt(document.getElementById('rub_basico_input').value), 
-                alto: parseInt(document.getElementById('rub_alto_input').value) 
-            };
+            db_conf.rubrica.bajo = parseInt(document.getElementById('rub_bajo_input').value);
+            db_conf.rubrica.basico = parseInt(document.getElementById('rub_basico_input').value);
+            db_conf.rubrica.alto = parseInt(document.getElementById('rub_alto_input').value);
 
-            // Guardar Items por clase
             document.querySelectorAll('.item-eval-row').forEach((row, i) => {
                 db_conf.items[i].name = row.querySelector('.it-name').value;
                 db_conf.items[i].weight = parseFloat(row.querySelector('.it-weight').value);
                 db_conf.items[i].count = parseInt(row.querySelector('.it-count').value);
             });
 
-            // Guardar Periodos por clase
             document.querySelectorAll('.period-config-row').forEach(row => {
                 const p = row.dataset.p;
                 db_conf.periodos[p].start = row.querySelector('.p-start').value;
@@ -327,7 +321,7 @@
             });
 
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); 
-            alert("Sincronización completa: Configuración guardada."); 
+            alert("Configuración Guardada"); 
             location.reload();
         }
 
@@ -342,6 +336,8 @@
                 </div>`).join('');
         }
 
+        function abrirOpcionesPeriodo() { abrirSelectorUniversal(); }
+
         // --- DOCENTE ---
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
@@ -349,14 +345,22 @@
                 <tr class="hover:bg-blue-50 transition">
                     <td class="p-5 font-black text-gray-500">01-A</td>
                     <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
-                    <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
                     <td class="p-5 text-center"><button onclick="abrirSelectorUniversal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td>
                 </tr>`).join('');
         }
 
         function abrirPlanilla(p) {
             curPer = p; closeModal('modal_periodos'); openModal('modal_planilla');
-            checkLock(db_conf.periodos[p].start, db_conf.periodos[p].end);
+            // Admin tiene bypass del bloqueo de fechas
+            if(sesion.role === 'Administrativo') {
+                isLocked = false;
+                document.getElementById('lock_msg').innerText = "MODO ADMINISTRADOR: ACCESO TOTAL";
+                document.getElementById('lock_msg').className = "text-blue-500 font-black uppercase italic";
+                document.getElementById('save_btn').style.display = 'block';
+            } else {
+                checkLock(db_conf.periodos[p].start, db_conf.periodos[p].end);
+            }
+            
             document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | P${p}`;
             document.getElementById('period_dates_info').innerHTML = `<span><i class="fas fa-calendar mr-1"></i> Inicio: ${db_conf.periodos[p].start || 'S/D'}</span> <span><i class="fas fa-clock mr-1"></i> Cierre: ${db_conf.periodos[p].end || 'S/D'}</span>`;
             
@@ -442,7 +446,6 @@
         }
 
         function saveNotasDB() {
-            if(isLocked) return;
             document.querySelectorAll('.input-nota').forEach(inp => {
                 const {uid, it, idx} = inp.dataset; const key = `${curMat.id}_${curPer}_${uid}`;
                 if(!db_notas[key]) db_notas[key] = {};
@@ -450,7 +453,7 @@
                 const dInp = document.querySelector(`.input-desc[data-uid="${uid}"][data-it="${it}"][data-idx="${idx}"]`);
                 db_notas[key][`${it}_${idx}_desc`] = dInp ? dInp.value : '';
             });
-            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Calificaciones Guardadas"); calc();
+            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Cambios Sincronizados"); calc();
         }
 
         function calc() {
