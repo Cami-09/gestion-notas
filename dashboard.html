@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v33.0 | Full Master Build</title>
+    <title>Integra Pro v34.0 | Full Master Build</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,7 +52,7 @@
             <h1 class="text-xl font-extrabold tracking-tighter italic">INTEGRA<span class="text-orange-500 text-sm ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-8 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">Version 33.0 Final</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">Version 34.0 Final</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -70,10 +70,11 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-10 custom-scrollbar">
+            
             <div id="view-admin-main" class="tab-content space-y-8">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <div class="glass-card p-8">
-                        <h3 class="text-xs font-black uppercase mb-6 text-orange-500 flex items-center gap-2 italic"><i class="fas fa-user-plus"></i> Registro de Usuarios</h3>
+                        <h3 class="text-xs font-black uppercase mb-6 text-orange-500 flex items-center gap-2 italic"><i class="fas fa-user-plus"></i> Registro de Personal</h3>
                         <div class="grid grid-cols-2 gap-5">
                             <input type="text" id="adm_u_name" placeholder="Nombre Completo" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs outline-none">
                             <input type="text" id="adm_u_user" placeholder="ID Usuario" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs outline-none">
@@ -98,18 +99,18 @@
                                     <select id="sel_dest_mat" class="flex-1 bg-[#0f172a] p-3 rounded-xl text-white text-[10px] font-bold border-none"></select>
                                     <select id="sel_dest_user" class="flex-1 bg-[#0f172a] p-3 rounded-xl text-white text-[10px] font-bold border-none"></select>
                                 </div>
-                                <button onclick="matricularAction()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-black uppercase text-[10px]">Vincular</button>
+                                <button onclick="matricularAction()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-black uppercase text-[10px]">Vincular Estudiante/Docente</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="glass-card overflow-hidden">
-                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase text-gray-500">Usuarios</div>
+                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase text-gray-500">Usuarios Activos</div>
                         <div id="list_users" class="max-h-80 overflow-y-auto divide-y divide-white/5"></div>
                     </div>
                     <div class="glass-card overflow-hidden">
-                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase text-gray-500">Materias</div>
+                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase text-gray-500">Malla Curricular</div>
                         <div id="list_mats" class="max-h-80 overflow-y-auto divide-y divide-white/5"></div>
                     </div>
                 </div>
@@ -117,13 +118,13 @@
 
             <div id="view-admin-config" class="tab-content space-y-8">
                 <div class="glass-card p-10 space-y-12">
-                    <h3 class="text-xs font-black uppercase text-indigo-400 italic">Configuración de Ítems y Evaluación</h3>
+                    <h3 class="text-xs font-black uppercase text-indigo-400 italic">Configuración Maestro e Ítems</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"></div>
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-white/5"></div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                         <div class="p-8 bg-[#020617] rounded-[2.5rem] border border-white/5">
-                            <h4 class="text-xs font-black uppercase text-orange-500 mb-6 italic">Rúbrica</h4>
+                            <h4 class="text-xs font-black uppercase text-orange-500 mb-6 italic">Rúbrica de Desempeño</h4>
                             <div class="grid grid-cols-3 gap-4">
                                 <input type="number" id="rub_bajo_input" class="w-full bg-[#0f172a] p-4 rounded-2xl text-red-500 font-black border border-red-500/20">
                                 <input type="number" id="rub_basico_input" class="w-full bg-[#0f172a] p-4 rounded-2xl text-orange-500 font-black border border-orange-500/20">
@@ -131,11 +132,11 @@
                             </div>
                         </div>
                         <div class="p-8 bg-[#020617] rounded-[2.5rem] border border-white/5">
-                            <h4 class="text-xs font-black uppercase text-emerald-500 mb-6 italic">Ventanas de Autoevaluación</h4>
+                            <h4 class="text-xs font-black uppercase text-emerald-500 mb-6 italic">Fechas Módulo Autoevaluación</h4>
                             <div id="config_auto_dates" class="space-y-4"></div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="bg-indigo-600 hover:bg-indigo-500 px-16 py-5 rounded-[2rem] font-black uppercase italic text-xs">Guardar Cambios Globales</button>
+                    <button onclick="saveGlobalConfig()" class="bg-indigo-600 hover:bg-indigo-500 px-16 py-5 rounded-[2rem] font-black uppercase italic text-xs shadow-2xl transition-all">Sincronizar Todo</button>
                 </div>
             </div>
 
@@ -144,17 +145,17 @@
             </div>
 
             <div id="view-estudiante-main" class="tab-content">
-                <div class="bg-indigo-900 p-12 rounded-[3.5rem] flex justify-between items-center mb-10 border border-white/10">
-                    <div><h3 class="text-3xl font-black italic uppercase tracking-tighter">Reporte General</h3><p class="text-[10px] font-bold opacity-70 uppercase mt-2">Promedios en tiempo real</p></div>
-                    <button onclick="abrirSelectorUniversal()" class="bg-white text-indigo-900 px-10 py-5 rounded-3xl font-black uppercase text-xs italic">Cambiar Periodo</button>
+                <div class="bg-indigo-900 p-12 rounded-[3.5rem] flex justify-between items-center mb-10 border border-white/10 shadow-2xl">
+                    <div><h3 class="text-3xl font-black italic uppercase tracking-tighter">Mi Reporte Académico</h3><p class="text-[10px] font-bold opacity-70 uppercase mt-2">Seguimiento en tiempo real</p></div>
+                    <button onclick="abrirSelectorUniversal()" class="bg-white text-indigo-900 px-10 py-5 rounded-3xl font-black uppercase text-xs italic">Periodo</button>
                 </div>
                 <div id="boletin_container" class="space-y-8"></div>
             </div>
 
             <div id="view-estudiante-auto" class="tab-content">
                 <div class="bg-[#0f172a] p-10 rounded-[3rem] border border-white/5 mb-8">
-                    <h3 class="text-2xl font-black italic uppercase text-orange-500">Módulo de Autoevaluación</h3>
-                    <p class="text-[10px] font-bold opacity-50 uppercase mt-2">Registra tu nota de autopercepción por materia</p>
+                    <h3 class="text-2xl font-black italic uppercase text-orange-500">Módulo Autoevaluación</h3>
+                    <p class="text-[10px] font-bold opacity-50 uppercase mt-2">Registra tu propia nota de desempeño</p>
                 </div>
                 <div id="estudiante_auto_list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
             </div>
@@ -162,9 +163,9 @@
     </main>
 
     <div id="modal_periodos" class="modal">
-        <div class="bg-[#0f172a] w-full max-sm rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+        <div class="bg-[#0f172a] w-full max-w-sm rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
             <div class="p-8 bg-slate-900 flex justify-between items-center border-b border-white/5">
-                <span id="selector_title" class="font-black uppercase text-xs italic tracking-widest text-indigo-400">Ciclos Académicos</span>
+                <span id="selector_title" class="font-black uppercase text-xs italic tracking-widest text-indigo-400">Seleccionar Ciclo</span>
                 <button onclick="closeModal('modal_periodos')" class="text-3xl font-light hover:text-orange-500">&times;</button>
             </div>
             <div id="period_list_container" class="p-8 space-y-4"></div>
@@ -177,26 +178,26 @@
             <p id="modal_auto_subtitle" class="text-[10px] font-bold text-gray-500 uppercase mb-8"></p>
             <div class="space-y-6">
                 <div class="flex flex-col gap-2">
-                    <label class="text-[10px] font-black uppercase text-orange-500 italic">Ingresa tu nota (10-50)</label>
+                    <label class="text-[10px] font-black uppercase text-orange-500 italic">Tu nota (Rango 10 a 50)</label>
                     <input type="number" id="auto_nota_val" class="bg-[#020617] border border-white/10 p-6 rounded-3xl text-3xl font-black text-center text-white outline-none focus:border-orange-500">
                 </div>
                 <div id="auto_status_msg" class="text-[10px] font-black uppercase italic"></div>
-                <button id="btn_save_auto" onclick="guardarMiAuto()" class="w-full bg-orange-600 py-5 rounded-3xl font-black uppercase italic text-xs">Guardar Autoevaluación</button>
+                <button id="btn_save_auto" onclick="guardarMiAuto()" class="w-full bg-orange-600 py-5 rounded-3xl font-black uppercase italic text-xs shadow-xl">Guardar Autoevaluación</button>
             </div>
-            <button onclick="closeModal('modal_auto')" class="mt-6 text-gray-600 font-bold uppercase text-[10px]">Cerrar</button>
+            <button onclick="closeModal('modal_auto')" class="mt-6 text-gray-600 font-bold uppercase text-[10px]">Cancelar</button>
         </div>
     </div>
 
     <div id="modal_planilla" class="modal">
         <div class="bg-[#020617] w-full h-full flex flex-col">
-            <header class="p-8 bg-[#0f172a] border-b border-white/10 flex justify-between items-center shrink-0">
+            <header class="p-8 bg-[#0f172a] border-b border-white/10 flex justify-between items-center shrink-0 shadow-2xl">
                 <div class="flex items-center gap-6">
-                    <button onclick="closeModal('modal_planilla')" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-orange-500"><i class="fas fa-arrow-left"></i></button>
-                    <div><h2 id="planilla_header_txt" class="text-2xl font-black uppercase italic"></h2><p id="period_dates_info" class="text-[10px] font-bold text-gray-500 uppercase mt-1"></p></div>
+                    <button onclick="closeModal('modal_planilla')" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-orange-500 transition-all"><i class="fas fa-arrow-left"></i></button>
+                    <div><h2 id="planilla_header_txt" class="text-2xl font-black uppercase italic tracking-tighter"></h2><p id="period_dates_info" class="text-[10px] font-bold text-gray-500 uppercase mt-1"></p></div>
                 </div>
                 <div class="flex items-center gap-6">
                     <div id="timer_display" class="bg-red-500/10 text-red-500 px-6 py-3 rounded-2xl border border-red-500/20 text-[10px] font-black uppercase"></div>
-                    <button id="save_btn" onclick="saveNotasDB()" class="bg-orange-500 px-12 py-4 rounded-2xl font-black uppercase italic text-xs">Sincronizar</button>
+                    <button id="save_btn" onclick="saveNotasDB()" class="bg-orange-500 px-12 py-4 rounded-2xl font-black uppercase italic text-xs shadow-xl hover:bg-orange-400">Sincronizar Planilla</button>
                 </div>
             </header>
             <div class="flex-1 overflow-auto p-10 custom-scrollbar">
@@ -287,8 +288,8 @@
                 <div class="flex justify-between p-5 hover:bg-white/5 items-center">
                     <div><b class="text-white text-xs">${m.nombre}</b><p class="text-[8px] uppercase text-blue-400 font-bold tracking-widest mt-1">Prof: ${db_users[m.docente]?.fullname || 'Pendiente'}</p></div>
                     <div class="flex gap-4">
-                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[11px] font-black uppercase italic tracking-tighter">Planilla</button>
-                        <button onclick="deleteMat(${m.id})" class="text-red-500"><i class="fas fa-trash-alt"></i></button>
+                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[10px] font-black uppercase italic tracking-tighter">Gestionar Notas</button>
+                        <button onclick="deleteMat(${m.id})" class="text-red-500 hover:scale-110 transition"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`).join('');
             document.getElementById('sel_dest_mat').innerHTML = db_mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
@@ -382,7 +383,7 @@
             document.getElementById('selector_title').innerText = "Seleccionar Periodo";
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
                 <div onclick="${sesion.role === 'Estudiante' ? `renderBoletinVertical(${p})` : `abrirPlanilla(${p})`}" class="bg-[#020617] border border-white/5 p-5 rounded-2xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition-all">
-                    <span class="font-black text-[11px] uppercase text-gray-500 italic">Periodo Académico ${p}</span>
+                    <span class="font-black text-[11px] uppercase text-gray-500 italic">Ciclo Lectivo ${p}</span>
                     <i class="fas fa-chevron-right text-gray-700"></i>
                 </div>`).join('');
         }
@@ -393,7 +394,7 @@
                 <div class="glass-card p-8 group">
                     <div class="w-14 h-14 bg-orange-500/10 text-orange-500 rounded-2xl flex items-center justify-center text-xl mb-6 border border-orange-500/20"><i class="fas fa-journal-whills"></i></div>
                     <h4 class="text-xl font-black text-white uppercase italic tracking-tighter mb-2">${m.nombre}</h4>
-                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">${m.alumnos.length} Alumnos</p>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">${m.alumnos.length} Estudiantes</p>
                     <button onclick="abrirSelectorUniversal(${m.id})" class="mt-8 w-full bg-orange-600 py-4 rounded-2xl font-black uppercase italic text-xs shadow-xl">Abrir Planilla</button>
                 </div>`).join('');
         }
@@ -401,12 +402,13 @@
         function abrirPlanilla(p) {
             curPer = p; closeModal('modal_periodos'); openModal('modal_planilla');
             const isAdmin = sesion.role === 'Administrativo';
-            if(isAdmin) { isLocked = false; document.getElementById('lock_msg').innerText = "BYPASS ADMIN"; document.getElementById('save_btn').style.display = 'block'; }
+            if(isAdmin) { isLocked = false; document.getElementById('lock_msg').innerText = "AUTORIZACIÓN ADMIN: BYPASS"; document.getElementById('save_btn').style.display = 'block'; }
             else { checkLock(db_conf.periodos[p].start, db_conf.periodos[p].end); }
             
             document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | P${p}`;
             document.getElementById('period_dates_info').innerText = `INICIO: ${db_conf.periodos[p].start || '--'} | CIERRE: ${db_conf.periodos[p].end || '--'}`;
 
+            // Header dinámico: recorre db_conf.items para que Autoevaluacion aparezca sí o sí
             document.getElementById('planilla_items_header').innerHTML = db_conf.items.map(it => {
                 const count = getNotaCount(it.id); const customName = getCustomItemName(it.id);
                 return `<div class="min-w-[200px] p-5 rounded-3xl border border-white/5 flex flex-col gap-3" style="background: ${it.color}15">
@@ -415,28 +417,29 @@
                         <span class="text-[9px] font-black bg-black/40 px-3 py-1 rounded-lg">${it.weight}%</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-[8px] font-bold opacity-40 uppercase tracking-widest">${count} Notas</span>
+                        <span class="text-[8px] font-bold opacity-40 uppercase tracking-widest">${count} Notas Activas</span>
                         ${isAdmin ? `<div class="flex gap-2"><button onclick="changeColumnCount('${it.id}', 1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">+</button><button onclick="changeColumnCount('${it.id}', -1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">-</button></div>` : ''}
                     </div>
                 </div>`;
             }).join('');
 
+            // Cards de Estudiantes: también recorre db_conf.items para generar las celdas de autoevaluacion
             document.getElementById('planilla_students_list').innerHTML = curMat.alumnos.map(uid => {
                 const est = db_users[uid] || {fullname: uid}, key = `${curMat.id}_${curPer}_${uid}`, n = db_notas[key] || {};
                 let itemsHtml = db_conf.items.map(it => {
                     const count = getNotaCount(it.id); let ni = "";
                     for(let i=0; i<count; i++) {
                         const val = n[it.id+'_'+i] || '', d = n[it.id+'_'+i+'_desc'] || '';
-                        // Permitir edicion al admin o al docente si no esta bloqueado. 
-                        // Nota: Para autoevaluacion, el docente solo lee si es que el alumno ya puso su nota.
+                        // Nota: Si es autoevaluacion, el docente solo lee (salvo que sea admin). El alumno la pone en su modulo.
                         const readOnly = (it.id === 'auto' && !isAdmin) ? 'disabled' : (isLocked ? 'disabled' : '');
                         ni += `<div class="flex flex-col gap-1">
                                 <input type="number" step="1" class="input-nota ${getNotaColor(val)}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${val}" ${readOnly}>
-                                <input type="text" class="input-desc" placeholder="Obs..." data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${d}" ${readOnly}>
+                                <input type="text" class="input-desc" placeholder="Observación..." data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${d}" ${readOnly}>
                                </div>`;
                     }
                     return `<div class="p-5 bg-black/40 rounded-2xl border border-white/5 flex flex-wrap gap-3"><span class="w-full text-[8px] font-black opacity-30 uppercase tracking-widest mb-1">${getCustomItemName(it.id)}</span>${ni}</div>`;
                 }).join('');
+
                 return `<div class="student-row-card">
                     <div class="w-56 flex flex-col items-center text-center shrink-0 border-r border-white/5 pr-8">
                         <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center text-3xl mb-4 text-indigo-400 border border-indigo-500/20 shadow-inner"><i class="fas fa-user-graduate"></i></div>
@@ -450,7 +453,7 @@
             calc();
         }
 
-        // --- AUTOEVALUACION ESTUDIANTE ---
+        // --- AUTOEVALUACION ESTUDIANTE (MÓDULO APARTE) ---
         function loadAutoEstudiante() {
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
             document.getElementById('estudiante_auto_list').innerHTML = mis.map(m => `
@@ -462,7 +465,7 @@
 
         function prepararAuto(mid) {
             curMat = db_mats.find(x => x.id === mid); openModal('modal_periodos');
-            document.getElementById('selector_title').innerText = "Seleccionar Periodo - Auto";
+            document.getElementById('selector_title').innerText = "Ciclo Autoevaluación";
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
                 <div onclick="abrirModalNotaAuto(${p})" class="bg-[#020617] border border-white/5 p-5 rounded-2xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition-all">
                     <span class="font-black text-[11px] uppercase text-gray-500">Periodo Académico ${p}</span>
@@ -474,27 +477,37 @@
             curPer = p; closeModal('modal_periodos'); openModal('modal_auto');
             const range = db_conf.auto_dates?.[p], now = new Date().getTime(), start = new Date(range?.start).getTime(), end = new Date(range?.end).getTime();
             const isOpen = (range?.start && range?.end && now >= start && now <= end);
+            
             document.getElementById('modal_auto_title').innerText = curMat.nombre;
-            document.getElementById('modal_auto_subtitle').innerText = `AUTOPERCIBIDO | P${p}`;
-            document.getElementById('auto_nota_val').value = db_notas[`${curMat.id}_${curPer}_${sesion.user}`]?.['auto_0'] || '';
+            document.getElementById('modal_auto_subtitle').innerText = `CALIFICACIÓN PROPIA | P${p}`;
+            
+            // La nota se guarda en el item 'auto', indice 0
+            const key = `${curMat.id}_${curPer}_${sesion.user}`;
+            document.getElementById('auto_nota_val').value = db_notas[key]?.['auto_0'] || '';
+            
             const status = document.getElementById('auto_status_msg');
             const btn = document.getElementById('btn_save_auto');
-            if(!isOpen) { status.innerText = "SISTEMA CERRADO"; status.className = "text-[10px] font-black text-red-500"; btn.style.display = 'none'; document.getElementById('auto_nota_val').disabled = true; }
-            else { status.innerText = "SISTEMA HABILITADO"; status.className = "text-[10px] font-black text-emerald-500"; btn.style.display = 'block'; document.getElementById('auto_nota_val').disabled = false; }
+            if(!isOpen) { 
+                status.innerText = "ACCESO CERRADO POR FECHAS"; status.className = "text-[10px] font-black text-red-500"; 
+                btn.style.display = 'none'; document.getElementById('auto_nota_val').disabled = true; 
+            } else { 
+                status.innerText = "HABILITADO PARA CARGA"; status.className = "text-[10px] font-black text-emerald-500"; 
+                btn.style.display = 'block'; document.getElementById('auto_nota_val').disabled = false; 
+            }
         }
 
         function guardarMiAuto() {
-            const val = document.getElementById('auto_nota_val').value; if(!val || val < 10 || val > 50) return alert("Rango válido: 10 a 50");
+            const val = document.getElementById('auto_nota_val').value; if(!val || val < 10 || val > 50) return alert("Rango: 10 a 50");
             const key = `${curMat.id}_${curPer}_${sesion.user}`; if(!db_notas[key]) db_notas[key] = {};
-            db_notas[key]['auto_0'] = val; db_notas[key]['auto_0_desc'] = "Auto-registro Estudiante";
-            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Nota Guardada."); closeModal('modal_auto');
+            db_notas[key]['auto_0'] = val; db_notas[key]['auto_0_desc'] = "Registrada por estudiante";
+            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Autoevaluación sincronizada."); closeModal('modal_auto');
         }
 
-        // --- CALIFICACIONES ESTUDIANTE ---
+        // --- CALIFICACIONES ESTUDIANTE (VISUALIZACIÓN BOLETÍN) ---
         function renderBoletinVertical(p) {
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user)), cont = document.getElementById('boletin_container');
-            if(mis.length === 0) return cont.innerHTML = `<div class="py-20 text-center opacity-20 uppercase font-black">Sin registros</div>`;
+            if(mis.length === 0) return cont.innerHTML = `<div class="py-20 text-center opacity-20 font-black uppercase">Sin registros</div>`;
             cont.innerHTML = mis.map(m => {
                 const k = `${m.id}_${p}_${sesion.user}`, n = db_notas[k] || {}; let det = "", defF = 0;
                 db_conf.items.forEach(it => {
@@ -504,7 +517,7 @@
                         const v = parseFloat(n[it.id+'_'+i] || 0); s += v;
                         rows += `<div class="p-5 bg-black/40 rounded-3xl border border-white/5 flex items-center gap-5">
                             <div class="w-14 h-14 rounded-2xl bg-white/5 flex flex-col items-center justify-center border border-white/10 shrink-0"><span class="text-[8px] font-bold text-gray-500 mb-1">N${i+1}</span><span class="text-xl font-black ${getNotaColor(v)}">${v || '0'}</span></div>
-                            <div class="flex-1"><p class="text-[9px] font-black uppercase italic text-indigo-400">${cName}</p><p class="text-xs text-gray-400 italic font-medium mt-1">"${n[it.id+'_'+i+'_desc'] || 'Sin detalle'}"</p></div>
+                            <div class="flex-1"><p class="text-[9px] font-black uppercase italic text-indigo-400">${cName}</p><p class="text-xs text-gray-400 italic mt-1 font-medium">"${n[it.id+'_'+i+'_desc'] || 'Sin detalle'}"</p></div>
                         </div>`;
                     }
                     defF += (count > 0 ? (s/count) : 0) * (it.weight/100);
@@ -512,14 +525,14 @@
                 });
                 return `<div class="glass-card overflow-hidden">
                     <div class="p-10 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-all" onclick="this.nextElementSibling.classList.toggle('open')">
-                        <div class="flex items-center gap-6"><div class="w-20 h-20 bg-orange-500/10 text-orange-500 rounded-[2rem] flex items-center justify-center text-3xl border border-orange-500/20"><i class="fas fa-award"></i></div>
+                        <div class="flex items-center gap-6"><div class="w-20 h-20 bg-orange-500/10 text-orange-500 rounded-[2rem] flex items-center justify-center text-3xl border border-orange-500/20 shadow-inner"><i class="fas fa-award"></i></div>
                         <div><h4 class="text-2xl font-black text-white italic uppercase tracking-tighter">${m.nombre}</h4><p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Reporte de Desempeño</p></div></div>
                         <div class="text-right flex flex-col items-end"><span class="text-[9px] font-black text-gray-500 block mb-1">Promedio</span><span class="text-5xl font-black text-white tracking-tighter">${defF.toFixed(1)}</span></div>
                     </div><div class="accordion-content bg-[#1e293b]/50 p-10 border-t border-white/5">${det}</div></div>`;
             }).join('');
         }
 
-        // --- LOGIC ---
+        // --- CORE LOGIC ---
         function checkLock(start, end) {
             const disp = document.getElementById('timer_display'), btn = document.getElementById('save_btn'); if(timerInterval) clearInterval(timerInterval);
             const now = new Date().getTime(), sDate = new Date(start).getTime(), eDate = new Date(end).getTime();
@@ -546,7 +559,7 @@
                 const dInp = document.querySelector(`.input-desc[data-uid="${uid}"][data-it="${it}"][data-idx="${idx}"]`);
                 db_notas[key][`${it}_${idx}_desc`] = dInp ? dInp.value : '';
             });
-            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Nube Sincronizada."); calc();
+            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Sincronización Completa."); calc();
         }
 
         function calc() {
