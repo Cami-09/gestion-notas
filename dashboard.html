@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v22.0 | Sistema Unificado Final</title>
+    <title>Integra Pro v23.0 | Sistema Unificado Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v22.0 Stable Build</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v23.0 Stable Build</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -99,18 +99,18 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Rúbrica</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Gestión de Periodos y Rúbrica</h3>
                     
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
-                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Rúbrica de Calificaciones (10-50)</h4>
+                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Configuración de Rúbrica (10-50)</h4>
                         <div class="grid grid-cols-3 gap-6">
                             <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
                             <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Alto (Verde)</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
                     <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración</button>
@@ -121,7 +121,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Estudiantes</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -132,7 +132,7 @@
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
                         <h3 class="font-black text-indigo-900 text-xl uppercase italic">Consulta de Notas</h3>
-                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Detalle vertical por periodos</p>
+                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Vista detallada vertical con descripciones</p>
                     </div>
                     <button onclick="abrirOpcionesPeriodo(null)" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
                         <i class="fas fa-eye mr-2"></i> Ver Mis Notas
