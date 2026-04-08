@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v32.0 | Full Master Build</title>
+    <title>Integra Pro v33.0 | Full Master Build</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -52,7 +52,7 @@
             <h1 class="text-xl font-extrabold tracking-tighter italic">INTEGRA<span class="text-orange-500 text-sm ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-8 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">Version 32.0 Final</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">Version 33.0 Final</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -162,7 +162,7 @@
     </main>
 
     <div id="modal_periodos" class="modal">
-        <div class="bg-[#0f172a] w-full max-w-sm rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+        <div class="bg-[#0f172a] w-full max-sm rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
             <div class="p-8 bg-slate-900 flex justify-between items-center border-b border-white/5">
                 <span id="selector_title" class="font-black uppercase text-xs italic tracking-widest text-indigo-400">Ciclos Académicos</span>
                 <button onclick="closeModal('modal_periodos')" class="text-3xl font-light hover:text-orange-500">&times;</button>
@@ -287,7 +287,7 @@
                 <div class="flex justify-between p-5 hover:bg-white/5 items-center">
                     <div><b class="text-white text-xs">${m.nombre}</b><p class="text-[8px] uppercase text-blue-400 font-bold tracking-widest mt-1">Prof: ${db_users[m.docente]?.fullname || 'Pendiente'}</p></div>
                     <div class="flex gap-4">
-                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[10px] font-black uppercase italic">Planilla</button>
+                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[11px] font-black uppercase italic tracking-tighter">Planilla</button>
                         <button onclick="deleteMat(${m.id})" class="text-red-500"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`).join('');
@@ -382,7 +382,7 @@
             document.getElementById('selector_title').innerText = "Seleccionar Periodo";
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
                 <div onclick="${sesion.role === 'Estudiante' ? `renderBoletinVertical(${p})` : `abrirPlanilla(${p})`}" class="bg-[#020617] border border-white/5 p-5 rounded-2xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition-all">
-                    <span class="font-black text-[11px] uppercase text-gray-500 italic">Periodo ${p}</span>
+                    <span class="font-black text-[11px] uppercase text-gray-500 italic">Periodo Académico ${p}</span>
                     <i class="fas fa-chevron-right text-gray-700"></i>
                 </div>`).join('');
         }
@@ -416,7 +416,7 @@
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-[8px] font-bold opacity-40 uppercase tracking-widest">${count} Notas</span>
-                        ${isAdmin ? `<div class="flex gap-2"><button onclick="changeColumnCount('${it.id}', 1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs">+</button><button onclick="changeColumnCount('${it.id}', -1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs">-</button></div>` : ''}
+                        ${isAdmin ? `<div class="flex gap-2"><button onclick="changeColumnCount('${it.id}', 1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">+</button><button onclick="changeColumnCount('${it.id}', -1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">-</button></div>` : ''}
                     </div>
                 </div>`;
             }).join('');
@@ -427,6 +427,8 @@
                     const count = getNotaCount(it.id); let ni = "";
                     for(let i=0; i<count; i++) {
                         const val = n[it.id+'_'+i] || '', d = n[it.id+'_'+i+'_desc'] || '';
+                        // Permitir edicion al admin o al docente si no esta bloqueado. 
+                        // Nota: Para autoevaluacion, el docente solo lee si es que el alumno ya puso su nota.
                         const readOnly = (it.id === 'auto' && !isAdmin) ? 'disabled' : (isLocked ? 'disabled' : '');
                         ni += `<div class="flex flex-col gap-1">
                                 <input type="number" step="1" class="input-nota ${getNotaColor(val)}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${val}" ${readOnly}>
