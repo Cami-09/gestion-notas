@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v23.0 | Sistema Unificado Final</title>
+    <title>Integra Pro v24.0 | Sistema Unificado Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v23.0 Stable Build</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v24.0 Stable Build</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -102,18 +102,17 @@
                     <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Gestión de Periodos y Rúbrica</h3>
                     
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
-                    
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
-                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Configuración de Rúbrica (10-50)</h4>
+                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Límites de Rúbrica</h4>
                         <div class="grid grid-cols-3 gap-6">
-                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Máximo (Verde)</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Rojo hasta:</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Naranja hasta:</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Verde hasta:</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración</button>
+                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Cambios Globales</button>
                 </div>
             </div>
 
@@ -121,7 +120,7 @@
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 text-[10px] font-black uppercase text-gray-400 border-b">
-                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5 text-center">Acciones</th></tr>
+                            <tr><th class="p-5">Grupo</th><th class="p-5">Asignatura</th><th class="p-5">Alumnos</th><th class="p-5 text-center">Acciones</th></tr>
                         </thead>
                         <tbody id="docente_table_body" class="divide-y divide-gray-100"></tbody>
                     </table>
@@ -131,11 +130,11 @@
             <div id="view-estudiante-main" class="tab-content space-y-4">
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
-                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Consulta de Notas</h3>
-                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Vista detallada vertical con descripciones</p>
+                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Mis Calificaciones</h3>
+                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Consulta detallada por periodo académico</p>
                     </div>
-                    <button onclick="abrirOpcionesPeriodo(null)" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
-                        <i class="fas fa-eye mr-2"></i> Ver Mis Notas
+                    <button onclick="abrirSelectorUniversal()" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
+                        <i class="fas fa-eye mr-2"></i> Seleccionar Periodo
                     </button>
                 </div>
                 <div id="boletin_container" class="mt-8 space-y-4"></div>
@@ -146,7 +145,7 @@
     <div id="modal_periodos" class="modal">
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
-                <span class="font-black uppercase text-[10px] tracking-widest italic">Seleccionar Periodo</span>
+                <span class="font-black uppercase text-[10px] tracking-widest italic">Periodo Académico</span>
                 <button onclick="closeModal('modal_periodos')" class="text-2xl">&times;</button>
             </div>
             <div id="period_list_container" class="p-8 space-y-4"></div>
@@ -173,7 +172,7 @@
             </div>
             <div class="p-4 bg-gray-50 border-t flex justify-between items-center px-10">
                 <span id="lock_msg" class="text-[10px] font-black uppercase italic tracking-widest"></span>
-                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Guardar Calificaciones</button>
+                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Sincronizar Planilla</button>
             </div>
         </div>
     </div>
@@ -243,7 +242,7 @@
             return "nota-green";
         }
 
-        // --- ADMIN: USUARIOS Y MATERIAS ---
+        // --- ADMIN: USUARIOS ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${u.fullname}</b><p class="text-[9px] uppercase text-gray-400">${u.role} | @${u.user}</p></div>
@@ -276,7 +275,7 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
-        // --- ADMIN: CONFIGURACIÓN (REPARADO TOTAL) ---
+        // --- CONFIGURACIÓN REPARADA (SIN IDs DINÁMICOS) ---
         function loadConfig() {
             // Rúbrica
             document.getElementById('rub_bajo_input').value = db_conf.rubrica.bajo;
@@ -285,51 +284,55 @@
 
             // Items Evaluativos
             document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
-                <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed">
-                    <input type="text" id="it_name_${i}" value="${it.name}" class="w-full font-black text-xs uppercase bg-transparent border-b mb-3">
+                <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed item-eval-row">
+                    <input type="hidden" class="it-id" value="${it.id}">
+                    <input type="text" class="it-name w-full font-black text-xs uppercase bg-transparent border-b mb-3" value="${it.name}">
                     <div class="grid grid-cols-2 gap-2 text-[9px] font-bold">
-                        <span>PESO %</span><input type="number" id="it_weight_${i}" value="${it.weight}" class="w-full border rounded px-1">
-                        <span>NOTAS</span><input type="number" id="it_count_${i}" value="${it.count}" class="w-full border rounded px-1">
+                        <span>PESO %</span><input type="number" class="it-weight w-full border rounded px-1" value="${it.weight}">
+                        <span>NOTAS</span><input type="number" class="it-count w-full border rounded px-1" value="${it.count}">
                     </div>
                 </div>`).join('');
             
             // Periodos
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
-                <div class="bg-white p-5 rounded-3xl border shadow-sm">
+                <div class="bg-white p-5 rounded-3xl border shadow-sm period-config-row" data-p="${p}">
                     <h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
                     <label class="text-[7px] font-black uppercase">Inicio</label>
-                    <input type="datetime-local" id="p_start_${p}" value="${db_conf.periodos[p].start || ''}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
+                    <input type="datetime-local" class="p-start w-full text-[9px] p-2 border rounded-xl mb-3" value="${db_conf.periodos[p].start || ''}">
                     <label class="text-[7px] font-black uppercase">Cierre</label>
-                    <input type="datetime-local" id="p_end_${p}" value="${db_conf.periodos[p].end || ''}" class="w-full text-[9px] p-2 border rounded-xl">
+                    <input type="datetime-local" class="p-end w-full text-[9px] p-2 border rounded-xl" value="${db_conf.periodos[p].end || ''}">
                 </div>`).join('');
         }
 
         function saveGlobalConfig() {
             // Guardar Rúbrica
-            db_conf.rubrica.bajo = parseInt(document.getElementById('rub_bajo_input').value);
-            db_conf.rubrica.basico = parseInt(document.getElementById('rub_basico_input').value);
-            db_conf.rubrica.alto = parseInt(document.getElementById('rub_alto_input').value);
+            db_conf.rubrica = { 
+                bajo: parseInt(document.getElementById('rub_bajo_input').value), 
+                basico: parseInt(document.getElementById('rub_basico_input').value), 
+                alto: parseInt(document.getElementById('rub_alto_input').value) 
+            };
 
-            // Guardar Items
-            db_conf.items.forEach((it, i) => {
-                it.name = document.getElementById(`it_name_${i}`).value;
-                it.weight = parseFloat(document.getElementById(`it_weight_${i}`).value);
-                it.count = parseInt(document.getElementById(`it_count_${i}`).value);
+            // Guardar Items por clase
+            document.querySelectorAll('.item-eval-row').forEach((row, i) => {
+                db_conf.items[i].name = row.querySelector('.it-name').value;
+                db_conf.items[i].weight = parseFloat(row.querySelector('.it-weight').value);
+                db_conf.items[i].count = parseInt(row.querySelector('.it-count').value);
             });
 
-            // Guardar Fechas
-            [1,2,3].forEach(p => {
-                db_conf.periodos[p].start = document.getElementById(`p_start_${p}`).value;
-                db_conf.periodos[p].end = document.getElementById(`p_end_${p}`).value;
+            // Guardar Periodos por clase
+            document.querySelectorAll('.period-config-row').forEach(row => {
+                const p = row.dataset.p;
+                db_conf.periodos[p].start = row.querySelector('.p-start').value;
+                db_conf.periodos[p].end = row.querySelector('.p-end').value;
             });
 
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); 
-            alert("¡Configuración guardada y sincronizada!"); 
+            alert("Sincronización completa: Configuración guardada."); 
             location.reload();
         }
 
-        // --- SELECTOR PERIODOS ---
-        function abrirOpcionesPeriodo(mid = null) {
+        // --- SELECTOR UNIVERSAL ---
+        function abrirSelectorUniversal(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
@@ -347,7 +350,7 @@
                     <td class="p-5 font-black text-gray-500">01-A</td>
                     <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
                     <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
-                    <td class="p-5 text-center"><button onclick="abrirOpcionesPeriodo(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td>
+                    <td class="p-5 text-center"><button onclick="abrirSelectorUniversal(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td>
                 </tr>`).join('');
         }
 
@@ -382,8 +385,6 @@
         }
 
         // --- ESTUDIANTE ---
-        function abrirSelectorEstudiante() { abrirOpcionesPeriodo(); }
-
         function renderBoletinVertical(p) {
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
