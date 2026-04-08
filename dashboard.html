@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v29.0 | Elite Framework</title>
+    <title>Integra Pro v30.0 | Full Master Build</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
         
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020617; color: #f8fafc; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #020617; 
+            color: #f8fafc; 
+            margin: 0;
+        }
         
         .tab-content { display: none; }
         .tab-content.active { display: block !important; }
@@ -18,166 +23,248 @@
         .sidebar-docente { background: #064e3b; border-right: 1px solid #065f46; }
         .sidebar-estudiante { background: #1e1b4b; border-right: 1px solid #312e81; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0,0,0,0.95); 
+            z-index: 100; 
+            align-items: center; 
+            justify-content: center; 
+            backdrop-filter: blur(12px); 
+        }
         .modal.active { display: flex; }
 
-        .glass-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 1.5rem; transition: all 0.3s ease; }
-        .glass-card:hover { border-color: #f97316; }
+        .glass-card { 
+            background: #0f172a; 
+            border: 1px solid #1e293b; 
+            border-radius: 1.5rem; 
+            transition: all 0.3s ease; 
+        }
+        .glass-card:hover { border-color: #f97316; shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.2); }
 
-        .input-nota { background: #020617; border: 1px solid #1e293b; color: white; width: 55px; height: 35px; text-align: center; font-weight: 800; border-radius: 0.5rem; }
-        .input-nota:focus { border-color: #f97316; outline: none; }
-        .input-desc { background: #1e293b; color: #94a3b8; font-size: 10px; padding: 5px; border-radius: 0.4rem; width: 100%; border: none; margin-top: 4px; }
+        .input-nota { 
+            background: #020617; 
+            border: 1px solid #334155; 
+            color: white; 
+            width: 55px; 
+            height: 38px; 
+            text-align: center; 
+            font-weight: 800; 
+            border-radius: 0.75rem; 
+            font-size: 14px;
+        }
+        .input-nota:focus { border-color: #f97316; outline: none; box-shadow: 0 0 10px rgba(249, 115, 22, 0.3); }
+        
+        .input-desc { 
+            background: #1e293b; 
+            color: #94a3b8; 
+            font-size: 10px; 
+            padding: 6px; 
+            border-radius: 0.5rem; 
+            width: 100%; 
+            border: 1px solid transparent; 
+            margin-top: 5px; 
+        }
+        .input-desc:focus { border-color: #475569; outline: none; }
 
         .nota-red { color: #ef4444 !important; border-color: #ef4444 !important; } 
         .nota-orange { color: #f97316 !important; border-color: #f97316 !important; } 
         .nota-green { color: #10b981 !important; border-color: #10b981 !important; }
 
-        .accordion-content { max-height: 0; overflow: hidden; transition: all 0.3s ease-out; }
-        .accordion-content.open { max-height: 3000px; padding-top: 1rem; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .accordion-content.open { max-height: 5000px; padding-top: 1.5rem; }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        .it-custom-name-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed #475569;
+            color: white;
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 10px;
+            width: 100%;
+        }
+        .it-custom-name-input:focus { outline: none; border-bottom-color: #f97316; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+
+        /* Estilo para las tarjetas de estudiantes en planilla */
+        .student-row-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 2rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: row;
+            gap: 2rem;
+            align-items: flex-start;
+        }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <aside id="sidebar" class="w-64 flex flex-col shadow-2xl transition-all duration-300">
+    <aside id="sidebar" class="w-64 flex flex-col shadow-2xl transition-all duration-300 shrink-0">
         <div class="p-6 border-b border-white/5 flex items-center gap-3">
-            <div class="bg-orange-500 p-2 rounded-xl shadow-lg"><i class="fas fa-shield-alt text-xl"></i></div>
-            <h1 class="text-xl font-extrabold tracking-tighter italic">INTEGRA<span class="text-orange-500">PRO</span></h1>
+            <div class="bg-orange-500 p-2 rounded-xl shadow-lg rotate-3"><i class="fas fa-crown text-xl text-white"></i></div>
+            <h1 class="text-xl font-extrabold tracking-tighter italic">INTEGRA<span class="text-orange-500 text-sm ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-8 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">v29.0 Build Stable</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-bold opacity-40 uppercase italic tracking-widest">Version 30.0 LTS</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
-        <header class="h-20 bg-[#0f172a]/50 backdrop-blur-md border-b border-white/5 flex justify-between items-center px-8">
-            <h2 id="view-title" class="text-lg font-black text-white uppercase italic tracking-tighter">Cargando...</h2>
+        <header class="h-20 bg-[#0f172a]/80 backdrop-blur-xl border-b border-white/5 flex justify-between items-center px-10 shrink-0">
+            <h2 id="view-title" class="text-xl font-black text-white uppercase italic tracking-tighter">Dashboard</h2>
             <div class="flex items-center gap-6">
                 <div class="text-right">
                     <p id="navFullName" class="font-extrabold text-white text-md leading-none"></p>
                     <p id="navRole" class="text-[10px] uppercase text-orange-500 font-black mt-1 tracking-widest"></p>
                 </div>
-                <button onclick="logout()" class="w-10 h-10 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
-                    <i class="fas fa-power-off text-sm"></i>
+                <button onclick="logout()" class="w-11 h-11 bg-red-500/10 text-red-500 rounded-2xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all border border-red-500/20">
+                    <i class="fas fa-power-off"></i>
                 </button>
             </div>
         </header>
 
-        <div id="content-scroll" class="p-8 overflow-y-auto h-full">
+        <div class="flex-1 overflow-y-auto p-10 custom-scrollbar">
             
-            <div id="view-admin-main" class="tab-content space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="glass-card p-6">
-                        <h3 class="text-xs font-black uppercase mb-4 text-orange-500 italic">Registro de Personal</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" id="adm_u_name" placeholder="Nombre Completo" class="bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-xs">
-                            <input type="text" id="adm_u_user" placeholder="Usuario ID" class="bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-xs">
-                            <input type="password" id="adm_u_pass" placeholder="Password" class="bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-xs">
-                            <select id="adm_u_role" class="bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-xs font-bold">
+            <div id="view-admin-main" class="tab-content space-y-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="glass-card p-8">
+                        <h3 class="text-xs font-black uppercase mb-6 text-orange-500 italic flex items-center gap-2">
+                            <i class="fas fa-user-plus"></i> Registro de Personal Académico
+                        </h3>
+                        <div class="grid grid-cols-2 gap-5">
+                            <input type="text" id="adm_u_name" placeholder="Nombre Completo" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs focus:border-orange-500 outline-none">
+                            <input type="text" id="adm_u_user" placeholder="Usuario / ID" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs focus:border-orange-500 outline-none">
+                            <input type="password" id="adm_u_pass" placeholder="Contraseña" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs focus:border-orange-500 outline-none">
+                            <select id="adm_u_role" class="bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs font-bold">
                                 <option value="Estudiante">Estudiante</option>
                                 <option value="Docente">Docente</option>
                                 <option value="Administrativo">Administrativo</option>
                             </select>
                         </div>
-                        <button onclick="saveUser()" class="w-full mt-4 bg-orange-600 py-3 rounded-xl font-black uppercase text-[10px] italic">Guardar Usuario</button>
+                        <button onclick="saveUser()" class="w-full mt-6 bg-orange-600 hover:bg-orange-500 py-4 rounded-2xl font-black uppercase text-xs italic transition-all">Sincronizar Usuario</button>
                     </div>
 
-                    <div class="glass-card p-6">
-                        <h3 class="text-xs font-black uppercase mb-4 text-blue-500 italic">Estructura Académica</h3>
-                        <div class="space-y-4">
-                            <div class="flex gap-2">
-                                <input type="text" id="adm_m_name" placeholder="Nombre Asignatura" class="flex-1 bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-xs">
-                                <button onclick="saveMateria()" class="bg-blue-600 px-6 rounded-xl font-black uppercase text-[10px]">Crear</button>
+                    <div class="glass-card p-8">
+                        <h3 class="text-xs font-black uppercase mb-6 text-blue-500 italic flex items-center gap-2">
+                            <i class="fas fa-book-medical"></i> Configuración de Asignaturas
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <input type="text" id="adm_m_name" placeholder="Nombre de la Materia" class="flex-1 bg-[#020617] border border-white/10 p-4 rounded-2xl text-white text-xs outline-none">
+                                <button onclick="saveMateria()" class="bg-blue-600 hover:bg-blue-500 px-8 rounded-2xl font-black uppercase text-xs italic">Crear</button>
                             </div>
-                            <div class="flex gap-2">
-                                <select id="sel_dest_mat" class="flex-1 bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-[10px]"></select>
-                                <select id="sel_dest_user" class="flex-1 bg-[#020617] border border-white/10 p-3 rounded-xl text-white text-[10px]"></select>
-                                <button onclick="matricularAction()" class="bg-indigo-600 px-4 rounded-xl font-black uppercase text-[10px]">Vincular</button>
+                            <div class="p-6 bg-[#020617] rounded-3xl border border-white/5 space-y-4">
+                                <div class="flex gap-4">
+                                    <select id="sel_dest_mat" class="flex-1 bg-[#0f172a] p-3 rounded-xl text-white text-[10px] font-bold border-none"></select>
+                                    <select id="sel_dest_user" class="flex-1 bg-[#0f172a] p-3 rounded-xl text-white text-[10px] font-bold border-none"></select>
+                                </div>
+                                <button onclick="matricularAction()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-black uppercase text-[10px] italic">Vincular Estudiante/Docente</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="glass-card overflow-hidden">
-                        <div class="p-3 bg-white/5 text-[9px] font-black uppercase italic opacity-50">Base de Usuarios</div>
-                        <div id="list_users" class="max-h-60 overflow-y-auto"></div>
+                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase italic text-gray-500">Usuarios Activos</div>
+                        <div id="list_users" class="max-h-80 overflow-y-auto divide-y divide-white/5"></div>
                     </div>
                     <div class="glass-card overflow-hidden">
-                        <div class="p-3 bg-white/5 text-[9px] font-black uppercase italic opacity-50">Base de Materias</div>
-                        <div id="list_mats" class="max-h-60 overflow-y-auto"></div>
+                        <div class="p-4 bg-white/5 text-[10px] font-black uppercase italic text-gray-500">Malla Curricular</div>
+                        <div id="list_mats" class="max-h-80 overflow-y-auto divide-y divide-white/5"></div>
                     </div>
                 </div>
             </div>
 
             <div id="view-admin-config" class="tab-content">
-                <div class="glass-card p-8 space-y-10">
-                    <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
-                    <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-white/5"></div>
-                    <div class="p-6 bg-[#020617] rounded-2xl border border-white/5">
-                        <h4 class="text-[10px] font-black uppercase text-orange-500 mb-4">Límites de Rúbrica</h4>
-                        <div class="grid grid-cols-3 gap-4">
-                            <input type="number" id="rub_bajo_input" class="bg-[#0f172a] p-3 rounded-xl text-red-500 font-bold border border-red-500/20">
-                            <input type="number" id="rub_basico_input" class="bg-[#0f172a] p-3 rounded-xl text-orange-500 font-bold border border-orange-500/20">
-                            <input type="number" id="rub_alto_input" class="bg-[#0f172a] p-3 rounded-xl text-green-500 font-bold border border-green-500/20">
+                <div class="glass-card p-10 space-y-12">
+                    <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                    <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-8 border-t border-white/5"></div>
+                    
+                    <div class="p-8 bg-[#020617] rounded-[2.5rem] border border-white/5">
+                        <h4 class="text-xs font-black uppercase text-orange-500 mb-6 italic">Rúbrica de Colores</h4>
+                        <div class="grid grid-cols-3 gap-8">
+                            <div class="space-y-2">
+                                <label class="text-[9px] font-bold text-gray-500 uppercase">Tope Bajo (Rojo)</label>
+                                <input type="number" id="rub_bajo_input" class="w-full bg-[#0f172a] p-4 rounded-2xl text-red-500 font-black border border-red-500/20">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[9px] font-bold text-gray-500 uppercase">Tope Medio (Naranja)</label>
+                                <input type="number" id="rub_basico_input" class="w-full bg-[#0f172a] p-4 rounded-2xl text-orange-500 font-black border border-orange-500/20">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[9px] font-bold text-gray-500 uppercase">Tope Alto (Verde)</label>
+                                <input type="number" id="rub_alto_input" class="w-full bg-[#0f172a] p-4 rounded-2xl text-green-500 font-black border border-green-500/20">
+                            </div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="bg-indigo-600 px-12 py-4 rounded-2xl font-black uppercase italic text-xs shadow-lg">Guardar Configuración Global</button>
+                    <button onclick="saveGlobalConfig()" class="bg-indigo-600 hover:bg-indigo-500 px-16 py-5 rounded-[2rem] font-black uppercase italic text-xs shadow-2xl transition-all">Sincronizar Configuración Maestro</button>
                 </div>
             </div>
 
             <div id="view-docente-mats" class="tab-content">
-                <div id="docente_cards_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                <div id="docente_cards_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             </div>
 
             <div id="view-estudiante-main" class="tab-content">
-                <div class="bg-indigo-600 p-10 rounded-[2.5rem] flex justify-between items-center mb-8">
+                <div class="bg-gradient-to-br from-indigo-700 to-indigo-900 p-12 rounded-[3.5rem] flex justify-between items-center mb-10 shadow-2xl border border-white/10">
                     <div>
-                        <h3 class="text-2xl font-black italic uppercase">Mi Perfil Académico</h3>
-                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mt-1">Revisión de notas y promedios por periodo</p>
+                        <h3 class="text-3xl font-black italic uppercase tracking-tighter">Mi Reporte de Notas</h3>
+                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-[0.3em] mt-2">Seguimiento en tiempo real</p>
                     </div>
-                    <button onclick="abrirSelectorUniversal()" class="bg-white text-indigo-600 px-8 py-3 rounded-xl font-black uppercase text-xs italic">Periodos</button>
+                    <button onclick="abrirSelectorUniversal()" class="bg-white text-indigo-900 px-10 py-5 rounded-3xl font-black uppercase text-xs italic shadow-xl hover:scale-105 transition">Seleccionar Ciclo</button>
                 </div>
-                <div id="boletin_container" class="space-y-6"></div>
+                <div id="boletin_container" class="space-y-8"></div>
             </div>
         </div>
     </main>
 
     <div id="modal_periodos" class="modal">
-        <div class="bg-[#0f172a] w-full max-w-sm rounded-[2rem] border border-white/10 overflow-hidden shadow-2xl">
-            <div class="p-6 bg-slate-900 flex justify-between items-center border-b border-white/5">
-                <span class="font-black uppercase text-xs italic tracking-widest">Selector de Ciclo</span>
-                <button onclick="closeModal('modal_periodos')" class="text-2xl">&times;</button>
+        <div class="bg-[#0f172a] w-full max-w-sm rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+            <div class="p-8 bg-slate-900 flex justify-between items-center border-b border-white/5">
+                <span class="font-black uppercase text-xs italic tracking-widest text-indigo-400">Ciclos Académicos</span>
+                <button onclick="closeModal('modal_periodos')" class="text-3xl font-light hover:text-orange-500">&times;</button>
             </div>
-            <div id="period_list_container" class="p-6 space-y-3"></div>
+            <div id="period_list_container" class="p-8 space-y-4"></div>
         </div>
     </div>
 
     <div id="modal_planilla" class="modal">
         <div class="bg-[#020617] w-full h-full flex flex-col">
-            <header class="p-6 bg-[#0f172a] border-b border-white/10 flex justify-between items-center shadow-xl">
+            <header class="p-8 bg-[#0f172a] border-b border-white/10 flex justify-between items-center shadow-2xl shrink-0">
                 <div class="flex items-center gap-6">
-                    <button onclick="closeModal('modal_planilla')" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-orange-500"><i class="fas fa-arrow-left text-xs"></i></button>
+                    <button onclick="closeModal('modal_planilla')" class="w-12 h-12 bg-white/5 rounded-2xl flex items-center justify-center hover:bg-orange-500 transition-all"><i class="fas fa-arrow-left"></i></button>
                     <div>
-                        <h2 id="planilla_header_txt" class="text-xl font-black uppercase italic tracking-tighter"></h2>
-                        <p id="period_dates_info" class="text-[9px] font-bold text-gray-500 uppercase tracking-widest"></p>
+                        <h2 id="planilla_header_txt" class="text-2xl font-black uppercase italic tracking-tighter"></h2>
+                        <p id="period_dates_info" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-1"></p>
                     </div>
                 </div>
-                <div class="flex items-center gap-4">
-                    <div id="timer_display" class="bg-red-500/10 text-red-500 px-4 py-2 rounded-xl border border-red-500/20 text-[9px] font-black uppercase"></div>
-                    <button id="save_btn" onclick="saveNotasDB()" class="bg-orange-600 px-8 py-3 rounded-xl font-black uppercase italic text-xs">Guardar Cambios</button>
+                <div class="flex items-center gap-6">
+                    <div id="timer_display" class="bg-red-500/10 text-red-500 px-6 py-3 rounded-2xl border border-red-500/20 text-[10px] font-black uppercase tracking-widest"></div>
+                    <button id="save_btn" onclick="saveNotasDB()" class="bg-orange-500 px-12 py-4 rounded-2xl font-black uppercase italic text-xs shadow-xl hover:bg-orange-400">Sincronizar Planilla</button>
                 </div>
             </header>
-            <div class="flex-1 overflow-auto p-8">
-                <div id="planilla_items_header" class="flex gap-4 mb-8 overflow-x-auto pb-4"></div>
-                <div id="planilla_students_list" class="space-y-4 pb-20"></div>
+            
+            <div class="flex-1 overflow-auto p-10 custom-scrollbar">
+                <div id="planilla_items_header" class="flex gap-6 mb-10 overflow-x-auto pb-4 shrink-0"></div>
+                
+                <div id="planilla_students_list" class="space-y-6 max-w-7xl mx-auto"></div>
             </div>
-            <footer class="p-4 bg-[#0f172a] border-t border-white/10 text-center"><span id="lock_msg" class="text-[9px] font-black uppercase italic opacity-40"></span></footer>
+
+            <footer class="p-4 bg-[#0f172a] border-t border-white/5 text-center">
+                <span id="lock_msg" class="text-[10px] font-black uppercase italic opacity-40"></span>
+            </footer>
         </div>
     </div>
 
     <script>
-        // --- DATA SYSTEM ---
+        // --- DATA ENGINE ---
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
@@ -200,21 +287,21 @@
         window.onload = () => {
             document.getElementById('navFullName').innerText = sesion.fullname;
             document.getElementById('navRole').innerText = sesion.role;
-            document.getElementById('sidebar').className = `w-64 flex flex-col sidebar-${sesion.role.toLowerCase().replace('administrativo','admin')}`;
+            document.getElementById('sidebar').className = `w-64 flex flex-col shrink-0 sidebar-${sesion.role.toLowerCase().replace('administrativo','admin')}`;
             renderMenu();
             loadHome();
         };
 
         function renderMenu() {
             const nav = document.getElementById('menu-nav');
-            let h = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-orange-500 rounded-2xl font-black text-[10px] uppercase italic transition-all flex items-center gap-3"><i class="fas fa-home"></i> Inicio</button>`;
+            let h = `<button onclick="loadHome()" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-black text-[11px] uppercase italic transition-all flex items-center gap-4"><i class="fas fa-th-large text-orange-500"></i> Dashboard</button>`;
             if(sesion.role === 'Administrativo') {
-                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-orange-500 rounded-2xl font-black text-[10px] uppercase italic transition-all flex items-center gap-3"><i class="fas fa-users-cog"></i> Estructura</button>
-                      <button onclick="showView('admin-config')" class="w-full text-left p-4 hover:bg-orange-500 rounded-2xl font-black text-[10px] uppercase italic transition-all flex items-center gap-3"><i class="fas fa-sliders-h"></i> Parámetros</button>`;
+                h += `<button onclick="showView('admin-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-black text-[11px] uppercase italic transition-all flex items-center gap-4"><i class="fas fa-users-cog text-blue-400"></i> Estructura</button>
+                      <button onclick="showView('admin-config')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-black text-[11px] uppercase italic transition-all flex items-center gap-4"><i class="fas fa-cogs text-indigo-400"></i> Parámetros</button>`;
             } else if(sesion.role === 'Docente') {
-                h += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-orange-500 rounded-2xl font-black text-[10px] uppercase italic transition-all flex items-center gap-3"><i class="fas fa-file-signature"></i> Planillas</button>`;
+                h += `<button onclick="showView('docente-mats')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-black text-[11px] uppercase italic transition-all flex items-center gap-4"><i class="fas fa-clipboard-list text-emerald-400"></i> Mis Planillas</button>`;
             } else {
-                h += `<button onclick="showView('estudiante-main')" class="w-full text-left p-4 hover:bg-orange-500 rounded-2xl font-black text-[10px] uppercase italic transition-all flex items-center gap-3"><i class="fas fa-award"></i> Notas</button>`;
+                h += `<button onclick="showView('estudiante-main')" class="w-full text-left p-4 hover:bg-white/10 rounded-2xl font-black text-[11px] uppercase italic transition-all flex items-center gap-4"><i class="fas fa-star text-indigo-400"></i> Calificaciones</button>`;
             }
             nav.innerHTML = h;
         }
@@ -241,18 +328,18 @@
             return "nota-green";
         }
 
-        // --- ADMIN ---
+        // --- CORE ADMIN ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
-                <div class="flex justify-between p-4 hover:bg-white/5 items-center border-b border-white/5">
-                    <div><b class="text-white text-xs">${u.fullname}</b><p class="text-[8px] uppercase text-gray-500">${u.role} | @${u.user}</p></div>
+                <div class="flex justify-between p-5 hover:bg-white/5 items-center">
+                    <div><b class="text-white text-xs">${u.fullname}</b><p class="text-[8px] uppercase text-gray-500 font-bold tracking-widest mt-1">${u.role} | @${u.user}</p></div>
                     <button onclick="deleteUser('${u.user}')" class="text-red-500 hover:scale-110 transition"><i class="fas fa-trash-alt"></i></button>
                 </div>`).join('');
             document.getElementById('list_mats').innerHTML = db_mats.map(m => `
-                <div class="flex justify-between p-4 hover:bg-white/5 items-center border-b border-white/5">
-                    <div><b class="text-white text-xs">${m.nombre}</b><p class="text-[8px] uppercase text-blue-400">Prof: ${db_users[m.docente]?.fullname || 'Pendiente'}</p></div>
+                <div class="flex justify-between p-5 hover:bg-white/5 items-center">
+                    <div><b class="text-white text-xs">${m.nombre}</b><p class="text-[8px] uppercase text-blue-400 font-bold tracking-widest mt-1">Prof: ${db_users[m.docente]?.fullname || 'Pendiente'}</p></div>
                     <div class="flex gap-4">
-                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[9px] font-black uppercase italic">Notas</button>
+                        <button onclick="abrirSelectorUniversal(${m.id})" class="text-emerald-400 text-[10px] font-black uppercase italic tracking-tighter">Gestionar Notas</button>
                         <button onclick="deleteMat(${m.id})" class="text-red-500 hover:scale-110 transition"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`).join('');
@@ -263,13 +350,13 @@
         function saveUser() {
             const u = document.getElementById('adm_u_user').value.trim(); const p = document.getElementById('adm_u_pass').value.trim();
             const n = document.getElementById('adm_u_name').value.trim(); const r = document.getElementById('adm_u_role').value;
-            if(!u || !p || !n) return alert("Faltan datos");
+            if(!u || !p || !n) return alert("Campos incompletos.");
             db_users[u] = { user:u, pass:p, fullname:n, role:r }; localStorage.setItem('db_users', JSON.stringify(db_users));
-            alert("Usuario Registrado"); loadAdmin();
+            alert("Usuario Registrado."); loadAdmin();
         }
-        function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
+        function deleteUser(u) { if(u!=='admin' && confirm("¿Eliminar usuario?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
         function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, item_counts:{}, item_names:{}}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
-        function deleteMat(id) { if(confirm("¿Borrar?")){ db_mats = db_mats.filter(m=>m.id!=id); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
+        function deleteMat(id) { if(confirm("¿Eliminar materia?")){ db_mats = db_mats.filter(m=>m.id!=id); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function matricularAction() {
             const m = db_mats.find(x => x.id == document.getElementById('sel_dest_mat').value);
             const uId = document.getElementById('sel_dest_user').value;
@@ -279,24 +366,26 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación Exitosa"); loadAdmin();
         }
 
-        // --- CONFIG ---
+        // --- CORE CONFIG ---
         function loadConfig() {
             document.getElementById('rub_bajo_input').value = db_conf.rubrica.bajo;
             document.getElementById('rub_basico_input').value = db_conf.rubrica.basico;
             document.getElementById('rub_alto_input').value = db_conf.rubrica.alto;
             document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
-                <div class="bg-[#020617] p-4 rounded-2xl border border-white/5 item-eval-row">
-                    <input type="text" class="it-name w-full font-black text-[10px] uppercase bg-transparent border-b border-indigo-500/30 mb-3 text-indigo-400" value="${it.name}">
-                    <div class="grid grid-cols-2 gap-2 text-[8px] font-bold">
-                        <div>PESO %<input type="number" class="it-weight w-full bg-[#0f172a] rounded p-1 mt-1 border-none" value="${it.weight}"></div>
-                        <div>NOTAS<input type="number" class="it-count w-full bg-[#0f172a] rounded p-1 mt-1 border-none" value="${it.count}"></div>
+                <div class="bg-[#020617] p-5 rounded-[2rem] border border-white/5 item-eval-row">
+                    <input type="text" class="it-name w-full font-black text-[10px] uppercase bg-transparent border-b border-white/10 mb-4 text-indigo-400" value="${it.name}">
+                    <div class="grid grid-cols-2 gap-4 text-[8px] font-bold">
+                        <div>PESO %<input type="number" class="it-weight w-full bg-[#0f172a] rounded-lg p-2 mt-1 border-none" value="${it.weight}"></div>
+                        <div>NOTAS<input type="number" class="it-count w-full bg-[#0f172a] rounded-lg p-2 mt-1 border-none" value="${it.count}"></div>
                     </div>
                 </div>`).join('');
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
-                <div class="bg-[#020617] p-4 rounded-2xl border border-white/5 period-config-row" data-p="${p}">
-                    <h4 class="font-black text-[9px] uppercase text-indigo-500 mb-3 italic">Periodo ${p}</h4>
-                    <input type="datetime-local" class="p-start w-full bg-[#0f172a] text-[10px] p-2 rounded-xl mb-2 border-none" value="${db_conf.periodos[p].start || ''}">
-                    <input type="datetime-local" class="p-end w-full bg-[#0f172a] text-[10px] p-2 rounded-xl border-none" value="${db_conf.periodos[p].end || ''}">
+                <div class="bg-[#020617] p-6 rounded-[2rem] border border-white/5 period-config-row" data-p="${p}">
+                    <h4 class="font-black text-[9px] uppercase text-indigo-500 mb-4 italic tracking-widest">Periodo ${p}</h4>
+                    <div class="space-y-3">
+                        <input type="datetime-local" class="p-start w-full bg-[#0f172a] text-[10px] p-3 rounded-xl border-none" value="${db_conf.periodos[p].start || ''}">
+                        <input type="datetime-local" class="p-end w-full bg-[#0f172a] text-[10px] p-3 rounded-xl border-none" value="${db_conf.periodos[p].end || ''}">
+                    </div>
                 </div>`).join('');
         }
 
@@ -315,122 +404,161 @@
                 db_conf.periodos[p].end = row.querySelector('.p-end').value;
             });
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); 
-            alert("Sistema Actualizado"); location.reload();
+            alert("Sincronización Completada."); location.reload();
         }
 
-        // --- PLANILLA ---
+        // --- CORE PLANILLA ---
         function changeColumnCount(itId, delta) {
             if(sesion.role !== 'Administrativo') return;
             if(!curMat.item_counts) curMat.item_counts = {};
-            const current = curMat.item_counts[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).count;
+            const baseCount = db_conf.items.find(x => x.id === itId).count;
+            const current = curMat.item_counts[`${curPer}_${itId}`] ?? baseCount;
             curMat.item_counts[`${curPer}_${itId}`] = Math.max(1, current + delta);
             localStorage.setItem('db_mats', JSON.stringify(db_mats));
             abrirPlanilla(curPer);
         }
 
         function getNotaCount(itId) {
-            return curMat.item_counts?.[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).count;
+            if(!curMat.item_counts) return db_conf.items.find(x => x.id === itId).count;
+            return curMat.item_counts[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).count;
+        }
+
+        function getCustomItemName(itId) {
+            if(!curMat.item_names) return db_conf.items.find(x => x.id === itId).name;
+            return curMat.item_names[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).name;
         }
 
         function abrirSelectorUniversal(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
             document.getElementById('period_list_container').innerHTML = [1,2,3].map(p => `
-                <div onclick="${sesion.role === 'Estudiante' ? `renderBoletinVertical(${p})` : `abrirPlanilla(${p})`}" class="bg-[#020617] border border-white/5 p-4 rounded-xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition-all group">
-                    <span class="font-black text-[10px] uppercase text-gray-500 group-hover:text-white">Periodo ${p}</span>
-                    <i class="fas fa-arrow-right text-gray-700 group-hover:text-orange-500"></i>
+                <div onclick="${sesion.role === 'Estudiante' ? `renderBoletinVertical(${p})` : `abrirPlanilla(${p})`}" class="bg-[#020617] border border-white/5 p-5 rounded-2xl flex justify-between items-center cursor-pointer hover:border-orange-500 transition-all group">
+                    <span class="font-black text-[11px] uppercase text-gray-500 group-hover:text-white italic">Periodo Académico ${p}</span>
+                    <i class="fas fa-chevron-right text-gray-700 group-hover:text-orange-500"></i>
                 </div>`).join('');
         }
 
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
             document.getElementById('docente_cards_container').innerHTML = mis.map(m => `
-                <div class="glass-card p-6 flex flex-col justify-between">
-                    <div>
-                        <div class="w-12 h-12 bg-orange-500/10 text-orange-500 rounded-xl flex items-center justify-center text-xl mb-4 border border-orange-500/20"><i class="fas fa-book"></i></div>
-                        <h4 class="text-md font-black text-white uppercase italic mb-1">${m.nombre}</h4>
-                        <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">${m.alumnos.length} Alumnos</p>
-                    </div>
-                    <button onclick="abrirSelectorUniversal(${m.id})" class="mt-6 w-full bg-orange-600 py-3 rounded-xl font-black uppercase italic text-[10px]">Cargar Notas</button>
+                <div class="glass-card p-8 group">
+                    <div class="w-14 h-14 bg-orange-500/10 text-orange-500 rounded-2xl flex items-center justify-center text-xl mb-6 border border-orange-500/20 shadow-inner"><i class="fas fa-journal-whills"></i></div>
+                    <h4 class="text-xl font-black text-white uppercase italic tracking-tighter mb-2">${m.nombre}</h4>
+                    <p class="text-[9px] font-bold text-gray-500 uppercase tracking-widest">${m.alumnos.length} Estudiantes</p>
+                    <button onclick="abrirSelectorUniversal(${m.id})" class="mt-8 w-full bg-orange-600 hover:bg-orange-500 py-4 rounded-2xl font-black uppercase italic text-xs transition-all shadow-xl">Cargar Notas</button>
                 </div>`).join('');
         }
 
         function abrirPlanilla(p) {
             curPer = p; closeModal('modal_periodos'); openModal('modal_planilla');
             const isAdmin = sesion.role === 'Administrativo';
-            if(isAdmin) { isLocked = false; document.getElementById('lock_msg').innerText = "ADMIN BYPASS"; document.getElementById('save_btn').style.display = 'block'; }
+            if(isAdmin) { isLocked = false; document.getElementById('lock_msg').innerText = "ADMIN MODO: BYPASS ACTIVADO"; document.getElementById('save_btn').style.display = 'block'; }
             else { checkLock(db_conf.periodos[p].start, db_conf.periodos[p].end); }
             
-            document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | P${p}`;
+            document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | Ciclo ${p}`;
             document.getElementById('period_dates_info').innerText = `INICIO: ${db_conf.periodos[p].start || '--'} | CIERRE: ${db_conf.periodos[p].end || '--'}`;
 
+            // Render Header Items
             document.getElementById('planilla_items_header').innerHTML = db_conf.items.map(it => {
                 const count = getNotaCount(it.id);
-                const customName = curMat.item_names?.[`${curPer}_${it.id}`] ?? it.name;
+                const customName = getCustomItemName(it.id);
                 return `
-                <div class="min-w-[180px] p-4 rounded-2xl border border-white/5 flex flex-col gap-2" style="background: ${it.color}10">
+                <div class="min-w-[200px] p-5 rounded-3xl border border-white/5 flex flex-col gap-3" style="background: ${it.color}15">
                     <div class="flex justify-between items-center">
-                        ${isAdmin ? `<input type="text" class="bg-transparent border-none text-[10px] font-black text-white uppercase it-custom-name w-24" data-itid="${it.id}" value="${customName}">` : `<span class="text-[10px] font-black uppercase text-white">${customName}</span>`}
-                        <span class="text-[8px] font-black bg-black/30 px-2 py-0.5 rounded">${it.weight}%</span>
+                        ${isAdmin ? `<input type="text" class="it-custom-name-input it-custom-name" data-itid="${it.id}" value="${customName}">` : `<span class="text-[10px] font-black uppercase text-white">${customName}</span>`}
+                        <span class="text-[9px] font-black bg-black/40 px-3 py-1 rounded-lg">${it.weight}%</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="text-[8px] font-bold opacity-50 uppercase">${count} Notas</span>
-                        ${isAdmin ? `<div class="flex gap-2"><button onclick="changeColumnCount('${it.id}', 1)" class="w-5 h-5 bg-white/10 rounded flex items-center justify-center text-[10px]">+</button><button onclick="changeColumnCount('${it.id}', -1)" class="w-5 h-5 bg-white/10 rounded flex items-center justify-center text-[10px]">-</button></div>` : ''}
+                        <span class="text-[8px] font-bold opacity-40 uppercase tracking-widest">${count} Notas Activas</span>
+                        ${isAdmin ? `<div class="flex gap-2"><button onclick="changeColumnCount('${it.id}', 1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">+</button><button onclick="changeColumnCount('${it.id}', -1)" class="w-6 h-6 bg-white/10 rounded-lg flex items-center justify-center text-xs hover:bg-white/20">-</button></div>` : ''}
                     </div>
                 </div>`;
             }).join('');
 
+            // Render Students Cards
             document.getElementById('planilla_students_list').innerHTML = curMat.alumnos.map(uid => {
                 const est = db_users[uid] || {fullname: uid}; const key = `${curMat.id}_${curPer}_${uid}`; const n = db_notas[key] || {};
                 let itemsHtml = db_conf.items.map(it => {
                     const count = getNotaCount(it.id); let ni = "";
-                    for(let i=0; i<count; i++) ni += `<div class="flex flex-col gap-1"><input type="number" class="input-nota ${getNotaColor(n[it.id+'_'+i])}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${n[it.id+'_'+i] || ''}" ${isLocked?'disabled':''}>
-                        <input type="text" class="input-desc" placeholder="Desc..." data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${n[it.id+'_'+i+'_desc'] || ''}" ${isLocked?'disabled':''}></div>`;
-                    return `<div class="p-3 bg-white/5 rounded-xl border border-white/5 flex flex-wrap gap-2"><span class="w-full text-[7px] font-black opacity-30 uppercase">${it.name}</span>${ni}</div>`;
+                    for(let i=0; i<count; i++) {
+                        const val = n[it.id+'_'+i] || ''; const d = n[it.id+'_'+i+'_desc'] || '';
+                        ni += `<div class="flex flex-col gap-1">
+                                <input type="number" step="1" class="input-nota ${getNotaColor(val)}" data-uid="${uid}" data-it="${it.id}" data-idx="${i}" value="${val}" ${isLocked?'disabled':''}>
+                                <input type="text" class="input-desc" placeholder="Evidencia..." data-uid="${uid}" data-it="${it.id}" data-idx="${i}" data-type="desc" value="${d}" ${isLocked?'disabled':''}>
+                               </div>`;
+                    }
+                    return `<div class="p-5 bg-black/40 rounded-2xl border border-white/5 flex flex-wrap gap-3"><span class="w-full text-[8px] font-black opacity-30 uppercase tracking-widest mb-1">${getCustomItemName(it.id)}</span>${ni}</div>`;
                 }).join('');
-                return `<div class="glass-card p-6 flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-48 text-center border-r border-white/5 pr-4">
-                        <h5 class="text-white font-black uppercase italic text-xs mb-1">${est.fullname}</h5>
-                        <p id="def_${uid}" class="text-3xl font-black mt-2 tracking-tighter">--</p>
+
+                return `
+                <div class="student-row-card">
+                    <div class="w-56 flex flex-col items-center text-center shrink-0 border-r border-white/5 pr-8">
+                        <div class="w-20 h-20 bg-indigo-500/10 rounded-full flex items-center justify-center text-3xl mb-4 text-indigo-400 border border-indigo-500/20 shadow-inner"><i class="fas fa-user-graduate"></i></div>
+                        <h5 class="text-white font-black uppercase italic text-sm mb-1">${est.fullname}</h5>
+                        <p class="text-[9px] font-bold text-gray-600 uppercase mb-6 tracking-widest">Estudiante ID: ${uid}</p>
+                        <div class="mt-auto pt-6 border-t border-white/5 w-full">
+                            <span class="text-[9px] font-black text-gray-500 uppercase block mb-1">Definitiva</span>
+                            <span id="def_${uid}" class="text-4xl font-black tracking-tighter">--</span>
+                        </div>
                     </div>
-                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4">${itemsHtml}</div>
+                    <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-5">${itemsHtml}</div>
                 </div>`;
             }).join('');
             calc();
         }
 
-        // --- ESTUDIANTE ---
+        // --- CORE ESTUDIANTE ---
         function renderBoletinVertical(p) {
             curPer = p; closeModal('modal_periodos');
             const mis = db_mats.filter(m => m.alumnos.includes(sesion.user));
             const cont = document.getElementById('boletin_container');
-            if(mis.length === 0) return cont.innerHTML = "<p class='text-center py-20 font-black opacity-20 uppercase'>Sin registros</p>";
+            if(mis.length === 0) return cont.innerHTML = `<div class="py-20 text-center"><i class="fas fa-ghost text-5xl opacity-10 mb-5"></i><p class="font-black uppercase italic opacity-20">No tienes registros en este periodo</p></div>`;
+            
             cont.innerHTML = mis.map(m => {
                 const k = `${m.id}_${p}_${sesion.user}`; const n = db_notas[k] || {}; let det = "", defF = 0;
                 db_conf.items.forEach(it => {
-                    let s = 0, count = m.item_counts?.[`${p}_${it.id}`] ?? it.count;
+                    let s = 0; const count = m.item_counts?.[`${p}_${it.id}`] ?? it.count;
+                    const cName = m.item_names?.[`${p}_${it.id}`] ?? it.name;
+                    let rows = "";
                     for(let i=0; i<count; i++) {
                         const v = parseFloat(n[it.id+'_'+i] || 0); s += v;
-                        det += `<div class="p-4 bg-[#020617]/50 border border-white/5 rounded-2xl flex items-center gap-4"><div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center font-black text-xs ${getNotaColor(v)}">${v || '0'}</div><div class="flex-1 text-[9px] uppercase font-bold opacity-70">${it.name} | N${i+1}<p class="italic font-normal opacity-50 text-[11px]">"${n[it.id+'_'+i+'_desc'] || 'Sin nota'}"</p></div></div>`;
+                        rows += `<div class="p-5 bg-black/40 rounded-3xl border border-white/5 flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-2xl bg-white/5 flex flex-col items-center justify-center border border-white/10 shrink-0"><span class="text-[8px] font-bold text-gray-500 mb-1">N${i+1}</span><span class="text-xl font-black ${getNotaColor(v)}">${v || '0'}</span></div>
+                            <div class="flex-1"><p class="text-[9px] font-black uppercase italic text-indigo-400">${cName}</p><p class="text-xs text-gray-400 italic font-medium mt-1">"${n[it.id+'_'+i+'_desc'] || 'Sin observaciones.'}"</p></div>
+                        </div>`;
                     }
                     defF += (count > 0 ? (s/count) : 0) * (it.weight/100);
+                    det += `<div class="mb-8"><div class="px-2 mb-4"><span class="text-[10px] font-black uppercase italic text-white opacity-50 tracking-widest">${cName} (${it.weight}%)</span></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4">${rows}</div></div>`;
                 });
-                return `<div class="glass-card p-6"><div class="flex justify-between items-center mb-6" onclick="this.nextElementSibling.classList.toggle('open')"><div><h4 class="text-xl font-black text-white italic uppercase">${m.nombre}</h4><p class="text-[9px] font-bold text-orange-500 uppercase tracking-[0.3em]">Nota Final: ${defF.toFixed(1)}</p></div><i class="fas fa-chevron-down opacity-20"></i></div><div class="accordion-content grid grid-cols-1 md:grid-cols-2 gap-4">${det}</div></div>`;
+                return `
+                <div class="glass-card overflow-hidden">
+                    <div class="p-10 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-all" onclick="this.nextElementSibling.classList.toggle('open')">
+                        <div class="flex items-center gap-6">
+                            <div class="w-20 h-20 bg-orange-500/10 text-orange-500 rounded-[2rem] flex items-center justify-center text-3xl border border-orange-500/20 shadow-inner"><i class="fas fa-award"></i></div>
+                            <div><h4 class="text-2xl font-black text-white italic uppercase tracking-tighter">${m.nombre}</h4><p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em] mt-1">Rendimiento Académico</p></div>
+                        </div>
+                        <div class="text-right flex flex-col items-end">
+                            <span class="text-[9px] font-black text-gray-500 uppercase block mb-1">Puntaje Final</span>
+                            <span class="text-5xl font-black text-white tracking-tighter">${defF.toFixed(1)}</span>
+                        </div>
+                    </div>
+                    <div class="accordion-content bg-[#1e293b]/50 p-10 border-t border-white/5">${det}</div>
+                </div>`;
             }).join('');
         }
 
-        // --- CORE ---
+        // --- CORE LOGIC ---
         function checkLock(start, end) {
             const disp = document.getElementById('timer_display'); const btn = document.getElementById('save_btn');
             if(timerInterval) clearInterval(timerInterval);
             const now = new Date().getTime(); const sDate = new Date(start).getTime(); const eDate = new Date(end).getTime();
-            if(!start || !end) { isLocked = true; disp.innerText = "BLOQUEADO"; btn.style.display = 'none'; return; }
+            if(!start || !end) { isLocked = true; disp.innerText = "ACCESO RESTRINGIDO"; btn.style.display = 'none'; return; }
             const up = () => {
                 const cur = new Date().getTime();
                 if(cur < sDate) { isLocked = true; disp.innerText = "BLOQUEADO"; btn.style.display = 'none'; }
                 else if(cur > eDate) { isLocked = true; disp.innerText = "SISTEMA CERRADO"; btn.style.display = 'none'; clearInterval(timerInterval); }
                 else { isLocked = false; btn.style.display = 'block'; const diff = eDate - cur; const d = Math.floor(diff/(1000*60*60*24)), h = Math.floor((diff%(1000*60*60*24))/(1000*60*60)), m = Math.floor((diff%(1000*60*60))/(1000*60)), s = Math.floor((diff%(1000*60))/1000);
-                    disp.innerText = `CIERRE: ${d}d ${h}h ${m}m ${s}s`;
+                    disp.innerText = `TIEMPO: ${d}d ${h}h ${m}m ${s}s`;
                 }
             };
             up(); timerInterval = setInterval(up, 1000);
@@ -448,7 +576,7 @@
                 const dInp = document.querySelector(`.input-desc[data-uid="${uid}"][data-it="${it}"][data-idx="${idx}"]`);
                 db_notas[key][`${it}_${idx}_desc`] = dInp ? dInp.value : '';
             });
-            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Sincronizado"); calc();
+            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Nube Sincronizada."); calc();
         }
 
         function calc() {
@@ -460,7 +588,7 @@
                     for(let i=0; i<count; i++) s += parseFloat(document.querySelector(`.input-nota[data-uid="${uid}"][data-it="${it.id}"][data-idx="${i}"]`)?.value || 0);
                     f += (count > 0 ? (s/count) : 0) * (it.weight/100);
                 });
-                const el = document.getElementById(`def_${uid}`); if(el){ el.innerText = f.toFixed(1); el.className = `text-3xl font-black mt-2 tracking-tighter ${getNotaColor(f)}`; }
+                const el = document.getElementById(`def_${uid}`); if(el){ el.innerText = f.toFixed(1); el.className = `text-4xl font-black tracking-tighter ${getNotaColor(f)}`; }
             });
         }
 
