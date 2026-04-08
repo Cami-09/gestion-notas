@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v26.0 | Sistema Unificado Total</title>
+    <title>Integra Pro v27.0 | Sistema Unificado Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -22,6 +22,8 @@
         .nota-red { color: #ef4444 !important; } 
         .nota-orange { color: #f97316 !important; } 
         .nota-green { color: #10b981 !important; }
+        .input-item-name { background: transparent; border: none; border-bottom: 1px dashed rgba(255,255,255,0.5); color: white; text-align: center; font-weight: 900; text-transform: uppercase; width: 80%; cursor: edit; }
+        .input-item-name:focus { outline: none; border-bottom-style: solid; }
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 10px; }
     </style>
@@ -34,7 +36,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v26.0 Plus Edition</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v27.0 Admin Elite</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -52,6 +54,7 @@
         </header>
 
         <div class="p-6 overflow-y-auto h-full pb-24">
+            
             <div id="view-admin-main" class="tab-content space-y-6">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="bg-white p-6 rounded-3xl shadow-sm border border-gray-200">
@@ -98,19 +101,19 @@
 
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
-                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración Global del Sistema</h3>
+                    <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración Global</h3>
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
                     
                     <div class="mt-8 p-6 bg-gray-50 rounded-3xl border">
-                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Rúbrica de Calificaciones</h4>
+                        <h4 class="font-black text-[10px] uppercase mb-4 italic text-indigo-600">Límites de Rúbrica</h4>
                         <div class="grid grid-cols-3 gap-6">
-                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Bajo (Rojo)</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Medio (Naranja)</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
-                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Alto (Verde)</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-red-500 uppercase">Tope Rojo</label><input type="number" id="rub_bajo_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-orange-500 uppercase">Tope Naranja</label><input type="number" id="rub_basico_input" class="w-full p-2 border rounded-lg"></div>
+                            <div><label class="text-[9px] font-bold text-green-500 uppercase">Tope Verde</label><input type="number" id="rub_alto_input" class="w-full p-2 border rounded-lg"></div>
                         </div>
                     </div>
-                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Configuración Global</button>
+                    <button onclick="saveGlobalConfig()" class="mt-8 bg-indigo-600 text-white px-12 py-3 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-105 transition">Guardar Todo</button>
                 </div>
             </div>
 
@@ -128,11 +131,11 @@
             <div id="view-estudiante-main" class="tab-content space-y-4">
                 <div class="bg-white p-10 rounded-[3rem] shadow-sm border-l-8 border-indigo-600 flex justify-between items-center">
                     <div>
-                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Consulta de Notas</h3>
-                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Vista vertical detallada</p>
+                        <h3 class="font-black text-indigo-900 text-xl uppercase italic">Mis Notas</h3>
+                        <p class="text-gray-400 font-bold uppercase text-[10px] mt-2 tracking-widest">Consulta tu rendimiento académico</p>
                     </div>
                     <button onclick="abrirSelectorUniversal(null)" class="bg-orange-500 text-white px-12 py-4 rounded-2xl font-black text-xs uppercase italic shadow-xl">
-                        <i class="fas fa-eye mr-2"></i> Ver Mis Notas
+                        <i class="fas fa-eye mr-2"></i> Ver Periodos
                     </button>
                 </div>
                 <div id="boletin_container" class="mt-8 space-y-4"></div>
@@ -143,7 +146,7 @@
     <div id="modal_periodos" class="modal">
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] shadow-2xl overflow-hidden">
             <div class="p-6 bg-slate-900 text-white flex justify-between items-center">
-                <span class="font-black uppercase text-[10px] tracking-widest italic">Periodo Académico</span>
+                <span class="font-black uppercase text-[10px] italic">Seleccionar Periodo</span>
                 <button onclick="closeModal('modal_periodos')" class="text-2xl">&times;</button>
             </div>
             <div id="period_list_container" class="p-8 space-y-4"></div>
@@ -156,11 +159,11 @@
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex items-center gap-4">
                         <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg hover:bg-white/40 transition"><i class="fas fa-arrow-left"></i></button>
-                        <span id="planilla_header_txt" class="font-black uppercase text-xs italic tracking-widest"></span>
+                        <span id="planilla_header_txt" class="font-black uppercase text-xs italic"></span>
                     </div>
-                    <div id="timer_display" class="bg-red-500 px-4 py-2 rounded-xl font-black text-[10px] shadow-lg border border-white/20 uppercase tracking-tighter"></div>
+                    <div id="timer_display" class="bg-red-500 px-4 py-2 rounded-xl font-black text-[10px] shadow-lg border border-white/20 uppercase"></div>
                 </div>
-                <div id="period_dates_info" class="text-[9px] font-bold opacity-80 flex gap-6 uppercase italic"></div>
+                <div id="period_dates_info" class="text-[9px] font-bold opacity-80 flex gap-6 uppercase"></div>
             </div>
             <div class="overflow-auto flex-1 bg-gray-50">
                 <table class="w-full text-[10px] border-collapse bg-white">
@@ -169,8 +172,8 @@
                 </table>
             </div>
             <div class="p-4 bg-gray-50 border-t flex justify-between items-center px-10">
-                <span id="lock_msg" class="text-[10px] font-black uppercase italic tracking-widest"></span>
-                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Sincronizar Cambios</button>
+                <span id="lock_msg" class="text-[10px] font-black uppercase italic"></span>
+                <button id="save_btn" onclick="saveNotasDB()" class="bg-emerald-600 text-white px-12 py-3 rounded-2xl font-black uppercase text-[10px] shadow-xl hover:bg-emerald-700 transition">Sincronizar Datos</button>
             </div>
         </div>
     </div>
@@ -248,7 +251,7 @@
             document.getElementById('list_mats').innerHTML = db_mats.map(m => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${m.nombre}</b><p class="text-[9px] uppercase text-blue-400">Docente: ${db_users[m.docente]?.fullname || 'Sin asignar'}</p></div>
                 <div class="flex gap-2">
-                    <button onclick="abrirSelectorUniversal(${m.id})" class="bg-blue-500 text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase italic">Notas</button>
+                    <button onclick="abrirSelectorUniversal(${m.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-[8px] font-black uppercase italic">Notas</button>
                     <button onclick="deleteMat(${m.id})" class="text-red-300 hover:text-red-600"><i class="fas fa-trash"></i></button>
                 </div></div>`).join('');
             document.getElementById('sel_dest_mat').innerHTML = db_mats.map(m => `<option value="${m.id}">${m.nombre}</option>`).join('');
@@ -264,7 +267,7 @@
         }
 
         function deleteUser(u) { if(u!=='admin' && confirm("¿Borrar?")){ delete db_users[u]; localStorage.setItem('db_users', JSON.stringify(db_users)); loadAdmin(); } }
-        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01-A', item_counts:{}}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
+        function saveMateria() { const n = document.getElementById('adm_m_name').value; if(n){ db_mats.push({id:Date.now(), nombre:n, alumnos:[], docente:null, grupo:'01-A', item_counts:{}, item_names:{}}); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         function deleteMat(id) { if(confirm("¿Borrar?")){ db_mats = db_mats.filter(m=>m.id!=id); localStorage.setItem('db_mats', JSON.stringify(db_mats)); loadAdmin(); } }
         
         function matricularAction() {
@@ -287,7 +290,7 @@
                     <input type="text" class="it-name w-full font-black text-xs uppercase bg-transparent border-b mb-3" value="${it.name}">
                     <div class="grid grid-cols-2 gap-2 text-[9px] font-bold">
                         <span>PESO %</span><input type="number" class="it-weight w-full border rounded px-1" value="${it.weight}">
-                        <span>NOTAS BASE</span><input type="number" class="it-count w-full border rounded px-1" value="${it.count}">
+                        <span>NOTAS</span><input type="number" class="it-count w-full border rounded px-1" value="${it.count}">
                     </div>
                 </div>`).join('');
             
@@ -319,25 +322,29 @@
             });
 
             localStorage.setItem('db_conf', JSON.stringify(db_conf)); 
-            alert("Configuración Global Guardada"); location.reload();
+            alert("Configuración Sincronizada"); location.reload();
         }
 
         // --- PLANILLA DINÁMICA ---
         function changeColumnCount(itId, delta) {
+            if(sesion.role !== 'Administrativo') return; // Solo Admin puede
             if(!curMat.item_counts) curMat.item_counts = {};
-            // Si no existe cuenta específica para esta materia/periodo/item, usamos la base de db_conf
             const baseCount = db_conf.items.find(x => x.id === itId).count;
             const current = curMat.item_counts[`${curPer}_${itId}`] ?? baseCount;
             const nuevo = Math.max(1, current + delta);
-            
             curMat.item_counts[`${curPer}_${itId}`] = nuevo;
             localStorage.setItem('db_mats', JSON.stringify(db_mats));
-            abrirPlanilla(curPer); // Refrescar vista
+            abrirPlanilla(curPer);
         }
 
         function getNotaCount(itId) {
             if(!curMat.item_counts) return db_conf.items.find(x => x.id === itId).count;
             return curMat.item_counts[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).count;
+        }
+
+        function getCustomItemName(itId) {
+            if(!curMat.item_names) return db_conf.items.find(x => x.id === itId).name;
+            return curMat.item_names[`${curPer}_${itId}`] ?? db_conf.items.find(x => x.id === itId).name;
         }
 
         function abrirSelectorUniversal(mid = null) {
@@ -363,9 +370,10 @@
         function abrirPlanilla(p) {
             curPer = p; closeModal('modal_periodos'); openModal('modal_planilla');
             
-            if(sesion.role === 'Administrativo') {
+            const isAdmin = sesion.role === 'Administrativo';
+            if(isAdmin) {
                 isLocked = false;
-                document.getElementById('lock_msg').innerText = "ACCESO ADMIN: SIN RESTRICCIÓN DE FECHAS";
+                document.getElementById('lock_msg').innerText = "GESTIÓN DE ADMINISTRADOR: SIN RESTRICCIONES";
                 document.getElementById('lock_msg').className = "text-blue-600 font-black uppercase italic";
                 document.getElementById('save_btn').style.display = 'block';
             } else {
@@ -375,25 +383,33 @@
             document.getElementById('planilla_header_txt').innerText = `${curMat.nombre} | P${p}`;
             document.getElementById('period_dates_info').innerHTML = `<span><i class="fas fa-calendar mr-1"></i> Inicio: ${db_conf.periodos[p].start || 'S/D'}</span> <span><i class="fas fa-clock mr-1"></i> Cierre: ${db_conf.periodos[p].end || 'S/D'}</span>`;
             
-            // Header Dinámico con botones +/-
             let h1 = `<tr class="bg-slate-800 text-white text-[9px] uppercase"><th rowspan="2" class="p-3 border border-white/10 text-left">Estudiante</th>`;
             let h2 = `<tr class="bg-gray-100 text-[8px] font-black uppercase text-gray-500">`;
             
             db_conf.items.forEach(it => {
                 const count = getNotaCount(it.id);
+                const customName = getCustomItemName(it.id);
+                
+                // Si es admin, mostramos input para nombre y botones de +/-
+                const adminControls = isAdmin ? `
+                    <div class="absolute right-1 top-1 flex gap-1">
+                        <button onclick="changeColumnCount('${it.id}', 1)" class="bg-white/20 hover:bg-white/40 w-4 h-4 rounded flex items-center justify-center">+</button>
+                        <button onclick="changeColumnCount('${it.id}', -1)" class="bg-white/20 hover:bg-white/40 w-4 h-4 rounded flex items-center justify-center">-</button>
+                    </div>` : '';
+
+                const headerContent = isAdmin ? 
+                    `<input type="text" class="input-item-name it-custom-name" data-itid="${it.id}" value="${customName}">` : 
+                    `<span>${customName}</span>`;
+
                 h1 += `<th colspan="${count * 2}" class="border border-white/10 p-1 relative" style="background:${it.color}">
-                        ${it.name}
-                        <div class="absolute right-1 top-1 flex gap-1">
-                            <button onclick="changeColumnCount('${it.id}', 1)" class="bg-white/20 hover:bg-white/40 w-4 h-4 rounded flex items-center justify-center">+</button>
-                            <button onclick="changeColumnCount('${it.id}', -1)" class="bg-white/20 hover:bg-white/40 w-4 h-4 rounded flex items-center justify-center">-</button>
-                        </div>
+                        ${headerContent}
+                        ${adminControls}
                        </th>`;
                 for(let i=1; i<=count; i++) h2 += `<th class="border p-1">N${i}</th><th class="border p-1 bg-gray-50">Desc</th>`;
             });
             h1 += `<th rowspan="2" class="bg-orange-500 border border-white/10 px-3 text-center">DEF</th></tr>`;
             document.getElementById('planilla_thead').innerHTML = h1 + h2 + `</tr>`;
 
-            // Body Dinámico
             document.getElementById('planilla_tbody').innerHTML = curMat.alumnos.map(uid => {
                 const est = db_users[uid] || {fullname: uid}; const key = `${curMat.id}_${curPer}_${uid}`; const n = db_notas[key] || {};
                 let cells = "";
@@ -423,6 +439,7 @@
                 db_conf.items.forEach(it => {
                     let s = 0, rowList = "";
                     const count = m.item_counts ? (m.item_counts[`${p}_${it.id}`] ?? it.count) : it.count;
+                    const customName = m.item_names ? (m.item_names[`${p}_${it.id}`] ?? it.name) : it.name;
                     for(let i=0; i<count; i++) {
                         const v = parseFloat(n[it.id+'_'+i] || 0); const d = n[it.id+'_'+i+'_desc'] || 'Sin descripción.';
                         s += v;
@@ -430,12 +447,12 @@
                                     <div class="w-14 h-14 bg-gray-50 border-2 rounded-2xl flex flex-col items-center justify-center font-black">
                                         <span class="text-[7px] text-gray-400">NOTA ${i+1}</span><span class="text-xl ${getNotaColor(v)}">${v || '--'}</span>
                                     </div>
-                                    <div class="flex-1"><p class="text-[9px] font-black uppercase tracking-widest" style="color:${it.color}">${it.name}</p><p class="text-xs text-gray-500 italic mt-1">"${d}"</p></div>
+                                    <div class="flex-1"><p class="text-[9px] font-black uppercase tracking-widest" style="color:${it.color}">${customName}</p><p class="text-xs text-gray-500 italic mt-1">"${d}"</p></div>
                                  </div>`;
                     }
                     const prom = count > 0 ? (s/count) : 0; defFinal += prom * (it.weight/100);
                     det += `<div class="mb-4 bg-gray-50 rounded-2xl border overflow-hidden">
-                                <div class="p-3 text-white font-black text-[10px] uppercase italic" style="background:${it.color}">${it.name} (${it.weight}%)</div>
+                                <div class="p-3 text-white font-black text-[10px] uppercase" style="background:${it.color}">${customName} (${it.weight}%)</div>
                                 ${rowList}
                             </div>`;
                 });
@@ -469,6 +486,17 @@
         }
 
         function saveNotasDB() {
+            // Guardar Nombres Personalizados (Solo Admin)
+            if(sesion.role === 'Administrativo') {
+                if(!curMat.item_names) curMat.item_names = {};
+                document.querySelectorAll('.it-custom-name').forEach(inp => {
+                    const itId = inp.dataset.itid;
+                    curMat.item_names[`${curPer}_${itId}`] = inp.value;
+                });
+                localStorage.setItem('db_mats', JSON.stringify(db_mats));
+            }
+
+            // Guardar Notas
             document.querySelectorAll('.input-nota').forEach(inp => {
                 const {uid, it, idx} = inp.dataset; const key = `${curMat.id}_${curPer}_${uid}`;
                 if(!db_notas[key]) db_notas[key] = {};
@@ -476,7 +504,7 @@
                 const dInp = document.querySelector(`.input-desc[data-uid="${uid}"][data-it="${it}"][data-idx="${idx}"]`);
                 db_notas[key][`${it}_${idx}_desc`] = dInp ? dInp.value : '';
             });
-            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Calificaciones Sincronizadas"); calc();
+            localStorage.setItem('db_notas', JSON.stringify(db_notas)); alert("Datos Sincronizados"); calc();
         }
 
         function calc() {
