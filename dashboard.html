@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integra Pro v20.0 | Sistema Unificado Total</title>
+    <title>Integra Pro v21.0 | Sistema Unificado Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -34,7 +34,7 @@
             <h1 class="text-xl font-black italic tracking-tighter uppercase">INTEGRA<span class="text-orange-500 text-[10px] ml-1">PRO</span></h1>
         </div>
         <nav id="menu-nav" class="mt-6 flex-1 px-4 space-y-2"></nav>
-        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v20.0 Stable Build</div>
+        <div class="p-4 bg-black/20 text-[10px] text-center font-black opacity-40 uppercase tracking-widest">v21.0 Stable Build</div>
     </aside>
 
     <main class="flex-1 flex flex-col overflow-hidden">
@@ -99,6 +99,7 @@
             <div id="view-admin-config" class="tab-content">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border-t-8 border-indigo-600">
                     <h3 class="font-black text-xs uppercase text-indigo-600 mb-8 italic">Configuración de Periodos y Rúbrica</h3>
+                    
                     <div id="config_items_container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"></div>
                     
                     <div id="config_periods_container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 pt-10 border-t border-dashed"></div>
@@ -156,7 +157,7 @@
             <div class="p-4 bg-emerald-700 text-white shadow-lg">
                 <div class="flex justify-between items-center mb-2">
                     <div class="flex items-center gap-4">
-                        <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg"><i class="fas fa-arrow-left"></i></button>
+                        <button onclick="closeModal('modal_planilla')" class="bg-white/20 p-2 rounded-lg hover:bg-white/40 transition"><i class="fas fa-arrow-left"></i></button>
                         <span id="planilla_header_txt" class="font-black uppercase text-xs italic tracking-widest"></span>
                     </div>
                     <div id="timer_display" class="bg-red-500 px-4 py-2 rounded-xl font-black text-[10px] shadow-lg border border-white/20 uppercase tracking-tighter"></div>
@@ -177,7 +178,7 @@
     </div>
 
     <script>
-        // --- DATA CORE ---
+        // --- DATA SYSTEM ---
         const sesion = JSON.parse(sessionStorage.getItem('activeUser'));
         if(!sesion) window.location.href = 'index.html';
 
@@ -241,7 +242,7 @@
             return "nota-green";
         }
 
-        // --- ADMIN ---
+        // --- ADMIN: USUARIOS Y MATERIAS ---
         function loadAdmin() {
             document.getElementById('list_users').innerHTML = Object.values(db_users).map(u => `
                 <div class="flex justify-between p-3 border-b border-gray-100 items-center"><div><b>${u.fullname}</b><p class="text-[9px] uppercase text-gray-400">${u.role} | @${u.user}</p></div>
@@ -274,34 +275,61 @@
             localStorage.setItem('db_mats', JSON.stringify(db_mats)); alert("Vinculación exitosa"); loadAdmin();
         }
 
-        // --- CONFIG (FECHAS REPARADO) ---
+        // --- ADMIN: CONFIGURACIÓN (REPARADO) ---
         function loadConfig() {
+            // Rúbrica
             document.getElementById('rub_bajo').value = db_conf.rubrica.bajo;
             document.getElementById('rub_basico').value = db_conf.rubrica.basico;
             document.getElementById('rub_alto').value = db_conf.rubrica.alto;
+
+            // Items Evaluativos
             document.getElementById('config_items_container').innerHTML = db_conf.items.map((it, i) => `
                 <div class="bg-gray-50 p-4 rounded-2xl border-2 border-dashed">
-                    <input type="text" value="${it.name}" onchange="db_conf.items[${i}].name=this.value" class="w-full font-black text-xs uppercase bg-transparent border-b mb-3">
-                    <div class="grid grid-cols-2 gap-2 text-[9px] font-bold"><span>PESO %</span><input type="number" value="${it.weight}" onchange="db_conf.items[${i}].weight=parseFloat(this.value)" class="w-full border rounded px-1">
-                    <span>NOTAS</span><input type="number" value="${it.count}" onchange="db_conf.items[${i}].count=parseInt(this.value)" class="w-full border rounded px-1"></div>
+                    <input type="text" id="it_name_${i}" value="${it.name}" class="w-full font-black text-xs uppercase bg-transparent border-b mb-3">
+                    <div class="grid grid-cols-2 gap-2 text-[9px] font-bold">
+                        <span>PESO %</span><input type="number" id="it_weight_${i}" value="${it.weight}" class="w-full border rounded px-1">
+                        <span>NOTAS</span><input type="number" id="it_count_${i}" value="${it.count}" class="w-full border rounded px-1">
+                    </div>
                 </div>`).join('');
             
+            // Fechas de Periodos
             document.getElementById('config_periods_container').innerHTML = [1,2,3].map(p => `
-                <div class="bg-white p-5 rounded-3xl border shadow-sm"><h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
-                <label class="text-[7px] font-black uppercase">Inicio</label><input type="datetime-local" id="f_start_${p}" value="${db_conf.periodos[p].start}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
-                <label class="text-[7px] font-black uppercase">Cierre</label><input type="datetime-local" id="f_end_${p}" value="${db_conf.periodos[p].end}" class="w-full text-[9px] p-2 border rounded-xl"></div>`).join('');
+                <div class="bg-white p-5 rounded-3xl border shadow-sm">
+                    <h4 class="font-black text-[10px] uppercase text-indigo-500 mb-2 italic">Periodo ${p}</h4>
+                    <label class="text-[7px] font-black uppercase">Inicio</label>
+                    <input type="datetime-local" id="p_start_${p}" value="${db_conf.periodos[p].start}" class="w-full text-[9px] p-2 border rounded-xl mb-3">
+                    <label class="text-[7px] font-black uppercase">Cierre</label>
+                    <input type="datetime-local" id="p_end_${p}" value="${db_conf.periodos[p].end}" class="w-full text-[9px] p-2 border rounded-xl">
+                </div>`).join('');
         }
 
         function saveGlobalConfig() {
-            db_conf.rubrica = { bajo: parseInt(document.getElementById('rub_bajo').value), basico: parseInt(document.getElementById('rub_basico').value), alto: parseInt(document.getElementById('rub_alto').value) };
-            [1,2,3].forEach(p => {
-                db_conf.periodos[p].start = document.getElementById(`f_start_${p}`).value;
-                db_conf.periodos[p].end = document.getElementById(`f_end_${p}`).value;
+            // Guardar Rúbrica
+            db_conf.rubrica = { 
+                bajo: parseInt(document.getElementById('rub_bajo').value), 
+                basico: parseInt(document.getElementById('rub_basico').value), 
+                alto: parseInt(document.getElementById('rub_alto').value) 
+            };
+
+            // Guardar Items Evaluativos
+            db_conf.items.forEach((it, i) => {
+                it.name = document.getElementById(`it_name_${i}`).value;
+                it.weight = parseFloat(document.getElementById(`it_weight_${i}`).value);
+                it.count = parseInt(document.getElementById(`it_count_${i}`).value);
             });
-            localStorage.setItem('db_conf', JSON.stringify(db_conf)); alert("Configuración guardada"); location.reload();
+
+            // Guardar Fechas de Periodos
+            [1,2,3].forEach(p => {
+                db_conf.periodos[p].start = document.getElementById(`p_start_${p}`).value;
+                db_conf.periodos[p].end = document.getElementById(`p_end_${p}`).value;
+            });
+
+            localStorage.setItem('db_conf', JSON.stringify(db_conf)); 
+            alert("Configuración Sincronizada Correctamente"); 
+            location.reload();
         }
 
-        // --- SELECTOR UNIVERSAL ---
+        // --- SELECTORES Y MODALES ---
         function abrirSelectorPeriodos(mid = null) {
             if(mid) curMat = db_mats.find(m => m.id == mid);
             openModal('modal_periodos');
@@ -318,9 +346,12 @@
         function loadDocente() {
             const mis = db_mats.filter(m => m.docente === sesion.user);
             document.getElementById('docente_table_body').innerHTML = mis.map(m => `
-                <tr class="hover:bg-blue-50 transition"><td class="p-5 font-black text-gray-500">01-A</td><td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
-                <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
-                <td class="p-5 text-center"><button onclick="abrirSelectorPeriodos(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td></tr>`).join('');
+                <tr class="hover:bg-blue-50 transition">
+                    <td class="p-5 font-black text-gray-500">01-A</td>
+                    <td class="p-5 font-black uppercase text-emerald-700">${m.nombre}</td>
+                    <td class="p-5 text-[9px] font-bold text-gray-400">${m.alumnos.length} ALUMNOS</td>
+                    <td class="p-5 text-center"><button onclick="abrirSelectorPeriodos(${m.id})" class="bg-emerald-500 text-white px-8 py-2 rounded-xl font-black text-[10px] uppercase shadow-sm">Planilla</button></td>
+                </tr>`).join('');
         }
 
         function abrirPlanilla(p) {
@@ -384,7 +415,7 @@
                 return `<div class="bg-white rounded-[2.5rem] shadow-sm border overflow-hidden">
                     <div class="p-6 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition" onclick="document.getElementById('det_${m.id}').classList.toggle('open')">
                         <div class="flex items-center gap-4"><div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-xl shadow-inner"><i class="fas fa-book"></i></div>
-                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase">Periodo ${p}</p></div></div>
+                        <div><h4 class="font-black text-gray-700 uppercase italic text-xs">${m.nombre}</h4><p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Periodo ${p}</p></div></div>
                         <div class="text-right"><span class="block text-[8px] font-black text-gray-300 uppercase">Definitiva</span><span class="text-3xl font-black ${getNotaColor(defFinal)}">${defFinal.toFixed(1)}</span></div>
                     </div>
                     <div id="det_${m.id}" class="accordion-content bg-white p-4">${det}</div>
